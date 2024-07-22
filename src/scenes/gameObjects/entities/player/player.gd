@@ -8,6 +8,7 @@ extends CharacterBody2D
 
 @onready var player: CharacterBody2D = $"."
 @onready var body: Sprite2D = $Visuals/Body
+@onready var coyoteTimer: Timer = $CoyoteTimer
 
 #debug
 @onready var stateLabel: Label = $CanvasLayer/VBoxContainer/StateLabel
@@ -29,8 +30,11 @@ var canJump: bool
 var jumpInput: bool
 var dir: Vector2
 
+#timers
+const coyoteTimerDuration: float = 0.16
+
 #movement variables
-const speed: float = 68.0
+const speed: float = 76.0
 const maxSpeed: float = speed
 
 const groundAcceleration: float = 11.6
@@ -39,11 +43,11 @@ const acceleration: float = groundAcceleration
 #const halfAcceleration: float = acceleration / 1.5
 
 const groundFriction: float = 58.23
-const airResistance: float = 35.5
+const airResistance: float = 30.5
 const friction: float = groundFriction
 #const halfFriction: float = friction / 1.5
 
-const jumpSpeed: float = -275.0 # how high you jump
+const jumpSpeed: float = -285.0 # how high you jump
 const variableJumpHeightMultiplier: float = 0.43 #variable jump height multiplier when you release jump button.
 const fallSpeed: float = 250.0
 const maxFallSpeed: float = fallSpeed 
@@ -219,9 +223,19 @@ func st_fall(delta: float) -> Callable:
 
 func st_enter_fall() -> void:
 	print("entering fall")
+	
+	if stateMachine.previousState == Callable(self, "st_idle") || stateMachine.previousState == Callable(self, "st_move") || stateMachine.previousState == Callable(self, "st_slide"):
+		canJump = true
+		coyoteTimer.start(coyoteTimerDuration)
+	else:
+		canJump = false
+	coyoteTimer.start(coyoteTimerDuration)
 
 func st_leave_fall() -> void:
 	print("leaving fall")
+
+func _on_coyote_timer_timeout():
+	canJump = false
 
 #dash
 func st_dash(delta: float) -> Callable:
@@ -256,4 +270,3 @@ func st_leave_duck() -> void:
 
 func on_dead() -> void:
 	pass
-
