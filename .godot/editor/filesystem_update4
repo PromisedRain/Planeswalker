@@ -1,0 +1,15 @@
+res://src/scenes/main.tscn
+res://src/scenes/main.gd
+res://src/scenes/volume1/room1.tscn
+res://src/scenes/gameObjects/entities/player/player.tscn
+res://src/components/hurtboxComponent.tscn
+res://src/components/hurtboxComponent.gd
+res://src/components/healthComponent.tscn
+res://src/components/healthComponent.gd
+res://src/scenes/gameObjects/entities/player/player.gd
+res://src/lib/stateMachine.gd
+res://src/components/velocityComponent.tscn
+res://src/components/velocityComponent.gd
+res://src/lib/nodeUtility.gd
+res://src/scenes/mainCamera.gd
+res://src/scenes/gameObjects/entities/player/playerTest.gd
