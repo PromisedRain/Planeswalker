@@ -20,3 +20,5 @@ texture = ExtResource("2_qpf5m")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionAreaComponent"]
 position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_2r77u")
+
+[connection signal="area_entered" from="InteractionAreaComponent" to="." method="_on_interaction_area_component_area_entered"]

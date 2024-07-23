@@ -1,14 +1,17 @@
 extends CharacterBody2D
 
-#chomps :3
+@onready var player: CharacterBody2D = $"."
 
 @onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 @onready var healthComponent: Node2D = $HealthComponent
 @onready var wallSlideRaycasts = $WallSlideRaycasts
+@onready var normalCollisionBox: CollisionShape2D = $NormalCollisionBox
+@onready var duckedCollisionBox: CollisionShape2D = $DuckCollisionBox
 
-@onready var player: CharacterBody2D = $"."
 @onready var body: Sprite2D = $Visuals/Body
+
 @onready var coyoteTimer: Timer = $CoyoteTimer
+@onready var jumpBufferTimer = $JumpBufferTimer
 
 #debug
 @onready var stateLabel: Label = $CanvasLayer/VBoxContainer/StateLabel
@@ -20,40 +23,60 @@ extends CharacterBody2D
 
 var stateMachine: StateMachine = StateMachine.new()
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
-var lastDirection: Vector2 = Vector2.RIGHT # last direction you have faced. as in right left.
+var lastDirection: Vector2 = Vector2.RIGHT # last direction you have faced. as in right left...
 var direction: Vector2
-var facing: Vector2 # specifically for where you can dash; north, west, south, east, nothwest, southeast... - etc.
+var facing: Vector2 # specifically for where you can dash; north, west, south, east, nothwest, southeast... 
 
 var canMove: bool = true
 var canDash: bool
 var canJump: bool
 var jumpInput: bool
-var dir: Vector2
+var duckInput: bool
+var jumpBuffer: bool = false
 
 #timers
-const coyoteTimerDuration: float = 0.16
+var coyoteTimerDuration: float = 0.16
+var jumpBufferTimerDuration: float = 0.1
 
 #movement variables
-const speed: float = 76.0
-const maxSpeed: float = speed
+var speed: float = 90.0
+var maxSpeed: float = speed
 
-const groundAcceleration: float = 11.6
-const airAcceleration: float = 54.2
-const acceleration: float = groundAcceleration
-#const halfAcceleration: float = acceleration / 1.5
+var groundAcceleration: float = 9.0 #11.6
+var airAcceleration: float = 40.5
+var acceleration: float = groundAcceleration
+#var halfAcceleration: float = acceleration / 1.5
 
-const groundFriction: float = 58.23
-const airResistance: float = 30.5
-const friction: float = groundFriction
-#const halfFriction: float = friction / 1.5
+var groundFriction: float = 35.0 #58.0 #10 #58.23
+var airResistance: float = 50.0
+var friction: float = groundFriction
+var halfFriction: float = friction / 1.5
 
-const jumpSpeed: float = -285.0 # how high you jump
-const variableJumpHeightMultiplier: float = 0.43 #variable jump height multiplier when you release jump button.
-const fallSpeed: float = 250.0
-const maxFallSpeed: float = fallSpeed 
 
-const gravityScale: float = 1.15
-const gravityStFallScale: float = 1.15
+#var jumpTimeToDescent: float
+#var jumpTimeToPeak: float
+
+#var jumpVelocity: float = ((2.0 * jumpHeight) / jumpTimeToPeak) * -1.0
+#var jumpGravity: float = ((-2.0 * jumpHeight) / (jumpTimeToPeak * jumpTimeToPeak)) * -1.0
+#var fallGravity: float = ((-2.0 * jumpHeight) / (jumpTimeToDescent * jumpTimeToDescent)) * -1.0
+
+var variableJumpHeightMultiplier: float = 0.385 #variable jump height multiplier when you release jump button.
+
+var fallSpeed: float = 412.0
+var maxFallSpeed: float = fallSpeed 
+
+var jumpHeight: float = (225.5) * -1 #(12750.0) * -1 #
+var jumpGravity: float = 0.95
+var fallGravity: float = 1.17
+
+# for the player jump stretch reversion, higher value = faster, lower = slower
+var bodySquashStretchReversion: float = 1.0 
+
+var bodySquashValue: Vector2 = Vector2(1.15, 0.8)
+var bodyStretchValue: Vector2 = Vector2(0.8, 1.15)
+var bodyDuckSquashValue: Vector2 = Vector2(1.15, 0.9)
+
+#lilith
 
 func _ready() -> void:
 	var states = ["idle", "move", "jump", "fall", "dash", "slide", "duck"]
@@ -67,6 +90,8 @@ func _ready() -> void:
 		)
 	stateMachine.set_initial_state(Callable(self, "st_idle"))
 	
+	jumpBufferTimer.start()
+	
 	#other stuff
 	healthComponent.connect("died", on_dead)
 
@@ -77,19 +102,28 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
+	body.scale.x = move_toward(body.scale.x, 1.0, bodySquashStretchReversion * delta)
+	body.scale.y = move_toward(body.scale.y, 1.0, bodySquashStretchReversion * delta)
+	
 	# debug
 	stateLabel.text = stateMachine.get_current_state_name()
 	velocityLabel.text = "velocity: " + "(" + str(velocity.x) + "," + str(velocity.y) + ")"
 	facingLabel.text = "facing: " + "(" + str(facing.x) + ", " + str(facing.y) + ")"
 	directionLabel.text = "direction: " + "(" + str(direction.x) + ", " + str(direction.y) + ")"
 	CanJumpLabel.text = "can jump: " + str(canJump)
-
+	#print(velocity.x)
 
 func _gravity_process(delta: float) -> void:
+	#if !is_on_floor():
+	#	velocity.y += gravity * jumpGravity * delta
+	#elif stateMachine.get_current_state() == Callable(self, "st_fall"):
+	#	velocity.y = gravity * fallGravity * delta 
+	
 	if !is_on_floor():
-		velocity.y += gravity * gravityScale * delta
-	elif stateMachine.get_current_state() == Callable(self, "st_fall"):
-		velocity.y = gravity * gravityStFallScale * delta 
+		velocity.y += gravity * delta * (jumpGravity if velocity.y < 0 else fallGravity)
+	
+	if velocity.y > maxFallSpeed:
+		velocity.y = maxFallSpeed
 
 func player_input() -> void:
 	facing = Vector2.ZERO
@@ -109,26 +143,31 @@ func player_input() -> void:
 		facing.y -= 1
 	
 	jumpInput = Input.is_action_just_pressed("jump")
+	duckInput = Input.is_action_pressed("duck")
+	
+	if jumpInput:
+		jumpBuffer = true
+		jumpBufferTimer.start(jumpBufferTimerDuration)
 
 func player_movement(delta) -> void:
 	if direction != Vector2.ZERO:
-		#print(direction)
 		if !is_on_floor():
 			accelerate_in_direction(direction, delta, true)
-			print("in air")
 		else:
 			accelerate_in_direction(direction, delta)
 	else:
 		if !is_on_floor():
 			decelerate(delta, true)
 		else:
-			decelerate(delta)
+			if velocity.x != 0:
+				decelerate(delta)
 
-func accelerate_in_direction(direction: Vector2, delta: float, air: bool = false) -> void:
+
+func accelerate_in_direction(dir: Vector2, delta: float, air: bool = false) -> void:
 	var accel: float = acceleration
 	if air:
 		accel = airAcceleration
-	to_velocity(Vector2(direction.x * maxSpeed, velocity.y), accel, delta)
+	to_velocity(Vector2(dir.x * maxSpeed, velocity.y), accel, delta)
 
 func decelerate(delta: float, air: bool = false) -> void:
 	var fric: float = friction
@@ -149,46 +188,64 @@ func get_direction_next_to_wall() -> Vector2:
 				return Vector2.LEFT
 	return Vector2()
 
+func is_approximately_equal(a: float, b: float, epsilon: float = 0.01) -> bool:
+	return abs(a - b) < epsilon
+
 #states
 
 #idle
 func st_idle(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
+	canJump = true
 	
-	if velocity.x != 0:
+	if !is_approximately_equal(velocity.x, 0):
 		return Callable(self, "st_move")
-	if jumpInput && canJump:
+	if (jumpInput || jumpBuffer) && canJump:
+		jumpBuffer = false
 		return Callable(self, "st_jump")
 	if velocity.y > 0:
 		return Callable(self, "st_fall")
+	if duckInput:
+		return Callable(self, "st_duck")
 	return Callable()
 
-func st_enter_idle() -> void:
+func st_enter_idle(delta: float = 0) -> void:
 	animationPlayer.play("anim_idle")
 	canJump = true
-	print("entering idle")
+	#print("entering idle")
+	
+	if stateMachine.previousState == Callable(self, "st_fall"):
+		body.scale = bodySquashValue
 
-func st_leave_idle() -> void:
-	print("leaving idle")
+func st_leave_idle(delta: float = 0) -> void:
+	pass
+	#print("leaving idle")
 
 #move
 func st_move(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
 	
-	if velocity.x == 0:
+	if is_approximately_equal(velocity.x, 0):
 		return Callable(self, "st_idle")
-	if jumpInput:
+	if jumpInput || jumpBuffer:
+		jumpBuffer = false
 		return Callable(self, "st_jump")
 	if velocity.y > 0:
 		return Callable(self, "st_fall")
+	if duckInput:
+		return Callable(self, "st_duck")
 	return Callable()
 
-func st_enter_move() -> void:
-	pass
+func st_enter_move(delta: float = 0) -> void:
+	animationPlayer.play("anim_run")
+	
+	
+	if stateMachine.previousState == Callable(self, "st_fall"):
+		body.scale = bodySquashValue
 
-func st_leave_move() -> void:
+func st_leave_move(delta: float = 0) -> void:
 	pass
 
 #jump
@@ -203,26 +260,33 @@ func st_jump(delta: float) -> Callable:
 		return Callable(self, "st_fall")
 	return Callable()
 
-func st_enter_jump() -> void:
-	velocity.y = jumpSpeed
+func st_enter_jump(delta: float = 0) -> void:
+	animationPlayer.play("anim_jump")
+	body.scale = bodyStretchValue
+	velocity.y = jumpHeight #* delta
 	canJump = false
+	print(velocity.y)
 
-func st_leave_jump() -> void:
-	print("leaving jump")
+func st_leave_jump(delta: float = 0) -> void:
+	pass
+	#print("leaving jump")
 
 #fall
 func st_fall(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
 	
+	if is_on_floor() && !is_approximately_equal(velocity.x, 0):
+		return Callable(self, "st_move")
 	if is_on_floor():
 		return Callable(self, "st_idle")
-	if jumpInput && canJump:
+	if (jumpInput || jumpBuffer) && canJump:
 		return Callable(self, "st_jump")
 	return Callable()
 
-func st_enter_fall() -> void:
-	print("entering fall")
+func st_enter_fall(delta: float = 0) -> void:
+	animationPlayer.play("anim_jump")
+	#print("entering fall")
 	
 	if stateMachine.previousState == Callable(self, "st_idle") || stateMachine.previousState == Callable(self, "st_move") || stateMachine.previousState == Callable(self, "st_slide"):
 		canJump = true
@@ -231,42 +295,67 @@ func st_enter_fall() -> void:
 		canJump = false
 	coyoteTimer.start(coyoteTimerDuration)
 
-func st_leave_fall() -> void:
-	print("leaving fall")
+func st_leave_fall(delta: float = 0) -> void:
+	pass
+	#print("leaving fall")
 
-func _on_coyote_timer_timeout():
-	canJump = false
+
 
 #dash
 func st_dash(delta: float) -> Callable:
 	return Callable()
 
-func st_enter_dash() -> void:
+func st_enter_dash(delta: float = 0) -> void:
 	pass
 
-func st_leave_dash() -> void:
+func st_leave_dash(delta: float = 0) -> void:
 	pass
 
-#slide(walls)
+#slide
 func st_slide(delta: float) -> Callable:
 	return Callable()
 
-func st_enter_slide() -> void:
+func st_enter_slide(delta: float = 0) -> void:
 	pass
 
-func st_leave_slide() -> void:
+func st_leave_slide(delta: float = 0) -> void:
 	pass
 
 #duck
-func st_duck() -> Callable:
+func st_duck(delta: float) -> Callable:
+	_gravity_process(delta)
+	canJump = true
+	jumpInput = Input.is_action_just_pressed("jump")
+	
+	if velocity.x != 0:
+		var fric: float = halfFriction
+		to_velocity(Vector2(0, velocity.y), fric, delta)
+	
+	if velocity.y > 0:
+		return Callable(self, "st_fall")
+	if !duckInput:
+		return Callable(self, "st_idle")
+	if jumpInput && canJump:
+		return Callable(self, "st_jump")
 	return Callable()
 
-func st_enter_duck() -> void:
-	pass
+func st_enter_duck(delta: float = 0) -> void:
+	animationPlayer.play("anim_duck")
+	body.scale = bodyDuckSquashValue
+	
+	duckedCollisionBox.disabled = false
+	normalCollisionBox.disabled = true
 
-func st_leave_duck() -> void:
-	pass
-
+func st_leave_duck(delta: float = 0) -> void:
+	duckedCollisionBox.disabled = true
+	normalCollisionBox.disabled = false
 
 func on_dead() -> void:
 	pass
+
+func _on_coyote_timer_timeout() -> void:
+	canJump = false
+
+func _on_jump_buffer_timer_timeout() -> void:
+	jumpBuffer = false
+
