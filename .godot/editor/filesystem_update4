@@ -9,3 +9,4 @@ res://src/scenes/managers/interactionManager.tscn
 res://src/scenes/gameObjects/entities/player/player.gd
 res://src/testing/scenes/gameObjects/testInteraction/testInteraction.gd
 res://src/lib/stateMachine.gd
+res://src/scenes/mainCamera.gd
