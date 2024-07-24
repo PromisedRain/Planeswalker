@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://4sk5yusr5vvs"]
+[gd_scene load_steps=6 format=3 uid="uid://4sk5yusr5vvs"]
 
 [ext_resource type="Script" path="res://src/scenes/main.gd" id="1_gewu3"]
+[ext_resource type="PackedScene" uid="uid://c6s0hvw0hsy5t" path="res://src/scenes/managers/debugManager.tscn" id="2_5w8xw"]
 [ext_resource type="PackedScene" uid="uid://cm0lw3nd0kw7d" path="res://src/scenes/gameObjects/entities/player/player.tscn" id="2_r3rp8"]
 [ext_resource type="PackedScene" uid="uid://hkeot3pu0jvn" path="res://src/scenes/volume1/rooms/room0.tscn" id="3_w3bbo"]
 [ext_resource type="Script" path="res://src/scenes/mainCamera.gd" id="4_2ats6"]
@@ -10,12 +11,12 @@ script = ExtResource("1_gewu3")
 
 [node name="PlayerUI" type="CanvasLayer" parent="."]
 
-[node name="DebugManager" type="CanvasLayer" parent="."]
+[node name="DebugManager" parent="." instance=ExtResource("2_5w8xw")]
 
 [node name="Entities" type="Node2D" parent="."]
 
 [node name="Player" parent="Entities" instance=ExtResource("2_r3rp8")]
-position = Vector2(-33, -8)
+position = Vector2(-34, 0.5)
 
 [node name="Volumes" type="Node2D" parent="."]
 

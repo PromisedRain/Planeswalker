@@ -1,0 +1,111 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6s0hvw0hsy5t"]
+
+[ext_resource type="Script" path="res://src/scenes/managers/debugManager.gd" id="1_nguqr"]
+[ext_resource type="FontFile" uid="uid://6fasdo7r43ey" path="res://src/media/fonts/RobotoMono-VariableFont_wght.ttf" id="2_mtvyq"]
+
+[sub_resource type="Theme" id="Theme_xg7o3"]
+default_font = ExtResource("2_mtvyq")
+default_font_size = 8
+
+[node name="DebugManager" type="CanvasLayer"]
+script = ExtResource("1_nguqr")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Control" type="Control" parent="Control/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_xg7o3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="StateLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "state"
+
+[node name="FpsLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "frames"
+
+[node name="DeathsLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "deaths"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/MarginContainer/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="VelocityLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "velocity"
+
+[node name="FacingLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "facing"
+
+[node name="DirectionLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "direction"
+
+[node name="TestLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "testLabel"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Control/MarginContainer/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="Control" type="HBoxContainer" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+
+[node name="TimeElapsedLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control"]
+layout_mode = 2
+text = "totalTime:"
+
+[node name="MSecLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control"]
+layout_mode = 2
+text = "00:"
+horizontal_alignment = 2
+
+[node name="SecondsLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control"]
+layout_mode = 2
+text = "00:"
+horizontal_alignment = 2
+
+[node name="MinutesLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control"]
+layout_mode = 2
+text = "00:"
+horizontal_alignment = 2

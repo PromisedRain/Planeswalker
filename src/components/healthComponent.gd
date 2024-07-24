@@ -11,19 +11,19 @@ signal healthChanged
 
 #TODO
 
-func _ready():
+func _ready() -> void:
 	init_health()
 
-func init_health():
+func init_health() -> void:
 	currentHealth = maxHealth
 
-func get_health():
+func get_health() -> int:
 	return currentHealth
 
-func get_max_health():
+func get_max_health() -> int:
 	return maxHealth
 
-func update():
+func update() -> void:
 	if currentHealth < 0:
 		currentHealth = 0
 	
@@ -31,11 +31,11 @@ func update():
 		emit_signal("died")
 		currentHealth += 1 #testing purposes
 
-func damage(amount: float):
+func damage(amount: int) -> void:
 	currentHealth -= amount
 	emit_signal("healthChanged")
 	update()
 
-func heal(amount: float):
+func heal(amount: int) -> void:
 	damage(-amount)
 
