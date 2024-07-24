@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/scenes/main.gd" id="1_gewu3"]
 [ext_resource type="PackedScene" uid="uid://c6s0hvw0hsy5t" path="res://src/scenes/managers/debugManager.tscn" id="2_5w8xw"]
-[ext_resource type="PackedScene" uid="uid://cm0lw3nd0kw7d" path="res://src/scenes/gameObjects/entities/player/player.tscn" id="2_r3rp8"]
+[ext_resource type="PackedScene" uid="uid://cm0lw3nd0kw7d" path="res://src/scenes/gameObjects/player/player.tscn" id="2_r3rp8"]
 [ext_resource type="PackedScene" uid="uid://hkeot3pu0jvn" path="res://src/scenes/volume1/rooms/room0.tscn" id="3_w3bbo"]
 [ext_resource type="Script" path="res://src/scenes/mainCamera.gd" id="4_2ats6"]
 

@@ -32,22 +32,24 @@ var isJumping: bool = false
 
 var dashInput: bool 
 var dashCooldownTimer: float
+var dashLengthTimer: float
 var dashDir: Vector2
 var beforeDashSpeed: Vector2
-var canDash: bool = false
+#var canDash: bool = false
 var isDashing: bool = false
 var totalDashes: int
+var totalDashesVolume: int
 var dashStartedOnGround: bool
-
 var duckInput: bool
 
 #constants
 
 #TODO corner correction on dash
 const dashSpeed: float = 240.0
-const endDashSpeed: float = 165.0
-const dashTime: float = 0.05
-const dashCooldown: float = 0.35
+const endDashSpeed: float = 160.0
+const dashLengthTime: float = 0.05
+const dashCooldownTime: float = 0.35
+const maxDashes: int = 1
 
 const runSpeed: float = 90.0
 const maxRunSpeed: float = runSpeed
@@ -147,6 +149,11 @@ func update(delta: float) -> void:
 	if dashCooldownTimer > 0.0:
 		dashCooldownTimer -= delta
 	
+	if dashLengthTimer > 0.0:
+		dashLengthTimer -= delta
+	if NodeUtility.is_approximately_equal(dashLengthTimer, 0.0, 0.01):
+		isDashing = false
+	
 	#jump
 	if jumpGraceTimer > 0.0:
 		jumpGraceTimer -= delta
@@ -164,10 +171,14 @@ func update(delta: float) -> void:
 	if NodeUtility.is_approximately_equal(respawnTimer, 0.0, 0.01):
 		respawn = true
 	
+	if justRespawned && (velocity != Vector2.ZERO):
+		justRespawned = false
+	
 	# squash and stretch reversion
 	body.scale.x = move_toward(body.scale.x, 1.0, bodySquashStretchReversion * delta)
 	body.scale.y = move_toward(body.scale.y, 1.0, bodySquashStretchReversion * delta)
 
+# inputs
 func player_input() -> void:
 	
 	if Input.is_action_pressed("right"):
@@ -185,9 +196,25 @@ func player_input() -> void:
 	
 	jumpInput = Input.is_action_just_pressed("jump")
 	
-	dashInput = Input.is_action_just_pressed("dash") && canDash && dashCooldownTimer <= 0.0
+	dashInput = Input.is_action_just_pressed("dash")
 	
 	duckInput = Input.is_action_pressed("duck")
+
+func can_dash() -> bool:
+	return dashInput && dashCooldownTimer <= 0.0 && totalDashes > 0
+
+var canDash: bool:
+	get:
+		return can_dash()
+
+func refill_dashes() -> bool:
+	print("pre func dashes %s" %totalDashes)
+	if totalDashes < maxDashes:
+		totalDashes = maxDashes
+		print("post func dashes %s" %totalDashes)
+		return true
+	else:
+		return false
 
 func player_movement(delta) -> void:
 	if direction != Vector2.ZERO:
@@ -228,7 +255,7 @@ func st_idle(delta: float) -> Callable:
 	if velocity.y > 0:
 		return Callable(self, "st_fall")
 	
-	if dashInput && canDash:
+	if canDash:
 		return Callable(self, "st_dash")
 	
 	if duckInput:
@@ -239,10 +266,11 @@ func st_idle(delta: float) -> Callable:
 func st_enter_idle(delta: float = 0) -> void:
 	animationPlayer.play("anim_idle")
 	canJump = true
-	canDash = true
 	
 	if stateMachine.previousState == Callable(self, "st_fall"):
 		body.scale = bodySquashVec
+	
+	refill_dashes()
 
 func st_leave_idle(delta: float = 0) -> void:
 	pass
@@ -262,7 +290,7 @@ func st_move(delta: float) -> Callable:
 	if velocity.y > 0:
 		return Callable(self, "st_fall")
 	
-	if dashInput && canDash:
+	if canDash: 
 		return Callable(self, "st_dash")
 	
 	if duckInput:
@@ -272,10 +300,11 @@ func st_move(delta: float) -> Callable:
 
 func st_enter_move(delta: float = 0) -> void:
 	animationPlayer.play("anim_run")
-	canDash = true
 	
 	if stateMachine.previousState == Callable(self, "st_fall"):
 		body.scale = bodySquashVec
+	
+	refill_dashes()
 
 func st_leave_move(delta: float = 0) -> void:
 	pass
@@ -296,8 +325,8 @@ func st_jump(delta: float) -> Callable:
 	if velocity.y >= 0:
 		return Callable(self, "st_fall")
 	
-	#if dashInput && canDash:
-	#	return Callable(self, "st_dash")
+	if canDash: 
+		return Callable(self, "st_dash")
 	
 	return Callable()
 
@@ -324,8 +353,7 @@ func st_fall(delta: float) -> Callable:
 	if (jumpInput || jumpBuffer) && canJump:
 		return Callable(self, "st_jump")
 	
-	if dashInput && canDash:
-		#dashDurationTimer
+	if canDash: 
 		return Callable(self, "st_dash")
 	
 	return Callable()
@@ -345,37 +373,37 @@ func st_leave_fall(delta: float = 0) -> void:
 
 #dash
 func st_dash(delta: float) -> Callable:
-	_gravity_process(delta)
-	player_movement(delta)
+	#_gravity_process(delta)
+	#player_movement(delta)
 	
-	#if !isDashing:
-	#	return Callable(self, "st_fall")
+	if !isDashing:
+		return Callable(self, "st_fall")
 	
-	#if jumpInput && canJump:
-	#	return Callable(self, "st_jump")
+	if jumpInput && canJump:
+		return Callable(self, "st_jump")
 	
 	return Callable()
 
 func st_enter_dash(delta: float = 0) -> void:
-	pass
-	#canDash = false
-	#isDashing = true
-	#dashDurationTimer.start(dashDurationTimerDuration)
-	#
-	#if facing != Vector2.ZERO:
-	#	dashDir = facing
-	#else:
-	#	dashDir = lastDir
-	#
-	#velocity = dashDir.normalized() * dashSpeed
-	#print(dashDir)
+	
+	totalDashes = max(0, totalDashes - 1)
+	isDashing = true
+	dashLengthTimer = dashLengthTime
+	dashCooldownTimer = dashCooldownTime
+	
+	if facing != Vector2.ZERO:
+		dashDir = facing
+	else:
+		dashDir = lastDir
+	
+	velocity = dashDir.normalized() * dashSpeed
 
 func st_leave_dash(delta: float = 0) -> void:
 	leave_dash_events()
-	#isDashing = false
+	isDashing = false
 
 func leave_dash_events() -> void:
-	totalDashes += 1
+	totalDashesVolume += 1
 
 #slide
 func st_slide(delta: float) -> Callable:

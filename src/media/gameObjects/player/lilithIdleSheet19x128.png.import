@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dj4stqasye0ja"
-path="res://.godot/imported/lilithRunSheet19x128.png-1c160462cfc269323c87c3fefcbd27b0.ctex"
+uid="uid://dus1t4omt66pe"
+path="res://.godot/imported/lilithIdleSheet19x128.png-7aa45361eadf98dd107344a139de290e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/media/gameObjects/entities/player/lilithRunSheet19x128.png"
-dest_files=["res://.godot/imported/lilithRunSheet19x128.png-1c160462cfc269323c87c3fefcbd27b0.ctex"]
+source_file="res://src/media/gameObjects/player/lilithIdleSheet19x128.png"
+dest_files=["res://.godot/imported/lilithIdleSheet19x128.png-7aa45361eadf98dd107344a139de290e.ctex"]
 
 [params]
 

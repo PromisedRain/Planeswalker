@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jvjkqfm2huvx"
-path="res://.godot/imported/chompersRunSheet19x160.png-4e95d9f391b73f5752931935069f4e5a.ctex"
+uid="uid://bxd5ex852l2cj"
+path="res://.godot/imported/chompersSpriteSheetFull.png-2813555951707637fb7e23660a457ee1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/media/gameObjects/entities/player/chompersRunSheet19x160.png"
-dest_files=["res://.godot/imported/chompersRunSheet19x160.png-4e95d9f391b73f5752931935069f4e5a.ctex"]
+source_file="res://src/media/gameObjects/player/chompersSpriteSheetFull.png"
+dest_files=["res://.godot/imported/chompersSpriteSheetFull.png-2813555951707637fb7e23660a457ee1.ctex"]
 
 [params]
 
