@@ -1,13 +1,15 @@
 extends Node2D
 
-var player = null
-@onready var camera_2d = $Camera2D
+@onready var player: CharacterBody2D = NodeUtility.get_player()
+@onready var camera2d: Camera2D = $Camera2D
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	player = NodeUtility.get_player()
+func _physics_process(delta) -> void:
+	update_camera()
 
+func _process(delta) -> void:
+	update_camera()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	camera_2d.position = player.position
+func update_camera() -> void:
+	pass
+	#if is_instance_valid(player):
+	#	camera2d.position = player.position

@@ -9,15 +9,13 @@ extends CanvasLayer
 @onready var velocityLabel = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer2/VelocityLabel
 @onready var facingLabel = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer2/FacingLabel
 @onready var directionLabel = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer2/DirectionLabel
-@onready var testLabel = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer2/TestLabel
+@onready var DashesLabel = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer2/DashesLabel
 
 @onready var timeElapsedLabel = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control/TimeElapsedLabel
 @onready var mSecLabel = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control/MSecLabel
 @onready var secondsLabel = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control/SecondsLabel
 @onready var minutesLabel = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control/MinutesLabel
-
-
-
+@onready var totalDashesSessionLabel = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/TotalDashesSessionLabel
 
 var time: float = 0.0
 var minutes: float = 0.0
@@ -33,7 +31,7 @@ func _process(delta):
 	velocityLabel.text = "velocity: (%s, %s)"  %[str(round(player.velocity.x)), str(round(player.velocity.y))]
 	facingLabel.text = "facing: (%s, %s)" %[player.facing.x, player.facing.y]
 	directionLabel.text = "dir: (%s, %s)" %[player.direction.x, player.direction.y]
-	#testLabel.text = 
+	DashesLabel.text =  "dashes: %s" %player.totalDashes
 	
 	time += delta
 	mSec = fmod(time, 1) * 100
@@ -42,4 +40,6 @@ func _process(delta):
 	minutesLabel.text = "%02d" % minutes
 	secondsLabel.text = "%02d." % seconds
 	mSecLabel.text = "%03d" % mSec 
+	
+	totalDashesSessionLabel.text = "totalDashesSession: %s" %player.totalDashesSession
 

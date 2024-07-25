@@ -38,7 +38,7 @@ var beforeDashSpeed: Vector2
 #var canDash: bool = false
 var isDashing: bool = false
 var totalDashes: int
-var totalDashesVolume: int
+var totalDashesSession: int
 var dashStartedOnGround: bool
 var duckInput: bool
 
@@ -208,10 +208,8 @@ var canDash: bool:
 		return can_dash()
 
 func refill_dashes() -> bool:
-	print("pre func dashes %s" %totalDashes)
 	if totalDashes < maxDashes:
 		totalDashes = maxDashes
-		print("post func dashes %s" %totalDashes)
 		return true
 	else:
 		return false
@@ -403,7 +401,7 @@ func st_leave_dash(delta: float = 0) -> void:
 	isDashing = false
 
 func leave_dash_events() -> void:
-	totalDashesVolume += 1
+	totalDashesSession += 1
 
 #slide
 func st_slide(delta: float) -> Callable:
