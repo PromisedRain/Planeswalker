@@ -13,17 +13,11 @@ script = ExtResource("1_gewu3")
 [node name="DebugManager" parent="." instance=ExtResource("2_5w8xw")]
 visible = false
 
-[node name="Entities" type="Node2D" parent="."]
-
-[node name="Player" parent="Entities" instance=ExtResource("2_r3rp8")]
-position = Vector2(-298, 120)
-
-[node name="CameraAnchor" type="Marker2D" parent="Entities/Player"]
-position = Vector2(0, -7)
-script = ExtResource("4_ih8ft")
+[node name="DashGhostContainer" type="Node2D" parent="."]
 
 [node name="MainCamera" type="Node2D" parent="."]
 script = ExtResource("4_2ats6")
+metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="MainCamera" groups=["mainCamera"]]
 position = Vector2(40, -38)
@@ -34,10 +28,23 @@ drag_top_margin = 0.5
 drag_right_margin = 0.4
 drag_bottom_margin = 0.5
 
+[node name="Entities" type="Node2D" parent="."]
+
+[node name="Player" parent="Entities" instance=ExtResource("2_r3rp8")]
+position = Vector2(8, -40)
+
+[node name="CameraAnchor" type="Marker2D" parent="Entities/Player"]
+position = Vector2(0, -7)
+script = ExtResource("4_ih8ft")
+metadata/_edit_lock_ = true
+
 [node name="Volumes" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="Volume1" type="Node2D" parent="Volumes"]
+metadata/_edit_lock_ = true
 
 [node name="Rooms" type="Node2D" parent="Volumes/Volume1"]
+metadata/_edit_lock_ = true
 
 [node name="Room0" parent="Volumes/Volume1/Rooms" instance=ExtResource("3_w3bbo")]

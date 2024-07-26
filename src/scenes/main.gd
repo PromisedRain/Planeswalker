@@ -7,7 +7,7 @@ extends Node
 @onready var screenSize: Vector2i = get_viewport().get_visible_rect().size
 
 #managers
-@onready var debugManager = $DebugManager
+@onready var debugManager: CanvasLayer = $DebugManager
 
 #vars
 var inDebug: bool = false

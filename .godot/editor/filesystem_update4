@@ -7,4 +7,10 @@ res://src/scenes/managers/interactionManager.tscn
 res://src/scenes/managers/debugManager.tscn
 res://src/scenes/gameObjects/dashRefillCrystal/dashRefillCrystal.tscn
 res://src/components/dashGhostComponent.tscn
+res://src/scenes/gameObjects/dashRefillOrb/dashRefillCrystal.tscn
+res://src/scenes/gameObjects/dashRefillOrb/dashRefillOrb.tscn
 res://src/scenes/gameObjects/player/player.gd
+res://src/lib/CameraAnchor.gd
+res://src/lib/nodeUtility.gd
+res://src/scenes/main.gd
+res://src/scenes/managers/debugManager.gd

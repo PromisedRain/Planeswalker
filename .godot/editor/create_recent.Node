@@ -1,4 +1,5 @@
 Node2D
+RayCast2D
 DashGhostComponent
 Sprite2D
 CPUParticles2D
@@ -11,4 +12,3 @@ Marker2D
 Area2D
 CollisionShape2D
 Panel
-VBoxContainer

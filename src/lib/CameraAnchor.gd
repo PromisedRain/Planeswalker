@@ -8,8 +8,8 @@ func _process(delta) -> void:
 	var targetPosX: int
 	var targetPosY: int
 	
-	targetPosX = int_lerp(global_position.x, target.x, 0.6)
-	targetPosY = int_lerp(global_position.y, target.y, 0.6)
+	targetPosX = NodeUtility.int_lerp(global_position.x, target.x, 0.6)
+	targetPosY = NodeUtility.int_lerp(global_position.y, target.y, 0.6)
 	
 	#targetPosX = int(target.x)
 	#targetPosY = int(target.y)
@@ -17,5 +17,4 @@ func _process(delta) -> void:
 	global_position = Vector2(targetPosX, targetPosY)
 	mainCamera.position = global_position
 
-func int_lerp(start: int, target: int, multiplier: float) -> int:
-	return int(start + (target - start) * multiplier)
+

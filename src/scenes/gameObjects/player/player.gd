@@ -2,11 +2,16 @@ extends CharacterBody2D
 #lilith
 
 @onready var sprite: Sprite2D = $Visuals/Body
+@onready var main: Node = NodeUtility.get_main()
+
 @onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 @onready var healthComponent: HealthComponent = $HealthComponent
+
 @onready var wallSlideRaycasts = $WallSlideRaycasts
+
 @onready var normalCollisionBox: CollisionShape2D = $NormalCollisionBox
 @onready var duckedCollisionBox: CollisionShape2D = $DuckCollisionBox
+
 @onready var dashTrailLine: Line2D = $DashTrailLine
 @onready var dashParticles: CPUParticles2D = $DashParticles
 @onready var dashGhost: PackedScene = preload("res://src/components/dashGhostComponent.tscn")
@@ -41,9 +46,15 @@ var isDashing: bool = false
 var totalDashes: int
 var totalDashesSession: int
 var dashStartedOnGround: bool
+
+
 var duckInput: bool
 
 #constants
+
+const upwardCornerCorrection: int = 4
+const respawnTime: float = 2.5
+
 const dashSpeed: float = 240.0
 const endDashSpeed: float = 160.0
 const dashLengthTime: float = 0.135
@@ -51,6 +62,7 @@ const dashTrailTime: float = 0.04
 const ghostDashColor: Color = Color("#5694ff")
 const dashCooldownTime: float = 0.35
 const maxDashes: int = 1
+const dashCornerCorrection: int = 4
 
 const runSpeed: float = 90.0
 const maxRunSpeed: float = runSpeed
@@ -78,8 +90,6 @@ const bodySquashStretchReversion: float = 1.75
 const bodySquashVec: Vector2 = Vector2(1.4, 0.8)
 const bodyStretchVec: Vector2 = Vector2(0.6, 1.4) 
 const bodyDuckSquashVec: Vector2 = Vector2(1.4, 0.8)
-
-const respawnTime: float = 2.5
 
 func _ready() -> void:
 	
@@ -174,6 +184,19 @@ func update(delta: float) -> void:
 	
 	#sprite
 	update_sprite(delta)
+	
+	#corner correction
+	if velocity.y < 0 && test_move(global_transform, Vector2(0, velocity.y * delta)):
+		
+		for i in range(1, upwardCornerCorrection * 2 + 1):
+			for direction in [-1.0, 1.0]:
+				
+				var offset = Vector2(i * direction / 2, 0)
+				if !test_move(global_transform.translated(Vector2(i * direction / 2, 0)), Vector2(0, velocity.y * delta)):
+					translate(offset)
+					if velocity.x * direction < 0: velocity.x = 0
+					return
+	
 
 func update_sprite(delta: float) -> void:
 	# scale tweening
@@ -182,7 +205,6 @@ func update_sprite(delta: float) -> void:
 	
 	#anims
 	if canControl && !sequenceState:
-		
 		#idle
 		if stateMachine.currentState == Callable(self, "st_idle"):
 			animationPlayer.play("anim_idle")
@@ -309,7 +331,6 @@ func st_move(delta: float) -> Callable:
 func st_enter_move(delta: float = 0) -> void:
 	if stateMachine.previousState == Callable(self, "st_fall"):
 		sprite.scale = bodySquashVec
-	
 	refill_dashes()
 
 func st_leave_move(delta: float = 0) -> void:
@@ -376,7 +397,6 @@ func st_leave_fall(delta: float = 0) -> void:
 
 #dash
 func st_dash(delta: float) -> Callable:
-	
 	if dashTrailTimer > 0:
 		dashTrailTimer -= delta
 		if dashTrailTimer <= 0:
@@ -390,15 +410,6 @@ func st_dash(delta: float) -> Callable:
 		return Callable(self, "st_jump")
 	
 	return Callable()
-
-func create_dash_trail() -> void:
-	var ghostInstance: Sprite2D = dashGhost.instantiate()
-	ghostInstance.texture = sprite.texture
-	ghostInstance.hframes = sprite.hframes
-	ghostInstance.global_position = sprite.global_position
-	ghostInstance.flip_h = sprite.flip_h
-	ghostInstance.modulate = ghostDashColor
-	get_parent().add_child(ghostInstance)
 
 func st_enter_dash(delta: float = 0) -> void:
 	totalDashes = max(0, totalDashes - 1)
@@ -552,3 +563,12 @@ func get_direction_next_to_wall() -> Vector2:
 #			return Color.BLACK
 #		_:
 #			return Color.WHITE
+
+func create_dash_trail() -> void:
+	var ghostInstance: Sprite2D = dashGhost.instantiate()
+	ghostInstance.texture = sprite.texture
+	ghostInstance.hframes = sprite.hframes
+	ghostInstance.global_position = sprite.global_position
+	ghostInstance.flip_h = sprite.flip_h
+	ghostInstance.modulate = ghostDashColor
+	get_parent().add_child(ghostInstance)

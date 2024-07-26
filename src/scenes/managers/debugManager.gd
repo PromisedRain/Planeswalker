@@ -16,7 +16,7 @@ extends CanvasLayer
 @onready var secondsLabel: Label = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control/SecondsLabel
 @onready var minutesLabel: Label = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control/MinutesLabel
 @onready var totalDashesSessionLabel: Label = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/TotalDashesSessionLabel
-
+  
 var time: float = 0.0
 var minutes: float = 0.0
 var seconds: float = 0.0
