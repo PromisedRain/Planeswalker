@@ -17,5 +17,5 @@ func _process(delta) -> void:
 	global_position = Vector2(targetPosX, targetPosY)
 	mainCamera.position = global_position
 
-func int_lerp(start: int, end: int, t: float) -> int:
-	return int(start + (end - start) * t)
+func int_lerp(start: int, target: int, multiplier: float) -> int:
+	return int(start + (target - start) * multiplier)

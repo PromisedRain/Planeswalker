@@ -1,18 +1,19 @@
 extends CharacterBody2D
 #lilith
 
-@onready var body: Sprite2D = $Visuals/Body
-
+@onready var sprite: Sprite2D = $Visuals/Body
 @onready var animationPlayer: AnimationPlayer = $AnimationPlayer
-@onready var healthComponent: Node2D = $HealthComponent
+@onready var healthComponent: HealthComponent = $HealthComponent
 @onready var wallSlideRaycasts = $WallSlideRaycasts
 @onready var normalCollisionBox: CollisionShape2D = $NormalCollisionBox
 @onready var duckedCollisionBox: CollisionShape2D = $DuckCollisionBox
+@onready var dashTrailLine: Line2D = $DashTrailLine
+@onready var dashParticles: CPUParticles2D = $DashParticles
+@onready var dashGhost: PackedScene = preload("res://src/components/dashGhostComponent.tscn")
+
 
 #vars
-
 var stateMachine: StateMachine
-var canMove: bool
 var direction: Vector2
 var lastDir: Vector2 = Vector2.RIGHT
 var facing: Vector2
@@ -24,7 +25,7 @@ var respawnTimer: float
 var justRespawned: bool
 
 var jumpInput: bool
-var jumpGraceTimer: float = 0.0
+var jumpGraceTimer: float = 0.0 
 var jumpBufferTimer: float = 0.0
 var canJump: bool
 var jumpBuffer: bool
@@ -33,9 +34,9 @@ var isJumping: bool = false
 var dashInput: bool 
 var dashCooldownTimer: float
 var dashLengthTimer: float
+var dashTrailTimer: float
 var dashDir: Vector2
 var beforeDashSpeed: Vector2
-#var canDash: bool = false
 var isDashing: bool = false
 var totalDashes: int
 var totalDashesSession: int
@@ -43,11 +44,11 @@ var dashStartedOnGround: bool
 var duckInput: bool
 
 #constants
-
-#TODO corner correction on dash
 const dashSpeed: float = 240.0
 const endDashSpeed: float = 160.0
-const dashLengthTime: float = 0.05
+const dashLengthTime: float = 0.135
+const dashTrailTime: float = 0.04
+const ghostDashColor: Color = Color("#5694ff")
 const dashCooldownTime: float = 0.35
 const maxDashes: int = 1
 
@@ -73,9 +74,9 @@ const fallSpeed: float = 310.0
 const maxFallSpeed: float = fallSpeed 
 const gravity: int = 900
 
-const bodySquashStretchReversion: float = 1.75 #1.3
+const bodySquashStretchReversion: float = 1.75
 const bodySquashVec: Vector2 = Vector2(1.4, 0.8)
-const bodyStretchVec: Vector2 = Vector2(0.6, 1.4) #Vector2(0.8, 1.115)
+const bodyStretchVec: Vector2 = Vector2(0.6, 1.4) 
 const bodyDuckSquashVec: Vector2 = Vector2(1.4, 0.8)
 
 const respawnTime: float = 2.5
@@ -90,20 +91,18 @@ func _ready() -> void:
 	stateMachine.add_states("dash", Callable(self, "st_dash"), Callable(self, "st_enter_dash"), Callable(self, "st_leave_dash"))
 	stateMachine.add_states("slide", Callable(self, "st_slide"), Callable(self, "st_enter_slide"), Callable(self, "st_leave_slide"))
 	stateMachine.add_states("duck", Callable(self, "st_duck"), Callable(self, "st_enter_duck"), Callable(self, "st_leave_duck"))
-	stateMachine.add_states("respawned", Callable(self, "st_respawned"), Callable(self, "st_enter_respawned"), Callable(self, "st_leave_respawned"))
+	stateMachine.add_states("respawn", Callable(self, "st_respawn"), Callable(self, "st_enter_respawn"), Callable(self, "st_leave_respawn"))
 	stateMachine.add_states("dead", Callable(self, "st_dead"), Callable(self, "st_enter_dead"), Callable(self, "st_leave_dead"))
 	stateMachine.set_initial_state(Callable(self, "st_idle"))
 	
 	healthComponent.connect("died", Callable(self, "st_dead"))
-	
-	canMove = true
 	start_jump_buffer_timer()
 
 # physics
 func _physics_process(delta: float) -> void:
 	stateMachine.update(delta)
 	update(delta)
-	if canMove:
+	if canControl:
 		facing = Vector2.ZERO
 		direction = Vector2.ZERO
 		player_input()
@@ -144,7 +143,6 @@ func _gravity_process(delta: float) -> void:
 		velocity.y = maxFallSpeed
 
 func update(delta: float) -> void:
-	
 	# dash
 	if dashCooldownTimer > 0.0:
 		dashCooldownTimer -= delta
@@ -174,21 +172,51 @@ func update(delta: float) -> void:
 	if justRespawned && (velocity != Vector2.ZERO):
 		justRespawned = false
 	
-	# squash and stretch reversion
-	body.scale.x = move_toward(body.scale.x, 1.0, bodySquashStretchReversion * delta)
-	body.scale.y = move_toward(body.scale.y, 1.0, bodySquashStretchReversion * delta)
+	#sprite
+	update_sprite(delta)
+
+func update_sprite(delta: float) -> void:
+	# scale tweening
+	sprite.scale.x = move_toward(sprite.scale.x, 1.0, bodySquashStretchReversion * delta)
+	sprite.scale.y = move_toward(sprite.scale.y, 1.0, bodySquashStretchReversion * delta)
+	
+	#anims
+	if canControl && !sequenceState:
+		
+		#idle
+		if stateMachine.currentState == Callable(self, "st_idle"):
+			animationPlayer.play("anim_idle")
+		
+		#move
+		elif stateMachine.currentState == Callable(self, "st_move"):
+			animationPlayer.play("anim_run")
+		
+		#jump
+		elif stateMachine.currentState == Callable(self, "st_jump"):
+			animationPlayer.play("anim_jump")
+		
+		#fall
+		elif stateMachine.currentState == Callable(self, "st_fall"):
+			animationPlayer.play("anim_jump")
+		
+		#dash
+		elif stateMachine.currentState == Callable(self, "st_dash"):
+			pass
+		
+		#duck
+		elif stateMachine.currentState == Callable(self, "st_duck"):
+			animationPlayer.play("anim_duck")
 
 # inputs
 func player_input() -> void:
-	
 	if Input.is_action_pressed("right"):
 		facing.x += 1
 		direction = Vector2.RIGHT
-		body.flip_h = false
+		sprite.flip_h = false
 	if Input.is_action_pressed("left"):
 		facing.x -= 1
 		direction = Vector2.LEFT
-		body.flip_h = true
+		sprite.flip_h = true
 	if Input.is_action_pressed("down"):
 		facing.y += 1
 	if Input.is_action_pressed("up"):
@@ -199,13 +227,6 @@ func player_input() -> void:
 	dashInput = Input.is_action_just_pressed("dash")
 	
 	duckInput = Input.is_action_pressed("duck")
-
-func can_dash() -> bool:
-	return dashInput && dashCooldownTimer <= 0.0 && totalDashes > 0
-
-var canDash: bool:
-	get:
-		return can_dash()
 
 func refill_dashes() -> bool:
 	if totalDashes < maxDashes:
@@ -226,16 +247,6 @@ func player_movement(delta) -> void:
 		else:
 			if velocity.x != 0:
 				decelerate(delta)
-
-func get_direction_next_to_wall() -> Vector2:
-	for raycast: RayCast2D in wallSlideRaycasts:
-		raycast.force_raycast_update()
-		if raycast.is_colliding():
-			if raycast.target_position.x > 0:
-				return Vector2.RIGHT
-			else:
-				return Vector2.LEFT
-	return Vector2()
 
 #idle
 func st_idle(delta: float) -> Callable:
@@ -262,11 +273,10 @@ func st_idle(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_idle(delta: float = 0) -> void:
-	animationPlayer.play("anim_idle")
 	canJump = true
 	
 	if stateMachine.previousState == Callable(self, "st_fall"):
-		body.scale = bodySquashVec
+		sprite.scale = bodySquashVec
 	
 	refill_dashes()
 
@@ -297,10 +307,8 @@ func st_move(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_move(delta: float = 0) -> void:
-	animationPlayer.play("anim_run")
-	
 	if stateMachine.previousState == Callable(self, "st_fall"):
-		body.scale = bodySquashVec
+		sprite.scale = bodySquashVec
 	
 	refill_dashes()
 
@@ -329,8 +337,7 @@ func st_jump(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_jump(delta: float = 0) -> void:
-	animationPlayer.play("anim_jump")
-	body.scale = bodyStretchVec
+	sprite.scale = bodyStretchVec
 	velocity.y = jumpHeight
 	canJump = false
 
@@ -357,8 +364,6 @@ func st_fall(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_fall(delta: float = 0) -> void:
-	animationPlayer.play("anim_jump")
-	
 	if stateMachine.previousState == Callable(self, "st_idle") || stateMachine.previousState == Callable(self, "st_move") || stateMachine.previousState == Callable(self, "st_slide"):
 		canJump = true
 		start_jump_grace_timer()
@@ -371,8 +376,12 @@ func st_leave_fall(delta: float = 0) -> void:
 
 #dash
 func st_dash(delta: float) -> Callable:
-	#_gravity_process(delta)
-	#player_movement(delta)
+	
+	if dashTrailTimer > 0:
+		dashTrailTimer -= delta
+		if dashTrailTimer <= 0:
+			create_dash_trail()
+			dashTrailTimer = dashTrailTime
 	
 	if !isDashing:
 		return Callable(self, "st_fall")
@@ -382,23 +391,37 @@ func st_dash(delta: float) -> Callable:
 	
 	return Callable()
 
+func create_dash_trail() -> void:
+	var ghostInstance: Sprite2D = dashGhost.instantiate()
+	ghostInstance.texture = sprite.texture
+	ghostInstance.hframes = sprite.hframes
+	ghostInstance.global_position = sprite.global_position
+	ghostInstance.flip_h = sprite.flip_h
+	ghostInstance.modulate = ghostDashColor
+	get_parent().add_child(ghostInstance)
+
 func st_enter_dash(delta: float = 0) -> void:
-	
 	totalDashes = max(0, totalDashes - 1)
 	isDashing = true
+	dashParticles.emitting = true
+	
 	dashLengthTimer = dashLengthTime
 	dashCooldownTimer = dashCooldownTime
+	dashTrailTimer = dashTrailTime
 	
 	if facing != Vector2.ZERO:
 		dashDir = facing
 	else:
 		dashDir = lastDir
 	
+	dashParticles.direction = dashDir.normalized()
 	velocity = dashDir.normalized() * dashSpeed
 
 func st_leave_dash(delta: float = 0) -> void:
 	leave_dash_events()
 	isDashing = false
+	dashTrailTimer = 0
+	dashParticles.emitting = false
 
 func leave_dash_events() -> void:
 	totalDashesSession += 1
@@ -434,8 +457,7 @@ func st_duck(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_duck(delta: float = 0) -> void:
-	animationPlayer.play("anim_duck")
-	body.scale = bodyDuckSquashVec
+	sprite.scale = bodyDuckSquashVec
 	
 	duckedCollisionBox.disabled = false
 	normalCollisionBox.disabled = true
@@ -464,3 +486,69 @@ func st_enter_dead(delta: float = 0) -> void:
 func st_leave_dead(delta: float = 0) -> void:
 	pass
 
+# getters
+func can_dash() -> bool:
+	return dashInput && dashCooldownTimer <= 0.0 && totalDashes > 0
+
+var canDash: bool:
+	get:
+		return can_dash()
+
+func can_control() -> bool:
+	match stateMachine.currentState:
+		"st_respawn":
+			return false
+		"st_dead":
+			return false
+		_:
+			return true
+
+var canControl: bool:
+	get:
+		return can_control()
+
+func sequence_state() -> bool:
+	match stateMachine.currentState:
+		"st_respawn":
+			return true
+		"st_dead":
+			return true
+		_:
+			return false
+
+var sequenceState: bool:
+	get:
+		return sequence_state()
+
+func get_direction_next_to_wall() -> Vector2:
+	for raycast: RayCast2D in wallSlideRaycasts:
+		raycast.force_raycast_update()
+		if raycast.is_colliding():
+			if raycast.target_position.x > 0:
+				return Vector2.RIGHT
+			else:
+				return Vector2.LEFT
+	return Vector2()
+
+#func get_debug_trail_color() -> Color:
+#	match stateMachine.currentState:
+#		"st_idle":
+#			return Color.WHITE
+#		"st_move":
+#			return Color.AQUA
+#		"st_jump":
+#			return Color.DARK_RED
+#		"st_fall":
+#			return Color.DIM_GRAY
+#		"st_dash":
+#			return Color.PURPLE
+#		"st_slide":
+#			return Color.CORNFLOWER_BLUE
+#		"st_duck":
+#			return Color.DARK_ORANGE
+#		"st_respawn":
+#			return Color.CRIMSON
+#		"st_dead":
+#			return Color.BLACK
+#		_:
+#			return Color.WHITE

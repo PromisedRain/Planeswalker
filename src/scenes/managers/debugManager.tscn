@@ -85,30 +85,41 @@ text = "testLabel"
 [node name="VBoxContainer3" type="VBoxContainer" parent="Control/MarginContainer/Control/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 0
+theme_override_constants/separation = 6
 alignment = 2
 
-[node name="Control" type="HBoxContainer" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3"]
+[node name="Control" type="Control" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3"]
 layout_mode = 2
 
 [node name="TimeElapsedLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control"]
 layout_mode = 2
+offset_right = 53.0
+offset_bottom = 12.0
 text = "totalTime:"
 
 [node name="MSecLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control"]
 layout_mode = 2
+offset_left = 57.0
+offset_right = 72.0
+offset_bottom = 12.0
 text = "00:"
-horizontal_alignment = 2
 
 [node name="SecondsLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control"]
 layout_mode = 2
-text = "00:"
-horizontal_alignment = 2
+offset_left = 76.0
+offset_right = 91.0
+offset_bottom = 12.0
+text = "00."
 
 [node name="MinutesLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/Control"]
 layout_mode = 2
-text = "00:"
-horizontal_alignment = 2
+offset_left = 95.0
+offset_right = 105.0
+offset_bottom = 12.0
+text = "00"
+
+[node name="Control2" type="Control" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
 
 [node name="TotalDashesSessionLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3"]
 layout_mode = 2

@@ -5,19 +5,18 @@
 [ext_resource type="PackedScene" uid="uid://cm0lw3nd0kw7d" path="res://src/scenes/gameObjects/player/player.tscn" id="2_r3rp8"]
 [ext_resource type="PackedScene" uid="uid://hkeot3pu0jvn" path="res://src/scenes/volume1/rooms/room0.tscn" id="3_w3bbo"]
 [ext_resource type="Script" path="res://src/scenes/mainCamera.gd" id="4_2ats6"]
-[ext_resource type="Script" path="res://src/scenes/CameraAnchor.gd" id="4_ih8ft"]
+[ext_resource type="Script" path="res://src/lib/CameraAnchor.gd" id="4_ih8ft"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_gewu3")
 
-[node name="PlayerUI" type="CanvasLayer" parent="."]
-
 [node name="DebugManager" parent="." instance=ExtResource("2_5w8xw")]
+visible = false
 
 [node name="Entities" type="Node2D" parent="."]
 
 [node name="Player" parent="Entities" instance=ExtResource("2_r3rp8")]
-position = Vector2(-34, 0)
+position = Vector2(-298, 120)
 
 [node name="CameraAnchor" type="Marker2D" parent="Entities/Player"]
 position = Vector2(0, -7)
