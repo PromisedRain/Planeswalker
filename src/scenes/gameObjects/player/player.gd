@@ -98,6 +98,7 @@ func _ready() -> void:
 	stateMachine.add_states("jump", Callable(self, "st_jump"), Callable(self, "st_enter_jump"), Callable(self, "st_leave_jump"))
 	stateMachine.add_states("fall", Callable(self, "st_fall"), Callable(self, "st_enter_fall"), Callable(self, "st_leave_fall"))
 	stateMachine.add_states("dash", Callable(self, "st_dash"), Callable(self, "st_enter_dash"), Callable(self, "st_leave_dash"))
+	stateMachine.add_states("super_jump", Callable(self, "st_super_jump"), Callable(self, "st_enter_super_jump"), Callable(self, "st_leave_super_jump"))
 	stateMachine.add_states("slide", Callable(self, "st_slide"), Callable(self, "st_enter_slide"), Callable(self, "st_leave_slide"))
 	stateMachine.add_states("duck", Callable(self, "st_duck"), Callable(self, "st_enter_duck"), Callable(self, "st_leave_duck"))
 	stateMachine.add_states("respawn", Callable(self, "st_respawn"), Callable(self, "st_enter_respawn"), Callable(self, "st_leave_respawn"))
@@ -399,17 +400,23 @@ func st_leave_fall(delta: float = 0) -> void:
 
 #dash
 func st_dash(delta: float) -> Callable:
+	
+	jumpInput = Input.is_action_just_pressed("jump")
+	if jumpInput:
+		print(jumpInput)
+	
 	if dashTrailTimer > 0:
 		dashTrailTimer -= delta
 		if dashTrailTimer <= 0:
 			create_dash_trail()
 			dashTrailTimer = dashTrailTime
 	
+	if dashDir.y == 0:
+		if jumpInput && jumpGraceTimer > 0:
+			return Callable(self, "st_super_jump")
+	
 	if !isDashing:
 		return Callable(self, "st_fall")
-	
-	if jumpInput && canJump:
-		return Callable(self, "st_jump")
 	
 	return Callable()
 
@@ -449,6 +456,16 @@ func st_enter_slide(delta: float = 0) -> void:
 	pass
 
 func st_leave_slide(delta: float = 0) -> void:
+	pass
+
+#superjump
+func st_super_jump(delta: float) -> void:
+	pass
+
+func st_enter_super_jump(delta: float = 0) -> void:
+	print("SUPERJUMP")
+
+func st_leave_super_jump(delta: float = 0) -> void:
 	pass
 
 #duck

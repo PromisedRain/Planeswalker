@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cm0lw3nd0kw7d" path="res://src/scenes/gameObjects/player/player.tscn" id="2_r3rp8"]
 [ext_resource type="Script" path="res://src/scenes/mainCamera.gd" id="4_2ats6"]
 [ext_resource type="Script" path="res://src/lib/CameraAnchor.gd" id="4_ih8ft"]
-[ext_resource type="PackedScene" uid="uid://cvbw61cy0um5e" path="res://src/scenes/volume1/volume1.tscn" id="6_62x54"]
+[ext_resource type="PackedScene" uid="uid://cvbw61cy0um5e" path="res://src/scenes/levels/volume1.tscn" id="6_62x54"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_gewu3")
