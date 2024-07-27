@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwhxvmbxgmg1f"
-path="res://.godot/imported/gray8x8.png-0299800e9affc93a9ced24585898a375.ctex"
+uid="uid://dj4stqasye0ja"
+path="res://.godot/imported/lilithRunSheet19x128.png-b5ad23e0802f056627489dfb9c029e20.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/media/environment/tilesets/gray8x8.png"
-dest_files=["res://.godot/imported/gray8x8.png-0299800e9affc93a9ced24585898a375.ctex"]
+source_file="res://src/media/sprites/player/lilithRunSheet19x128.png"
+dest_files=["res://.godot/imported/lilithRunSheet19x128.png-b5ad23e0802f056627489dfb9c029e20.ctex"]
 
 [params]
 

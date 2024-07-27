@@ -14,3 +14,8 @@ res://src/lib/CameraAnchor.gd
 res://src/lib/nodeUtility.gd
 res://src/scenes/main.gd
 res://src/scenes/managers/debugManager.gd
+res://src/scenes/volume1/volume1.tscn
+res://src/scenes/gameObjects/dashRefillOrb/dashRefillOrb.gd
+res://src/gui/mainMenu/mainMenu.tscn
+res://src/gui/mainMenu/mainMenu.gd
+res://src/lib/stateMachine.gd

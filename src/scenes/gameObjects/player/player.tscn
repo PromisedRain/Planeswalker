@@ -1,12 +1,12 @@
 [gd_scene load_steps=20 format=3 uid="uid://cm0lw3nd0kw7d"]
 
 [ext_resource type="Script" path="res://src/scenes/gameObjects/player/player.gd" id="1_ev1iy"]
+[ext_resource type="Texture2D" uid="uid://dus1t4omt66pe" path="res://src/media/sprites/player/lilithIdleSheet19x128.png" id="2_d5ssh"]
 [ext_resource type="PackedScene" uid="uid://cyc4eax6g4cjv" path="res://src/components/hurtboxComponent.tscn" id="2_v0tt5"]
-[ext_resource type="Texture2D" uid="uid://dus1t4omt66pe" path="res://src/media/gameObjects/player/lilithIdleSheet19x128.png" id="2_wrosy"]
 [ext_resource type="PackedScene" uid="uid://dhgs7vny0y0xq" path="res://src/components/healthComponent.tscn" id="3_b752o"]
-[ext_resource type="Texture2D" uid="uid://dj4stqasye0ja" path="res://src/media/gameObjects/player/lilithRunSheet19x128.png" id="3_gqjfk"]
-[ext_resource type="Texture2D" uid="uid://bno1ityoac53x" path="res://src/media/gameObjects/player/lilithJumpSheet19x32.png" id="4_f5erb"]
-[ext_resource type="Texture2D" uid="uid://c7qwsubxwkjuf" path="res://src/media/gameObjects/player/lilithDuckSheet19x16.png" id="5_bqtfh"]
+[ext_resource type="Texture2D" uid="uid://c7qwsubxwkjuf" path="res://src/media/sprites/player/lilithDuckSheet19x16.png" id="3_qatpp"]
+[ext_resource type="Texture2D" uid="uid://bno1ityoac53x" path="res://src/media/sprites/player/lilithJumpSheet19x32.png" id="4_katjx"]
+[ext_resource type="Texture2D" uid="uid://dj4stqasye0ja" path="res://src/media/sprites/player/lilithRunSheet19x128.png" id="5_a6rul"]
 
 [sub_resource type="Animation" id="Animation_h43l2"]
 length = 0.001
@@ -20,7 +20,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_wrosy")]
+"values": [ExtResource("2_d5ssh")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -73,7 +73,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("5_bqtfh")]
+"values": [ExtResource("3_qatpp")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -127,7 +127,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_wrosy")]
+"values": [ExtResource("2_d5ssh")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -179,7 +179,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("4_f5erb")]
+"values": [ExtResource("4_katjx")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -233,7 +233,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("3_gqjfk")]
+"values": [ExtResource("5_a6rul")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -354,7 +354,7 @@ metadata/_edit_lock_ = true
 
 [node name="Body" type="Sprite2D" parent="Visuals"]
 position = Vector2(0, -8)
-texture = ExtResource("2_wrosy")
+texture = ExtResource("2_d5ssh")
 hframes = 8
 metadata/_edit_lock_ = true
 

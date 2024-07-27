@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cyfsf07we3j0e"
-path="res://.godot/imported/dashRefillOrb.png-ba8d4ea3ce9d2193053ac4e4dc3d8441.ctex"
+path="res://.godot/imported/dashRefillOrb.png-84b4c1b819be0c145f63f7556e3341ee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/media/gameObjects/dashRefillOrb/dashRefillOrb.png"
-dest_files=["res://.godot/imported/dashRefillOrb.png-ba8d4ea3ce9d2193053ac4e4dc3d8441.ctex"]
+source_file="res://src/media/sprites/gameObjects/dashRefillOrb/dashRefillOrb.png"
+dest_files=["res://.godot/imported/dashRefillOrb.png-84b4c1b819be0c145f63f7556e3341ee.ctex"]
 
 [params]
 

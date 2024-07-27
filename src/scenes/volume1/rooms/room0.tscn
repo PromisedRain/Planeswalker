@@ -1,10 +1,10 @@
 [gd_scene load_steps=5 format=3 uid="uid://hkeot3pu0jvn"]
 
+[ext_resource type="Texture2D" uid="uid://h37voowtdgto" path="res://src/media/sprites/levelGeometry8x8.png" id="1_oas1b"]
 [ext_resource type="PackedScene" uid="uid://c5evwfnm23qi3" path="res://src/scenes/gameObjects/dashRefillOrb/dashRefillOrb.tscn" id="2_g70ti"]
-[ext_resource type="Texture2D" uid="uid://h37voowtdgto" path="res://src/media/environment/tilesets/baseTileset8x8.png" id="2_hwey0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sevgq"]
-texture = ExtResource("2_hwey0")
+texture = ExtResource("1_oas1b")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)

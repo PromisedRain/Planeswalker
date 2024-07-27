@@ -1,11 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://c6s0hvw0hsy5t"]
 
 [ext_resource type="Script" path="res://src/scenes/managers/debugManager.gd" id="1_nguqr"]
-[ext_resource type="FontFile" uid="uid://6fasdo7r43ey" path="res://src/media/fonts/RobotoMono-VariableFont_wght.ttf" id="2_mtvyq"]
+[ext_resource type="FontFile" uid="uid://gejvyowi0g8l" path="res://src/media/fonts/m5x7.ttf" id="2_ft4bb"]
 
 [sub_resource type="Theme" id="Theme_xg7o3"]
-default_font = ExtResource("2_mtvyq")
-default_font_size = 8
+default_font = ExtResource("2_ft4bb")
 
 [node name="DebugManager" type="CanvasLayer"]
 script = ExtResource("1_nguqr")

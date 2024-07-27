@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://jvjkqfm2huvx"
-path="res://.godot/imported/chompersRunSheet19x160.png-2c84e10b8dab9bbd53b44c56c83d17f8.ctex"
+path="res://.godot/imported/chompersRunSheet19x160.png-ba3b8031d748c8f01c445e747de0212d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/media/gameObjects/player/chompersRunSheet19x160.png"
-dest_files=["res://.godot/imported/chompersRunSheet19x160.png-2c84e10b8dab9bbd53b44c56c83d17f8.ctex"]
+source_file="res://src/media/sprites/player/chompersRunSheet19x160.png"
+dest_files=["res://.godot/imported/chompersRunSheet19x160.png-ba3b8031d748c8f01c445e747de0212d.ctex"]
 
 [params]
 

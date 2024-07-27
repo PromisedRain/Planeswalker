@@ -1,0 +1,75 @@
+[gd_scene load_steps=10 format=3 uid="uid://cg6g17qc8awr2"]
+
+[ext_resource type="Script" path="res://src/gui/mainMenu/mainMenu.gd" id="1_t4hh1"]
+[ext_resource type="FontFile" uid="uid://gejvyowi0g8l" path="res://src/media/fonts/m5x7.ttf" id="2_2dmta"]
+[ext_resource type="Texture2D" uid="uid://b4vw2ps85vui3" path="res://src/media/ui/titleDoor.png" id="2_nlmjx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bmjn2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6rfvv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1x8kd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pp202"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gkpjh"]
+
+[sub_resource type="Theme" id="Theme_cij8g"]
+default_font = ExtResource("2_2dmta")
+Button/styles/disabled = SubResource("StyleBoxEmpty_bmjn2")
+Button/styles/focus = SubResource("StyleBoxEmpty_6rfvv")
+Button/styles/hover = SubResource("StyleBoxEmpty_1x8kd")
+Button/styles/normal = SubResource("StyleBoxEmpty_pp202")
+Button/styles/pressed = SubResource("StyleBoxEmpty_gkpjh")
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_t4hh1")
+metadata/_edit_lock_ = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Background" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="Door" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(160, 70)
+texture = ExtResource("2_nlmjx")
+
+[node name="Title" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(160, 55)
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+offset_left = 143.5
+offset_top = 115.0
+offset_right = 176.5
+offset_bottom = 128.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = SubResource("Theme_cij8g")
+text = "Play"
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.5
+offset_top = -35.0
+offset_right = 51.5
+offset_bottom = -11.9999
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_2dmta")
+theme_override_font_sizes/font_size = 32
+text = "Planeswalker"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]

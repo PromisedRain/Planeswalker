@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7qwsubxwkjuf"
-path="res://.godot/imported/lilithDuckSheet19x16.png-323da0c6c66da0cb8a09fe9e4578722c.ctex"
+uid="uid://bxd5ex852l2cj"
+path="res://.godot/imported/chompersSpriteSheetFull.png-1c9f4b9d288a8a7f213bfe5ad2bb7447.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/media/gameObjects/player/lilithDuckSheet19x16.png"
-dest_files=["res://.godot/imported/lilithDuckSheet19x16.png-323da0c6c66da0cb8a09fe9e4578722c.ctex"]
+source_file="res://src/media/sprites/player/chompersSpriteSheetFull.png"
+dest_files=["res://.godot/imported/chompersSpriteSheetFull.png-1c9f4b9d288a8a7f213bfe5ad2bb7447.ctex"]
 
 [params]
 

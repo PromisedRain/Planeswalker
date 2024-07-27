@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://c5evwfnm23qi3"]
 
 [ext_resource type="Script" path="res://src/scenes/gameObjects/dashRefillOrb/dashRefillOrb.gd" id="1_wljkf"]
-[ext_resource type="Texture2D" uid="uid://cyfsf07we3j0e" path="res://src/media/gameObjects/dashRefillOrb/dashRefillOrb.png" id="2_8cqjg"]
+[ext_resource type="Texture2D" uid="uid://cyfsf07we3j0e" path="res://src/media/sprites/gameObjects/dashRefillOrb/dashRefillOrb.png" id="2_ig01l"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_04mfo"]
 radius = 5.5
@@ -14,7 +14,7 @@ point_count = 3
 script = ExtResource("1_wljkf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_8cqjg")
+texture = ExtResource("2_ig01l")
 
 [node name="Area2D" type="Area2D" parent="."]
 

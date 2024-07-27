@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8xxc7fdv2rl2"
-path="res://.godot/imported/chompersIdleSheet19x128.png-d38ce2f06323160e82b95ee9ccd63795.ctex"
+uid="uid://bno1ityoac53x"
+path="res://.godot/imported/lilithJumpSheet19x32.png-cbd605749b5b32709302b90a089f21e0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/media/gameObjects/player/chompersIdleSheet19x128.png"
-dest_files=["res://.godot/imported/chompersIdleSheet19x128.png-d38ce2f06323160e82b95ee9ccd63795.ctex"]
+source_file="res://src/media/sprites/player/lilithJumpSheet19x32.png"
+dest_files=["res://.godot/imported/lilithJumpSheet19x32.png-cbd605749b5b32709302b90a089f21e0.ctex"]
 
 [params]
 

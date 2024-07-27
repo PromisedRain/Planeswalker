@@ -57,9 +57,9 @@ const respawnTime: float = 2.5
 
 const dashSpeed: float = 240.0
 const endDashSpeed: float = 160.0
-const dashLengthTime: float = 0.135
+const dashLengthTime: float = 0.13
 const dashTrailTime: float = 0.04
-const ghostDashColor: Color = Color("#5694ff")
+const ghostDashColor: Color = Color.DIM_GRAY
 const dashCooldownTime: float = 0.35
 const maxDashes: int = 1
 const dashCornerCorrection: int = 4
@@ -92,7 +92,6 @@ const bodyStretchVec: Vector2 = Vector2(0.6, 1.4)
 const bodyDuckSquashVec: Vector2 = Vector2(1.4, 0.8)
 
 func _ready() -> void:
-	
 	stateMachine = StateMachine.new()
 	stateMachine.add_states("idle", Callable(self, "st_idle"), Callable(self, "st_enter_idle"), Callable(self, "st_leave_idle"))
 	stateMachine.add_states("move", Callable(self, "st_move"), Callable(self, "st_enter_move"), Callable(self, "st_leave_move"))
@@ -190,13 +189,12 @@ func update(delta: float) -> void:
 		
 		for i in range(1, upwardCornerCorrection * 2 + 1):
 			for direction in [-1.0, 1.0]:
-				
 				var offset = Vector2(i * direction / 2, 0)
+				
 				if !test_move(global_transform.translated(Vector2(i * direction / 2, 0)), Vector2(0, velocity.y * delta)):
 					translate(offset)
 					if velocity.x * direction < 0: velocity.x = 0
 					return
-	
 
 func update_sprite(delta: float) -> void:
 	# scale tweening
@@ -295,6 +293,7 @@ func st_idle(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_idle(delta: float = 0) -> void:
+	print("IDLE")
 	canJump = true
 	
 	if stateMachine.previousState == Callable(self, "st_fall"):
@@ -329,6 +328,7 @@ func st_move(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_move(delta: float = 0) -> void:
+	print("MOVE")
 	if stateMachine.previousState == Callable(self, "st_fall"):
 		sprite.scale = bodySquashVec
 	refill_dashes()
@@ -358,6 +358,7 @@ func st_jump(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_jump(delta: float = 0) -> void:
+	print("JUMP")
 	sprite.scale = bodyStretchVec
 	velocity.y = jumpHeight
 	canJump = false
@@ -385,6 +386,7 @@ func st_fall(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_fall(delta: float = 0) -> void:
+	print("FALL")
 	if stateMachine.previousState == Callable(self, "st_idle") || stateMachine.previousState == Callable(self, "st_move") || stateMachine.previousState == Callable(self, "st_slide"):
 		canJump = true
 		start_jump_grace_timer()
@@ -412,6 +414,7 @@ func st_dash(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_dash(delta: float = 0) -> void:
+	print("DASH")
 	totalDashes = max(0, totalDashes - 1)
 	isDashing = true
 	dashParticles.emitting = true
@@ -442,6 +445,7 @@ func st_slide(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_slide(delta: float = 0) -> void:
+	print("SLIDE")
 	pass
 
 func st_leave_slide(delta: float = 0) -> void:
@@ -468,6 +472,7 @@ func st_duck(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_duck(delta: float = 0) -> void:
+	print("DUCK")
 	sprite.scale = bodyDuckSquashVec
 	
 	duckedCollisionBox.disabled = false
@@ -482,6 +487,7 @@ func st_respawn(delta: float) -> void:
 	return Callable()
 
 func st_enter_respawn(delta: float = 0) -> void:
+	print("RESPAWN")
 	pass
 
 func st_leave_respawn(delta: float = 0) -> void:
@@ -492,6 +498,7 @@ func st_dead(delta: float) -> void:
 	return Callable()
 
 func st_enter_dead(delta: float = 0) -> void:
+	print("DEAD")
 	pass
 
 func st_leave_dead(delta: float = 0) -> void:
@@ -571,4 +578,4 @@ func create_dash_trail() -> void:
 	ghostInstance.global_position = sprite.global_position
 	ghostInstance.flip_h = sprite.flip_h
 	ghostInstance.modulate = ghostDashColor
-	get_parent().add_child(ghostInstance)
+	get_parent().get_node("DashGhostContainer").add_child(ghostInstance)
