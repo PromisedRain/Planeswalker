@@ -36,6 +36,9 @@ var canJump: bool
 var jumpBuffer: bool
 var isJumping: bool = false
 
+var superJumpLengthTimer: float
+var isSuperJumping: bool
+
 var dashInput: bool 
 var dashCooldownTimer: float
 var dashLengthTimer: float
@@ -55,6 +58,13 @@ var duckInput: bool
 const upwardCornerCorrection: int = 4
 const respawnTime: float = 2.5
 
+const jumpHeight: float = (210.0) * -1 
+const jumpHBoost: float = 0.925
+const jumpAirHang: float = 0.8
+const jumpGraceTime: float = 0.19
+const jumpBufferTime: float = 0.11
+const variableJumpH: float = 0.45 
+
 const dashSpeed: float = 240.0
 const endDashSpeed: float = 160.0
 const dashLengthTime: float = 0.13
@@ -64,22 +74,18 @@ const dashCooldownTime: float = 0.35
 const maxDashes: int = 1
 const dashCornerCorrection: int = 4
 
+const superJumpLengthTime: float = 0.125
+const superJumpX: float = 300
+
 const runSpeed: float = 90.0
 const maxRunSpeed: float = runSpeed
 const runAccel: float = 12.0
 const airAccel: float = 10.5
 
 const groundFriction: float = 35.0
-const airResistance: float = 32.0
+const airResistance: float = 40.0
 const friction: float = groundFriction
 const duckFriction: float = friction / 1.5
-
-const jumpHeight: float = (210.0) * -1 
-const jumpHBoost: float = 0.925
-const jumpAirHang: float = 0.8
-const jumpGraceTime: float = 0.19
-const jumpBufferTime: float = 0.11
-const variableJumpH: float = 0.45 
 
 const fallGravity: float = 1.15
 const fallSpeed: float = 310.0
@@ -117,6 +123,19 @@ func _physics_process(delta: float) -> void:
 		direction = Vector2.ZERO
 		player_input()
 		move_and_slide()
+		print(isSuperJumping)
+
+func _gravity_process(delta: float) -> void:
+	if !is_on_floor():
+		if velocity.y >= 0:
+			velocity.y += gravity * jumpAirHang * delta
+		else:
+			velocity.y += gravity * jumpHBoost * delta
+	elif stateMachine.currentState == Callable(self, "st_fall"):
+		velocity.y += gravity * fallGravity * delta
+	
+	if velocity.y > maxFallSpeed:
+		velocity.y = maxFallSpeed
 
 func start_jump_grace_timer():
 	jumpGraceTimer = jumpGraceTime
@@ -140,18 +159,6 @@ func decelerate(delta: float, air: bool = false) -> void:
 		fric = airResistance
 	apply_velocity(Vector2(0, velocity.y), fric, delta)
 
-func _gravity_process(delta: float) -> void:
-	if !is_on_floor():
-		if velocity.y >= 0:
-			velocity.y += gravity * jumpAirHang * delta
-		else:
-			velocity.y += gravity * jumpHBoost * delta
-	elif stateMachine.currentState == Callable(self, "st_fall"):
-		velocity.y += gravity * fallGravity * delta
-	
-	if velocity.y > maxFallSpeed:
-		velocity.y = maxFallSpeed
-
 func update(delta: float) -> void:
 	# dash
 	if dashCooldownTimer > 0.0:
@@ -172,6 +179,13 @@ func update(delta: float) -> void:
 		jumpBufferTimer -= delta
 	if NodeUtility.is_approximately_equal(jumpBufferTimer, 0.0, 0.01):
 		jumpBuffer = false
+	
+	#superjump
+	if superJumpLengthTimer > 0.0:
+		superJumpLengthTimer -= delta
+		print(superJumpLengthTimer)
+	if NodeUtility.is_approximately_equal(superJumpLengthTimer, 0.0, 0.1):
+		isSuperJumping = false
 	
 	#respawn
 	if respawnTimer > 0.0:
@@ -244,17 +258,8 @@ func player_input() -> void:
 		facing.y -= 1
 	
 	jumpInput = Input.is_action_just_pressed("jump")
-	
 	dashInput = Input.is_action_just_pressed("dash")
-	
 	duckInput = Input.is_action_pressed("duck")
-
-func refill_dashes() -> bool:
-	if totalDashes < maxDashes:
-		totalDashes = maxDashes
-		return true
-	else:
-		return false
 
 func player_movement(delta) -> void:
 	if direction != Vector2.ZERO:
@@ -400,7 +405,6 @@ func st_leave_fall(delta: float = 0) -> void:
 
 #dash
 func st_dash(delta: float) -> Callable:
-	
 	jumpInput = Input.is_action_just_pressed("jump")
 	if jumpInput:
 		print(jumpInput)
@@ -429,6 +433,7 @@ func st_enter_dash(delta: float = 0) -> void:
 	dashLengthTimer = dashLengthTime
 	dashCooldownTimer = dashCooldownTime
 	dashTrailTimer = dashTrailTime
+	start_jump_grace_timer()
 	
 	if facing != Vector2.ZERO:
 		dashDir = facing
@@ -443,6 +448,8 @@ func st_leave_dash(delta: float = 0) -> void:
 	isDashing = false
 	dashTrailTimer = 0
 	dashParticles.emitting = false
+	
+	dashDir = Vector2.ZERO
 
 func leave_dash_events() -> void:
 	totalDashesSession += 1
@@ -460,13 +467,35 @@ func st_leave_slide(delta: float = 0) -> void:
 
 #superjump
 func st_super_jump(delta: float) -> void:
-	pass
+	
+	if dashTrailTimer > 0:
+		dashTrailTimer -= delta
+		if dashTrailTimer <= 0:
+			create_dash_trail()
+			dashTrailTimer = dashTrailTime
+	
+	if !isSuperJumping:
+		return Callable(self, "st_fall")
 
 func st_enter_super_jump(delta: float = 0) -> void:
 	print("SUPERJUMP")
+	isSuperJumping = true
+	dashParticles.emitting = true
+	
+	superJumpLengthTimer = superJumpLengthTime
+	dashTrailTimer = dashTrailTime
+	
+	if facing != Vector2.ZERO:
+		dashDir = facing
+	else:
+		dashDir = lastDir
+	
+	dashParticles.direction = dashDir.normalized()
+	velocity.y = jumpHeight
+	velocity.x = superJumpX * dashDir.x
 
 func st_leave_super_jump(delta: float = 0) -> void:
-	pass
+	isSuperJumping = false
 
 #duck
 func st_duck(delta: float) -> Callable:
@@ -596,3 +625,10 @@ func create_dash_trail() -> void:
 	ghostInstance.flip_h = sprite.flip_h
 	ghostInstance.modulate = ghostDashColor
 	get_parent().get_node("DashGhostContainer").add_child(ghostInstance)
+
+func refill_dashes() -> bool:
+	if totalDashes < maxDashes:
+		totalDashes = maxDashes
+		return true
+	else:
+		return false
