@@ -452,6 +452,7 @@ func st_enter_dash(delta: float = 0) -> void:
 	totalDashes = max(0, totalDashes - 1)
 	isDashing = true
 	dashParticles.emitting = true
+	sprite.scale = bodySquashVec
 	
 	dashLengthTimer = dashLengthTime
 	dashCooldownTimer = dashCooldownTime
@@ -517,6 +518,7 @@ func st_leave_climb(delta: float = 0) -> void:
 
 #superjump
 func st_super_jump(delta: float) -> void:
+	velocity.x = superJumpX * dashDir.x
 	
 	if dashTrailTimer > 0:
 		dashTrailTimer -= delta
@@ -541,9 +543,8 @@ func st_enter_super_jump(delta: float = 0) -> void:
 	else:
 		dashDir = lastDir
 	
-	#dashParticles.direction = dashDir.normalized()
-	#velocity.y = jumpHeight
-	#velocity.x = superJumpX * dashDir.x
+	dashParticles.direction = dashDir.normalized()
+	velocity.y = jumpHeight
 
 func st_leave_super_jump(delta: float = 0) -> void:
 	isSuperJumping = false
