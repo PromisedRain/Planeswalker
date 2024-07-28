@@ -79,7 +79,11 @@ text = "direction"
 
 [node name="DashesLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
-text = "testLabel"
+text = "dashes"
+
+[node name="LastDirLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "lastDir"
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="Control/MarginContainer/Control/HBoxContainer"]
 layout_mode = 2

@@ -8,3 +8,4 @@ res://src/scenes/managers/debugManager.tscn
 res://src/scenes/gameObjects/dashRefillOrb/dashRefillOrb.tscn
 res://src/gui/mainMenu/mainMenu.tscn
 res://src/scenes/gameObjects/player/player.gd
+res://src/scenes/managers/debugManager.gd

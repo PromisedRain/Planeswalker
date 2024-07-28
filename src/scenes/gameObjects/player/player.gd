@@ -36,6 +36,8 @@ var canJump: bool
 var jumpBuffer: bool
 var isJumping: bool = false
 
+var climbInput: bool
+
 var superJumpLengthTimer: float
 var isSuperJumping: bool
 
@@ -50,7 +52,6 @@ var totalDashes: int
 var totalDashesSession: int
 var dashStartedOnGround: bool
 
-
 var duckInput: bool
 
 #constants
@@ -58,7 +59,7 @@ var duckInput: bool
 const upwardCornerCorrection: int = 4
 const respawnTime: float = 2.5
 
-const jumpHeight: float = (210.0) * -1 
+const jumpHeight: float = (215.0) * -1 
 const jumpHBoost: float = 0.925
 const jumpAirHang: float = 0.8
 const jumpGraceTime: float = 0.19
@@ -83,9 +84,13 @@ const runAccel: float = 12.0
 const airAccel: float = 10.5
 
 const groundFriction: float = 35.0
-const airResistance: float = 40.0
+const airResistance: float = 50.0
 const friction: float = groundFriction
 const duckFriction: float = friction / 1.5
+
+const climbFriction: float = 0.94
+const climbSpeedY: float = -46.0
+const climbJumpHeightX: float = 80.0
 
 const fallGravity: float = 1.15
 const fallSpeed: float = 310.0
@@ -105,7 +110,7 @@ func _ready() -> void:
 	stateMachine.add_states("fall", Callable(self, "st_fall"), Callable(self, "st_enter_fall"), Callable(self, "st_leave_fall"))
 	stateMachine.add_states("dash", Callable(self, "st_dash"), Callable(self, "st_enter_dash"), Callable(self, "st_leave_dash"))
 	stateMachine.add_states("super_jump", Callable(self, "st_super_jump"), Callable(self, "st_enter_super_jump"), Callable(self, "st_leave_super_jump"))
-	stateMachine.add_states("slide", Callable(self, "st_slide"), Callable(self, "st_enter_slide"), Callable(self, "st_leave_slide"))
+	stateMachine.add_states("climb", Callable(self, "st_climb"), Callable(self, "st_enter_climb"), Callable(self, "st_leave_climb"))
 	stateMachine.add_states("duck", Callable(self, "st_duck"), Callable(self, "st_enter_duck"), Callable(self, "st_leave_duck"))
 	stateMachine.add_states("respawn", Callable(self, "st_respawn"), Callable(self, "st_enter_respawn"), Callable(self, "st_leave_respawn"))
 	stateMachine.add_states("dead", Callable(self, "st_dead"), Callable(self, "st_enter_dead"), Callable(self, "st_leave_dead"))
@@ -123,7 +128,7 @@ func _physics_process(delta: float) -> void:
 		direction = Vector2.ZERO
 		player_input()
 		move_and_slide()
-		print(isSuperJumping)
+		#print(isSuperJumping)
 
 func _gravity_process(delta: float) -> void:
 	if !is_on_floor():
@@ -238,6 +243,10 @@ func update_sprite(delta: float) -> void:
 		elif stateMachine.currentState == Callable(self, "st_dash"):
 			pass
 		
+		#climb
+		elif stateMachine.currentState == Callable(self, "st_climb"):
+			pass
+		
 		#duck
 		elif stateMachine.currentState == Callable(self, "st_duck"):
 			animationPlayer.play("anim_duck")
@@ -247,10 +256,12 @@ func player_input() -> void:
 	if Input.is_action_pressed("right"):
 		facing.x += 1
 		direction = Vector2.RIGHT
+		lastDir = Vector2.RIGHT
 		sprite.flip_h = false
 	if Input.is_action_pressed("left"):
 		facing.x -= 1
 		direction = Vector2.LEFT
+		lastDir = Vector2.LEFT
 		sprite.flip_h = true
 	if Input.is_action_pressed("down"):
 		facing.y += 1
@@ -259,6 +270,7 @@ func player_input() -> void:
 	
 	jumpInput = Input.is_action_just_pressed("jump")
 	dashInput = Input.is_action_just_pressed("dash")
+	climbInput = Input.is_action_pressed("climb")
 	duckInput = Input.is_action_pressed("duck")
 
 func player_movement(delta) -> void:
@@ -299,7 +311,7 @@ func st_idle(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_idle(delta: float = 0) -> void:
-	print("IDLE")
+	#print("IDLE")
 	canJump = true
 	
 	if stateMachine.previousState == Callable(self, "st_fall"):
@@ -334,7 +346,7 @@ func st_move(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_move(delta: float = 0) -> void:
-	print("MOVE")
+	#print("MOVE")
 	if stateMachine.previousState == Callable(self, "st_fall"):
 		sprite.scale = bodySquashVec
 	refill_dashes()
@@ -351,6 +363,12 @@ func st_jump(delta: float) -> Callable:
 		jumpBuffer = true
 		start_jump_buffer_timer()
 	
+	if stateMachine.previousState == Callable(self, "st_climb"):
+		if lastDir == Vector2.RIGHT:
+			velocity.x = -climbJumpHeightX
+		elif lastDir == Vector2.LEFT:
+			velocity.x = climbJumpHeightX
+	
 	# variable jump height
 	if Input.is_action_just_released("jump"): 
 		velocity.y *= variableJumpH 
@@ -364,11 +382,12 @@ func st_jump(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_jump(delta: float = 0) -> void:
-	print("JUMP")
+	#print("JUMP")
 	sprite.scale = bodyStretchVec
-	velocity.y = jumpHeight
 	canJump = false
-
+	
+	velocity.y = jumpHeight
+	
 func st_leave_jump(delta: float = 0) -> void:
 	pass
 
@@ -389,11 +408,14 @@ func st_fall(delta: float) -> Callable:
 	if canDash: 
 		return Callable(self, "st_dash")
 	
+	if get_direction_next_to_wall() != Vector2.ZERO:
+		return Callable(self, "st_climb")
+	
 	return Callable()
 
 func st_enter_fall(delta: float = 0) -> void:
-	print("FALL")
-	if stateMachine.previousState == Callable(self, "st_idle") || stateMachine.previousState == Callable(self, "st_move") || stateMachine.previousState == Callable(self, "st_slide"):
+	#print("FALL")
+	if stateMachine.previousState == Callable(self, "st_idle") || stateMachine.previousState == Callable(self, "st_move") || stateMachine.previousState == Callable(self, "st_climb"):
 		canJump = true
 		start_jump_grace_timer()
 	else:
@@ -416,8 +438,9 @@ func st_dash(delta: float) -> Callable:
 			dashTrailTimer = dashTrailTime
 	
 	if dashDir.y == 0:
-		if jumpInput && jumpGraceTimer > 0:
-			return Callable(self, "st_super_jump")
+		pass
+	#	if jumpInput && jumpGraceTimer > 0:
+	#		return Callable(self, "st_super_jump")
 	
 	if !isDashing:
 		return Callable(self, "st_fall")
@@ -425,7 +448,7 @@ func st_dash(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_dash(delta: float = 0) -> void:
-	print("DASH")
+	#print("DASH")
 	totalDashes = max(0, totalDashes - 1)
 	isDashing = true
 	dashParticles.emitting = true
@@ -454,15 +477,42 @@ func st_leave_dash(delta: float = 0) -> void:
 func leave_dash_events() -> void:
 	totalDashesSession += 1
 
-#slide
-func st_slide(delta: float) -> Callable:
+#climb
+func st_climb(delta: float) -> Callable:
+	_gravity_process(delta)
+	player_movement(delta)
+	
+	if climbInput:
+		if facing.y == -1:
+			velocity.y = climbSpeedY
+		elif facing.y == 1:
+			velocity.y = -climbSpeedY
+		else:
+			velocity.y = 0
+		
+	else:
+		velocity.y *= climbFriction
+	#velocity.y *= climbFriction
+	
+	if jumpInput:
+		return Callable(self, "st_jump")
+	
+	if get_direction_next_to_wall() == Vector2.ZERO:
+		return Callable(self, "st_fall")
+	
+	if canDash:
+		return Callable(self, "st_dash")
+	
+	if is_on_floor():
+		return Callable(self, "st_idle")
+	
 	return Callable()
 
-func st_enter_slide(delta: float = 0) -> void:
-	print("SLIDE")
+func st_enter_climb(delta: float = 0) -> void:
+	print("CLIMB")
 	pass
 
-func st_leave_slide(delta: float = 0) -> void:
+func st_leave_climb(delta: float = 0) -> void:
 	pass
 
 #superjump
@@ -474,11 +524,12 @@ func st_super_jump(delta: float) -> void:
 			create_dash_trail()
 			dashTrailTimer = dashTrailTime
 	
-	if !isSuperJumping:
+	if superJumpLengthTimer <= 0:
+		isSuperJumping = false
 		return Callable(self, "st_fall")
 
 func st_enter_super_jump(delta: float = 0) -> void:
-	print("SUPERJUMP")
+	#print("SUPERJUMP")
 	isSuperJumping = true
 	dashParticles.emitting = true
 	
@@ -490,9 +541,9 @@ func st_enter_super_jump(delta: float = 0) -> void:
 	else:
 		dashDir = lastDir
 	
-	dashParticles.direction = dashDir.normalized()
-	velocity.y = jumpHeight
-	velocity.x = superJumpX * dashDir.x
+	#dashParticles.direction = dashDir.normalized()
+	#velocity.y = jumpHeight
+	#velocity.x = superJumpX * dashDir.x
 
 func st_leave_super_jump(delta: float = 0) -> void:
 	isSuperJumping = false
@@ -518,7 +569,7 @@ func st_duck(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_duck(delta: float = 0) -> void:
-	print("DUCK")
+	#print("DUCK")
 	sprite.scale = bodyDuckSquashVec
 	
 	duckedCollisionBox.disabled = false
@@ -551,71 +602,39 @@ func st_leave_dead(delta: float = 0) -> void:
 	pass
 
 # getters
-func can_dash() -> bool:
-	return dashInput && dashCooldownTimer <= 0.0 && totalDashes > 0
-
 var canDash: bool:
 	get:
-		return can_dash()
-
-func can_control() -> bool:
-	match stateMachine.currentState:
-		"st_respawn":
-			return false
-		"st_dead":
-			return false
-		_:
-			return true
+		return dashInput && dashCooldownTimer <= 0.0 && totalDashes > 0
 
 var canControl: bool:
 	get:
-		return can_control()
-
-func sequence_state() -> bool:
-	match stateMachine.currentState:
-		"st_respawn":
-			return true
-		"st_dead":
-			return true
-		_:
-			return false
+		match stateMachine.currentState:
+			"st_respawn":
+				return false
+			"st_dead":
+				return false
+			_:
+				return true
 
 var sequenceState: bool:
 	get:
-		return sequence_state()
+		match stateMachine.currentState:
+			"st_respawn":
+				return true
+			"st_dead":
+				return true
+			_:
+				return false
 
 func get_direction_next_to_wall() -> Vector2:
-	for raycast: RayCast2D in wallSlideRaycasts:
+	for raycast in wallSlideRaycasts.get_children():
 		raycast.force_raycast_update()
 		if raycast.is_colliding():
 			if raycast.target_position.x > 0:
 				return Vector2.RIGHT
 			else:
 				return Vector2.LEFT
-	return Vector2()
-
-#func get_debug_trail_color() -> Color:
-#	match stateMachine.currentState:
-#		"st_idle":
-#			return Color.WHITE
-#		"st_move":
-#			return Color.AQUA
-#		"st_jump":
-#			return Color.DARK_RED
-#		"st_fall":
-#			return Color.DIM_GRAY
-#		"st_dash":
-#			return Color.PURPLE
-#		"st_slide":
-#			return Color.CORNFLOWER_BLUE
-#		"st_duck":
-#			return Color.DARK_ORANGE
-#		"st_respawn":
-#			return Color.CRIMSON
-#		"st_dead":
-#			return Color.BLACK
-#		_:
-#			return Color.WHITE
+	return Vector2.ZERO
 
 func create_dash_trail() -> void:
 	var ghostInstance: Sprite2D = dashGhost.instantiate()
@@ -632,3 +651,26 @@ func refill_dashes() -> bool:
 		return true
 	else:
 		return false
+
+#func get_debug_trail_color() -> Color:
+#	match stateMachine.currentState:
+#		"st_idle":
+#			return Color.WHITE
+#		"st_move":
+#			return Color.AQUA
+#		"st_jump":
+#			return Color.DARK_RED
+#		"st_fall":
+#			return Color.DIM_GRAY
+#		"st_dash":
+#			return Color.PURPLE
+#		"st_climb":
+#			return Color.CORNFLOWER_BLUE
+#		"st_duck":
+#			return Color.DARK_ORANGE
+#		"st_respawn":
+#			return Color.CRIMSON
+#		"st_dead":
+#			return Color.BLACK
+#		_:
+#			return Color.WHITE
