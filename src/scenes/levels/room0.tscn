@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://hkeot3pu0jvn"]
 
 [ext_resource type="Texture2D" uid="uid://h37voowtdgto" path="res://src/media/sprites/grayboxingTileset8x8.png" id="1_dhpyc"]
-[ext_resource type="PackedScene" uid="uid://c5evwfnm23qi3" path="res://src/scenes/objects/dashRefillOrb/dashRefillOrb.tscn" id="2_g70ti"]
+[ext_resource type="PackedScene" uid="uid://c5evwfnm23qi3" path="res://src/scenes/gameObjects/dashRefillOrb/dashRefillOrb.tscn" id="2_g70ti"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sevgq"]
 texture = ExtResource("1_dhpyc")

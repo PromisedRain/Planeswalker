@@ -1,12 +1,16 @@
+<<<<<<< HEAD
+res://src/scenes
 res://src/gui/pauseMenu
 res://src/gui
 res://src/scenes/managers
 res://src/gui/vignette
 res://src/resources/shaders
+=======
+>>>>>>> parent of 827bfda (before testing pixelperfect viewport)
 res://src/gui/playerUi
+res://src/scenes/managers
 res://src/gui/mainMenu
 res://src/media/fonts
 C:/Users/filip/Downloads/startup apps/godot-minimal-theme-1.2.1
 res://src/lib
 res://src/components
-res://src/scenes

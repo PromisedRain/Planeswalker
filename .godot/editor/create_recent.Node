@@ -1,14 +1,31 @@
-CanvasLayer
+<<<<<<< HEAD
+RemoteTransform2D
+TextureRect
+Camera2D
 SubViewport
+CanvasLayer
 Node
 ColorRect
 TextureProgressBar
 Label
 HBoxContainer
 VBoxContainer
+=======
+>>>>>>> parent of 827bfda (before testing pixelperfect viewport)
 Control
 MarginContainer
 ProgressBar
+CanvasLayer
 Node2D
+<<<<<<< HEAD
+=======
+HBoxContainer
+Label
 Sprite2D
 Button
+ColorRect
+CanvasModulate
+TextureRect
+WorldEnvironment
+RayCast2D
+>>>>>>> parent of 827bfda (before testing pixelperfect viewport)
