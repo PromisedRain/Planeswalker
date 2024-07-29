@@ -37,12 +37,22 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 metadata/_edit_lock_ = true
 
+[node name="Door3" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(160, 90)
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("2_nlmjx")
+
+[node name="Door2" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(160, 90)
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("2_nlmjx")
+
 [node name="Door" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(160, 70)
+position = Vector2(160, 90)
 texture = ExtResource("2_nlmjx")
 
 [node name="Title" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(160, 55)
+position = Vector2(160, 90)
 
 [node name="Button" type="Button" parent="CanvasLayer"]
 offset_left = 143.5

@@ -1,55 +1,32 @@
-<<<<<<< HEAD
-[gd_scene load_steps=9 format=3 uid="uid://4sk5yusr5vvs"]
-=======
-[gd_scene load_steps=8 format=3 uid="uid://4sk5yusr5vvs"]
->>>>>>> parent of 827bfda (before testing pixelperfect viewport)
+[gd_scene load_steps=7 format=3 uid="uid://4sk5yusr5vvs"]
 
 [ext_resource type="Script" path="res://src/scenes/main.gd" id="1_gewu3"]
-[ext_resource type="PackedScene" uid="uid://c6s0hvw0hsy5t" path="res://src/scenes/managers/debugManager.tscn" id="2_5w8xw"]
-[ext_resource type="PackedScene" uid="uid://cm0lw3nd0kw7d" path="res://src/scenes/gameObjects/player/player.tscn" id="2_r3rp8"]
-[ext_resource type="PackedScene" uid="uid://cevaoxwk4veu4" path="res://src/gui/playerUi/playerUi.tscn" id="3_swri6"]
-[ext_resource type="Script" path="res://src/scenes/mainCamera.gd" id="4_2ats6"]
+[ext_resource type="PackedScene" uid="uid://dimjcq438a4r4" path="res://src/gui/uiCanvas/uiCanvas.tscn" id="2_lx486"]
+[ext_resource type="PackedScene" uid="uid://cm0lw3nd0kw7d" path="res://src/scenes/objects/player/player.tscn" id="2_r3rp8"]
 [ext_resource type="Script" path="res://src/lib/CameraAnchor.gd" id="4_ih8ft"]
+[ext_resource type="PackedScene" uid="uid://c8n1y5fq0db07" path="res://src/scenes/objects/mainCamera/mainCamera.tscn" id="4_sh3qq"]
 [ext_resource type="PackedScene" uid="uid://cvbw61cy0um5e" path="res://src/scenes/levels/volume1.tscn" id="6_62x54"]
-[ext_resource type="Script" path="res://src/scenes/pixelPerfectCanvas.gd" id="7_36swm"]
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_c0d03"]
-viewport_path = NodePath("PixelPerfectCanvas/SubViewport")
 
 [node name="Main" type="Node"]
 script = ExtResource("1_gewu3")
 
-<<<<<<< HEAD
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(320, 180)
+
 [node name="UICanvas" parent="." instance=ExtResource("2_lx486")]
-=======
-[node name="DebugManager" parent="." instance=ExtResource("2_5w8xw")]
-visible = false
 
-[node name="PlayerUi" parent="." instance=ExtResource("3_swri6")]
->>>>>>> parent of 827bfda (before testing pixelperfect viewport)
+[node name="MainCamera" parent="." instance=ExtResource("4_sh3qq")]
+drag_horizontal_enabled = false
+drag_vertical_enabled = false
 
-[node name="MainCamera" type="Node2D" parent="."]
-script = ExtResource("4_2ats6")
+[node name="PlayerSFXContainer" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
 
-[node name="Camera2D" type="Camera2D" parent="MainCamera" groups=["mainCamera"]]
-position = Vector2(40, -38)
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
-drag_left_margin = 0.4
-drag_top_margin = 0.5
-drag_right_margin = 0.4
-drag_bottom_margin = 0.5
-
-[node name="Entities" type="Node2D" parent="."]
-metadata/_edit_lock_ = true
-
-[node name="DashGhostContainer" type="Node2D" parent="Entities"]
-
-[node name="Player" parent="Entities" instance=ExtResource("2_r3rp8")]
+[node name="Player" parent="." instance=ExtResource("2_r3rp8")]
 position = Vector2(8, -40)
+collision_layer = 2
 
-[node name="CameraAnchor" type="Marker2D" parent="Entities/Player"]
+[node name="CameraAnchor" type="Marker2D" parent="Player"]
 position = Vector2(0, -7)
 script = ExtResource("4_ih8ft")
 metadata/_edit_lock_ = true
@@ -58,23 +35,3 @@ metadata/_edit_lock_ = true
 metadata/_edit_lock_ = true
 
 [node name="Volume1" parent="Volumes" instance=ExtResource("6_62x54")]
-
-[node name="PixelPerfectCanvas" type="CanvasLayer" parent="." node_paths=PackedStringArray("pixelPerfectCamera")]
-layer = 10
-script = ExtResource("7_36swm")
-pixelPerfectCamera = NodePath("SubViewport/PixelPerfectCamera")
-
-[node name="SubViewport" type="SubViewport" parent="PixelPerfectCanvas"]
-transparent_bg = true
-canvas_item_default_texture_filter = 0
-size = Vector2i(320, 180)
-
-[node name="PixelPerfectCamera" type="Camera2D" parent="PixelPerfectCanvas/SubViewport"]
-
-[node name="ViewportTexture" type="TextureRect" parent="PixelPerfectCanvas"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("ViewportTexture_c0d03")

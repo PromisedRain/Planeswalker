@@ -1,3 +1,5 @@
+res://src/gui/playerUi/playerUi.tscn
+res://src/gui/playerUi/playerUi.gd
 res://src/scenes/main.tscn
 res://src/scenes/gameObjects/player/player.tscn
 res://src/scenes/levels/volume1.tscn
@@ -7,12 +9,19 @@ res://src/scenes/managers/interactionManager.tscn
 res://src/scenes/managers/debugManager.tscn
 res://src/scenes/gameObjects/dashRefillOrb/dashRefillOrb.tscn
 res://src/gui/mainMenu/mainMenu.tscn
-res://src/scenes/gameObjects/player/player.gd
-res://src/scenes/managers/debugManager.gd
 res://src/components/hurtboxComponent.tscn
+res://src/scenes/gameObjects/player/player.gd
+res://src/scenes/gameObjects/mainCamera/mainCamera.tscn
+res://src/lib/CameraAnchor.gd
+res://src/components/dashGhostComponent.gd
+res://src/scenes/gameObjects/dashRefillOrb/dashRefillOrb.gd
+res://src/scenes/managers/debugManager.gd
+res://src/scenes/managers/global.gd
 res://src/components/healthComponent.gd
+res://src/components/hurtboxComponent.gd
+res://src/components/interactionAreaComponent.gd
+res://src/scenes/managers/interactionManager.gd
 res://src/scenes/main.gd
-<<<<<<< HEAD
 res://src/scenes/MainCamera.gd
 res://src/gui/mainMenu/mainMenu.gd
 res://src/lib/nodeUtility.gd
@@ -31,8 +40,3 @@ res://src/scenes/managers/saveManager.gd
 res://src/scenes/objects/dashRefillOrb/dashRefillOrb.gd
 res://src/gui/uiCanvas.tscn
 res://src/gui/uiCanvas/uiCanvas.tscn
-res://src/scenes/pixelPerfectCanvas.gd
-=======
-res://src/gui/playerUi/playerUi.tscn
-res://src/gui/playerUi/playerUi.gd
->>>>>>> parent of 827bfda (before testing pixelperfect viewport)
