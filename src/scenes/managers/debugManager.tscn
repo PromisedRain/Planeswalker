@@ -103,29 +103,6 @@ size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3"]
-layout_mode = 2
-
-[node name="TimeElapsedLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "totalTime:"
-
-[node name="MSecLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "00:"
-
-[node name="SecondsLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "00."
-
-[node name="MinutesLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "00"
-
 [node name="TotalDashesSessionLabel" type="Label" parent="Control/MarginContainer/Control/HBoxContainer/VBoxContainer3"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16

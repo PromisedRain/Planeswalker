@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=3 uid="uid://dimjcq438a4r4"]
+
+[ext_resource type="PackedScene" uid="uid://c6s0hvw0hsy5t" path="res://src/scenes/managers/debugManager.tscn" id="1_fdxb7"]
+[ext_resource type="Script" path="res://src/gui/uiCanvas/uiCanvas.gd" id="1_fhtnr"]
+[ext_resource type="PackedScene" uid="uid://cevaoxwk4veu4" path="res://src/gui/playerUI/playerUI.tscn" id="2_7cuac"]
+[ext_resource type="PackedScene" uid="uid://ckceh1hxaxh4x" path="res://src/gui/vignette/vignette.tscn" id="3_tuq7a"]
+[ext_resource type="PackedScene" uid="uid://ba7tc2g1wlo02" path="res://src/gui/pauseMenu/pauseMenu.tscn" id="5_4l4dx"]
+
+[node name="UICanvas" type="CanvasLayer"]
+script = ExtResource("1_fhtnr")
+
+[node name="DebugManager" parent="." instance=ExtResource("1_fdxb7")]
+visible = false
+
+[node name="PlayerUI" parent="." instance=ExtResource("2_7cuac")]
+
+[node name="Vignette" parent="." instance=ExtResource("3_tuq7a")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("5_4l4dx")]

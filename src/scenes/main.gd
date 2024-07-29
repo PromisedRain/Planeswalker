@@ -6,7 +6,6 @@ extends Node
 @onready var windowBaseSize: Vector2i = window.content_scale_size
 @onready var windowScreenSize: Vector2i = get_viewport().get_visible_rect().size
 
-#managers
 @onready var debugManager: CanvasLayer = $DebugManager
 
 #vars
@@ -16,7 +15,6 @@ var inDebug: bool = false
 
 func _ready() -> void: 
 	print("screen size: %s" %windowScreenSize)
-	#signals
 	window.size_changed.connect(window_size_changed) 
 
 # integer
@@ -41,12 +39,12 @@ func handle_debug_visibility() -> void:
 	if !inDebug:
 		print("[console] debug is on")
 		inDebug = true
-		debugManager.visible = true
+	#	debugManager.visible = true
 	#	debugTrail.visible = true
 	else:
 		print("[console] debug is off")
 		inDebug = false
-		debugManager.visible = false
+	#	debugManager.visible = false
 	#	debugTrail.visible = false
 
 #getters
