@@ -328,27 +328,6 @@ shape = SubResource("RectangleShape2D_ocmmf")
 debug_color = Color(0.721569, 0, 0.164706, 0.439216)
 metadata/_edit_lock_ = true
 
-[node name="WallSlideRaycasts" type="Node2D" parent="."]
-metadata/_edit_lock_ = true
-
-[node name="TopRight" type="RayCast2D" parent="WallSlideRaycasts"]
-position = Vector2(0, -15)
-target_position = Vector2(-5, 0)
-metadata/_edit_lock_ = true
-
-[node name="TopLeft" type="RayCast2D" parent="WallSlideRaycasts"]
-position = Vector2(0, -15)
-target_position = Vector2(5, 0)
-metadata/_edit_lock_ = true
-
-[node name="BottomRight" type="RayCast2D" parent="WallSlideRaycasts"]
-target_position = Vector2(5, 0)
-metadata/_edit_lock_ = true
-
-[node name="BottomLeft" type="RayCast2D" parent="WallSlideRaycasts"]
-target_position = Vector2(-5, 0)
-metadata/_edit_lock_ = true
-
 [node name="NormalCollisionBox" type="CollisionShape2D" parent="."]
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_mvywc")
@@ -367,6 +346,49 @@ metadata/_edit_lock_ = true
 position = Vector2(0, -8)
 texture = ExtResource("2_d5ssh")
 hframes = 8
+metadata/_edit_lock_ = true
+
+[node name="ClimbLedgeGrabRaycasts" type="Node2D" parent="."]
+
+[node name="TopRight" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
+position = Vector2(0, -15)
+target_position = Vector2(-5, 0)
+metadata/_edit_lock_ = true
+
+[node name="TopLeft" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
+position = Vector2(0, -15)
+target_position = Vector2(5, 0)
+metadata/_edit_lock_ = true
+
+[node name="MiddleRight" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
+position = Vector2(0, -7)
+target_position = Vector2(5, 0)
+metadata/_edit_lock_ = true
+
+[node name="MiddleLeft" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
+position = Vector2(0, -7)
+target_position = Vector2(-5, 0)
+metadata/_edit_lock_ = true
+
+[node name="ClimbWallRaycasts" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="TopRight" type="RayCast2D" parent="ClimbWallRaycasts"]
+position = Vector2(0, -15)
+target_position = Vector2(-5, 0)
+metadata/_edit_lock_ = true
+
+[node name="TopLeft" type="RayCast2D" parent="ClimbWallRaycasts"]
+position = Vector2(0, -15)
+target_position = Vector2(5, 0)
+metadata/_edit_lock_ = true
+
+[node name="BottomRight" type="RayCast2D" parent="ClimbWallRaycasts"]
+target_position = Vector2(5, 0)
+metadata/_edit_lock_ = true
+
+[node name="BottomLeft" type="RayCast2D" parent="ClimbWallRaycasts"]
+target_position = Vector2(-5, 0)
 metadata/_edit_lock_ = true
 
 [node name="Light" type="PointLight2D" parent="."]

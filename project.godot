@@ -23,6 +23,7 @@ config/icon="res://icon.svg"
 NodeUtility="*res://src/lib/nodeUtility.gd"
 Global="*res://src/scenes/managers/global.gd"
 InteractionManager="*res://src/scenes/managers/interactionManager.tscn"
+SignalManager="*res://src/scenes/managers/signalManager.gd"
 
 [display]
 

@@ -7,7 +7,9 @@ extends CharacterBody2D
 @onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 @onready var healthComponent: HealthComponent = $HealthComponent
 
-@onready var wallSlideRaycasts = $WallSlideRaycasts
+@onready var climbWallRaycasts: Node2D = $ClimbWallRaycasts
+@onready var climbLedgeGrabTopRaycasts: Array = [$ClimbLedgeGrabRaycasts/TopLeft, $ClimbLedgeGrabRaycasts/TopRight]
+@onready var climbLedgeGrabMiddleRaycasts: Array = [$ClimbLedgeGrabRaycasts/MiddleLeft, $ClimbLedgeGrabRaycasts/MiddleRight]
 
 @onready var normalCollisionBox: CollisionShape2D = $NormalCollisionBox
 @onready var duckedCollisionBox: CollisionShape2D = $DuckCollisionBox
@@ -37,9 +39,7 @@ var jumpBuffer: bool
 var isJumping: bool = false
 
 var climbInput: bool
-
-var superJumpLengthTimer: float
-var isSuperJumping: bool
+var climbStamina: float
 
 var dashInput: bool 
 var dashCooldownTimer: float
@@ -75,22 +75,23 @@ const dashCooldownTime: float = 0.35
 const maxDashes: int = 1
 const dashCornerCorrection: int = 4
 
-const superJumpLengthTime: float = 0.125
-const superJumpX: float = 300
-
 const runSpeed: float = 90.0
 const maxRunSpeed: float = runSpeed
-const runAccel: float = 12.0
-const airAccel: float = 10.5
+const runAccel: float = 24.0
+const airAccel: float = 16.5
 
 const groundFriction: float = 35.0
-const airResistance: float = 50.0
+const airResistance: float = 70.0
 const friction: float = groundFriction
-const duckFriction: float = friction / 1.5
+const duckFriction: float = friction / 1.75
 
-const climbFriction: float = 0.94
-const climbSpeedY: float = -46.0
-const climbJumpHeightX: float = 80.0
+const climbFriction: float = 0.86
+const climbUpSpeed: float = -46.0
+const climbDownSpeed: float = 82.0
+const climbJumpHeight: float = maxRunSpeed + jumpHBoost
+const climbMaxStamina: float = 7.0
+const climbJumpStaminaDrain: float = 1.25
+const climbUpStaminaDrain: float = 0.18
 
 const fallGravity: float = 1.15
 const fallSpeed: float = 310.0
@@ -98,23 +99,29 @@ const maxFallSpeed: float = fallSpeed
 const gravity: int = 900
 
 const bodySquashStretchReversion: float = 1.75
-const bodySquashVec: Vector2 = Vector2(1.4, 0.8)
+const bodySquashVec: Vector2 = Vector2(1.4, 0.8) #0.6
 const bodyStretchVec: Vector2 = Vector2(0.6, 1.4) 
-const bodyDuckSquashVec: Vector2 = Vector2(1.4, 0.8)
+const bodyDuckSquashVec: Vector2 = Vector2(1.4, 0.8) #0.6
+
+#others
+
+enum climbStaminaActions {
+	jump,
+	climbUp
+}
 
 func _ready() -> void:
 	stateMachine = StateMachine.new()
-	stateMachine.add_states("idle", Callable(self, "st_idle"), Callable(self, "st_enter_idle"), Callable(self, "st_leave_idle"))
-	stateMachine.add_states("move", Callable(self, "st_move"), Callable(self, "st_enter_move"), Callable(self, "st_leave_move"))
-	stateMachine.add_states("jump", Callable(self, "st_jump"), Callable(self, "st_enter_jump"), Callable(self, "st_leave_jump"))
-	stateMachine.add_states("fall", Callable(self, "st_fall"), Callable(self, "st_enter_fall"), Callable(self, "st_leave_fall"))
-	stateMachine.add_states("dash", Callable(self, "st_dash"), Callable(self, "st_enter_dash"), Callable(self, "st_leave_dash"))
-	stateMachine.add_states("super_jump", Callable(self, "st_super_jump"), Callable(self, "st_enter_super_jump"), Callable(self, "st_leave_super_jump"))
-	stateMachine.add_states("climb", Callable(self, "st_climb"), Callable(self, "st_enter_climb"), Callable(self, "st_leave_climb"))
-	stateMachine.add_states("duck", Callable(self, "st_duck"), Callable(self, "st_enter_duck"), Callable(self, "st_leave_duck"))
-	stateMachine.add_states("respawn", Callable(self, "st_respawn"), Callable(self, "st_enter_respawn"), Callable(self, "st_leave_respawn"))
-	stateMachine.add_states("dead", Callable(self, "st_dead"), Callable(self, "st_enter_dead"), Callable(self, "st_leave_dead"))
-	stateMachine.set_initial_state(Callable(self, "st_idle"))
+	stateMachine.add_states("idle", Callable(self, "st_idle_update"), Callable(self, "st_enter_idle"), Callable(self, "st_leave_idle"))
+	stateMachine.add_states("move", Callable(self, "st_move_update"), Callable(self, "st_enter_move"), Callable(self, "st_leave_move"))
+	stateMachine.add_states("jump", Callable(self, "st_jump_update"), Callable(self, "st_enter_jump"), Callable(self, "st_leave_jump"))
+	stateMachine.add_states("fall", Callable(self, "st_fall_update"), Callable(self, "st_enter_fall"), Callable(self, "st_leave_fall"))
+	stateMachine.add_states("dash", Callable(self, "st_dash_update"), Callable(self, "st_enter_dash"), Callable(self, "st_leave_dash"))
+	stateMachine.add_states("climb", Callable(self, "st_climb_update"), Callable(self, "st_enter_climb"), Callable(self, "st_leave_climb"))
+	stateMachine.add_states("duck", Callable(self, "st_duck_update"), Callable(self, "st_enter_duck"), Callable(self, "st_leave_duck"))
+	stateMachine.add_states("respawn", Callable(self, "st_respawn_update"), Callable(self, "st_enter_respawn"), Callable(self, "st_leave_respawn"))
+	stateMachine.add_states("dead", Callable(self, "st_dead_update"), Callable(self, "st_enter_dead"), Callable(self, "st_leave_dead"))
+	stateMachine.set_initial_state(Callable(self, "st_idle_update"))
 	
 	healthComponent.connect("died", Callable(self, "st_dead"))
 	start_jump_buffer_timer()
@@ -128,7 +135,6 @@ func _physics_process(delta: float) -> void:
 		direction = Vector2.ZERO
 		player_input()
 		move_and_slide()
-		#print(isSuperJumping)
 
 func _gravity_process(delta: float) -> void:
 	if !is_on_floor():
@@ -186,11 +192,11 @@ func update(delta: float) -> void:
 		jumpBuffer = false
 	
 	#superjump
-	if superJumpLengthTimer > 0.0:
-		superJumpLengthTimer -= delta
-		print(superJumpLengthTimer)
-	if NodeUtility.is_approximately_equal(superJumpLengthTimer, 0.0, 0.1):
-		isSuperJumping = false
+	#if superJumpLengthTimer > 0.0:
+	#	superJumpLengthTimer -= delta
+	#	print(superJumpLengthTimer)
+	#if NodeUtility.is_approximately_equal(superJumpLengthTimer, 0.0, 0.1):
+	#	isSuperJumping = false
 	
 	#respawn
 	if respawnTimer > 0.0:
@@ -203,6 +209,10 @@ func update(delta: float) -> void:
 	
 	#sprite
 	update_sprite(delta)
+	
+	#stamina
+	if is_on_floor() && stateMachine.previousState == Callable(self, "st_climb_update"):
+		refill_stamina()
 	
 	#corner correction
 	if velocity.y < 0 && test_move(global_transform, Vector2(0, velocity.y * delta)):
@@ -224,31 +234,31 @@ func update_sprite(delta: float) -> void:
 	#anims
 	if canControl && !sequenceState:
 		#idle
-		if stateMachine.currentState == Callable(self, "st_idle"):
+		if stateMachine.currentState == Callable(self, "st_idle_update"):
 			animationPlayer.play("anim_idle")
 		
 		#move
-		elif stateMachine.currentState == Callable(self, "st_move"):
+		elif stateMachine.currentState == Callable(self, "st_move_update"):
 			animationPlayer.play("anim_run")
 		
 		#jump
-		elif stateMachine.currentState == Callable(self, "st_jump"):
+		elif stateMachine.currentState == Callable(self, "st_jump_update"):
 			animationPlayer.play("anim_jump")
 		
 		#fall
-		elif stateMachine.currentState == Callable(self, "st_fall"):
+		elif stateMachine.currentState == Callable(self, "st_fall_update"):
 			animationPlayer.play("anim_jump")
 		
 		#dash
-		elif stateMachine.currentState == Callable(self, "st_dash"):
+		elif stateMachine.currentState == Callable(self, "st_dash_update"):
 			pass
 		
 		#climb
-		elif stateMachine.currentState == Callable(self, "st_climb"):
+		elif stateMachine.currentState == Callable(self, "st_climb_update"):
 			pass
 		
 		#duck
-		elif stateMachine.currentState == Callable(self, "st_duck"):
+		elif stateMachine.currentState == Callable(self, "st_duck_update"):
 			animationPlayer.play("anim_duck")
 
 # inputs
@@ -287,26 +297,26 @@ func player_movement(delta) -> void:
 				decelerate(delta)
 
 #idle
-func st_idle(delta: float) -> Callable:
+func st_idle_update(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
 	canJump = true
 	
 	if !NodeUtility.is_approximately_equal(velocity.x, 0):
-		return Callable(self, "st_move")
+		return Callable(self, "st_move_update")
 	
 	if (jumpInput || jumpBuffer) && canJump:
 		jumpBuffer = false
-		return Callable(self, "st_jump")
+		return Callable(self, "st_jump_update")
 	
 	if velocity.y > 0:
-		return Callable(self, "st_fall")
+		return Callable(self, "st_fall_update")
 	
 	if canDash:
-		return Callable(self, "st_dash")
+		return Callable(self, "st_dash_update")
 	
 	if duckInput:
-		return Callable(self, "st_duck")
+		return Callable(self, "st_duck_update")
 	
 	return Callable()
 
@@ -323,25 +333,25 @@ func st_leave_idle(delta: float = 0) -> void:
 	pass
 
 #move
-func st_move(delta: float) -> Callable:
+func st_move_update(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
 	
 	if NodeUtility.is_approximately_equal(velocity.x, 0):
-		return Callable(self, "st_idle")
+		return Callable(self, "st_idle_update")
 	
 	if jumpInput || jumpBuffer:
 		jumpBuffer = false
-		return Callable(self, "st_jump")
+		return Callable(self, "st_jump_update")
 	
 	if velocity.y > 0:
-		return Callable(self, "st_fall")
+		return Callable(self, "st_fall_update")
 	
 	if canDash: 
-		return Callable(self, "st_dash")
+		return Callable(self, "st_dash_update")
 	
 	if duckInput:
-		return Callable(self, "st_duck")
+		return Callable(self, "st_duck_update")
 	
 	return Callable()
 
@@ -355,7 +365,7 @@ func st_leave_move(delta: float = 0) -> void:
 	pass
 
 #jump
-func st_jump(delta: float) -> Callable:
+func st_jump_update(delta: float) -> Callable: # every frame
 	_gravity_process(delta)
 	player_movement(delta)
 	
@@ -363,59 +373,53 @@ func st_jump(delta: float) -> Callable:
 		jumpBuffer = true
 		start_jump_buffer_timer()
 	
-	if stateMachine.previousState == Callable(self, "st_climb"):
-		if lastDir == Vector2.RIGHT:
-			velocity.x = -climbJumpHeightX
-		elif lastDir == Vector2.LEFT:
-			velocity.x = climbJumpHeightX
-	
 	# variable jump height
 	if Input.is_action_just_released("jump"): 
 		velocity.y *= variableJumpH 
 	
 	if velocity.y >= 0:
-		return Callable(self, "st_fall")
+		return Callable(self, "st_fall_update")
 	
 	if canDash: 
-		return Callable(self, "st_dash")
+		return Callable(self, "st_dash_update")
 	
 	return Callable()
 
-func st_enter_jump(delta: float = 0) -> void:
-	#print("JUMP")
+func st_enter_jump(delta: float = 0) -> void: #once
+	print("JUMP")
 	sprite.scale = bodyStretchVec
 	canJump = false
 	
 	velocity.y = jumpHeight
-	
+
 func st_leave_jump(delta: float = 0) -> void:
 	pass
 
 #fall
-func st_fall(delta: float) -> Callable:
+func st_fall_update(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
 	
 	if is_on_floor() && !NodeUtility.is_approximately_equal(velocity.x, 0):
-		return Callable(self, "st_move")
+		return Callable(self, "st_move_update")
 	
 	if is_on_floor():
-		return Callable(self, "st_idle")
+		return Callable(self, "st_idle_update")
 	
 	if (jumpInput || jumpBuffer) && canJump:
-		return Callable(self, "st_jump")
+		return Callable(self, "st_jump_update")
 	
 	if canDash: 
-		return Callable(self, "st_dash")
+		return Callable(self, "st_dash_update")
 	
-	if get_direction_next_to_wall() != Vector2.ZERO:
-		return Callable(self, "st_climb")
+	if get_climbable_dir_next_to_wall() != Vector2.ZERO:
+		return Callable(self, "st_climb_update")
 	
 	return Callable()
 
 func st_enter_fall(delta: float = 0) -> void:
 	#print("FALL")
-	if stateMachine.previousState == Callable(self, "st_idle") || stateMachine.previousState == Callable(self, "st_move") || stateMachine.previousState == Callable(self, "st_climb"):
+	if stateMachine.previousState == Callable(self, "st_idle_update") || stateMachine.previousState == Callable(self, "st_move_update") || stateMachine.previousState == Callable(self, "st_climb_update"):
 		canJump = true
 		start_jump_grace_timer()
 	else:
@@ -426,7 +430,7 @@ func st_leave_fall(delta: float = 0) -> void:
 	pass
 
 #dash
-func st_dash(delta: float) -> Callable:
+func st_dash_update(delta: float) -> Callable:
 	jumpInput = Input.is_action_just_pressed("jump")
 	if jumpInput:
 		print(jumpInput)
@@ -443,7 +447,7 @@ func st_dash(delta: float) -> Callable:
 	#		return Callable(self, "st_super_jump")
 	
 	if !isDashing:
-		return Callable(self, "st_fall")
+		return Callable(self, "st_fall_update")
 	
 	return Callable()
 
@@ -479,33 +483,41 @@ func leave_dash_events() -> void:
 	totalDashesSession += 1
 
 #climb
-func st_climb(delta: float) -> Callable:
+func st_climb_update(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
 	
-	if climbInput:
-		if facing.y == -1:
-			velocity.y = climbSpeedY
+	if climbInput && climbStamina > 0:
+		if facing.y == -1 && has_enough_stamina(climbStaminaActions.climbUp):
+			velocity.y = climbUpSpeed
+			
+			#get_ledge_grabbable()
+			#print("is grabbable: %s" % get_ledge_grabbable())
 		elif facing.y == 1:
-			velocity.y = -climbSpeedY
+			velocity.y = climbDownSpeed
 		else:
 			velocity.y = 0
-		
+		climbStamina -= delta
 	else:
+		climbStamina -= delta
 		velocity.y *= climbFriction
-	#velocity.y *= climbFriction
 	
-	if jumpInput:
-		return Callable(self, "st_jump")
+	print(climbStamina)
 	
-	if get_direction_next_to_wall() == Vector2.ZERO:
-		return Callable(self, "st_fall")
+	if jumpInput && has_enough_stamina(climbStaminaActions.jump):
+		
+		climbStamina -= climbJumpStaminaDrain
+		return Callable(self, "st_jump_update")
+	
+	if get_climbable_dir_next_to_wall() == Vector2.ZERO:
+		return Callable(self, "st_fall_update")
 	
 	if canDash:
-		return Callable(self, "st_dash")
+		return Callable(self, "st_dash_update")
 	
 	if is_on_floor():
-		return Callable(self, "st_idle")
+		refill_stamina()
+		return Callable(self, "st_idle_update")
 	
 	return Callable()
 
@@ -517,40 +529,40 @@ func st_leave_climb(delta: float = 0) -> void:
 	pass
 
 #superjump
-func st_super_jump(delta: float) -> void:
-	velocity.x = superJumpX * dashDir.x
-	
-	if dashTrailTimer > 0:
-		dashTrailTimer -= delta
-		if dashTrailTimer <= 0:
-			create_dash_trail()
-			dashTrailTimer = dashTrailTime
-	
-	if superJumpLengthTimer <= 0:
-		isSuperJumping = false
-		return Callable(self, "st_fall")
+#func st_superJump_update(delta: float) -> void:
+#	velocity.x = superJumpX * dashDir.x
+#	
+#	if dashTrailTimer > 0:
+#		dashTrailTimer -= delta
+#		if dashTrailTimer <= 0:
+#			create_dash_trail()
+#			dashTrailTimer = dashTrailTime
+#	
+#	if superJumpLengthTimer <= 0:
+#		isSuperJumping = false
+#		return Callable(self, "st_fall_update")
 
-func st_enter_super_jump(delta: float = 0) -> void:
-	#print("SUPERJUMP")
-	isSuperJumping = true
-	dashParticles.emitting = true
-	
-	superJumpLengthTimer = superJumpLengthTime
-	dashTrailTimer = dashTrailTime
-	
-	if facing != Vector2.ZERO:
-		dashDir = facing
-	else:
-		dashDir = lastDir
-	
-	dashParticles.direction = dashDir.normalized()
-	velocity.y = jumpHeight
+#func st_enter_super_jump(delta: float = 0) -> void:
+#	#print("SUPERJUMP")
+#	isSuperJumping = true
+#	dashParticles.emitting = true
+#	
+#	superJumpLengthTimer = superJumpLengthTime
+#	dashTrailTimer = dashTrailTime
+#	
+#	if facing != Vector2.ZERO:
+#		dashDir = facing
+#	else:
+#		dashDir = lastDir
+#	
+#	dashParticles.direction = dashDir.normalized()
+#	velocity.y = jumpHeight
 
-func st_leave_super_jump(delta: float = 0) -> void:
-	isSuperJumping = false
+#func st_leave_super_jump(delta: float = 0) -> void:
+#	isSuperJumping = false
 
 #duck
-func st_duck(delta: float) -> Callable:
+func st_duck_update(delta: float) -> Callable:
 	_gravity_process(delta)
 	canJump = true
 	jumpInput = Input.is_action_just_pressed("jump")
@@ -559,13 +571,13 @@ func st_duck(delta: float) -> Callable:
 		apply_velocity(Vector2(0, velocity.y), duckFriction, delta)
 	
 	if velocity.y > 0:
-		return Callable(self, "st_fall")
+		return Callable(self, "st_fall_update")
 	
 	if !duckInput:
-		return Callable(self, "st_idle")
+		return Callable(self, "st_idle_update")
 	
 	if jumpInput && canJump:
-		return Callable(self, "st_jump")
+		return Callable(self, "st_jump_update")
 	
 	return Callable()
 
@@ -581,7 +593,7 @@ func st_leave_duck(delta: float = 0) -> void:
 	normalCollisionBox.disabled = false
 
 #respawn
-func st_respawn(delta: float) -> void:
+func st_respawn_update(delta: float) -> void:
 	return Callable()
 
 func st_enter_respawn(delta: float = 0) -> void:
@@ -592,7 +604,7 @@ func st_leave_respawn(delta: float = 0) -> void:
 	pass
 
 #dead
-func st_dead(delta: float) -> void:
+func st_dead_update(delta: float) -> void:
 	return Callable()
 
 func st_enter_dead(delta: float = 0) -> void:
@@ -610,9 +622,9 @@ var canDash: bool:
 var canControl: bool:
 	get:
 		match stateMachine.currentState:
-			"st_respawn":
+			"st_respawn_update":
 				return false
-			"st_dead":
+			"st_dead_update":
 				return false
 			_:
 				return true
@@ -620,15 +632,18 @@ var canControl: bool:
 var sequenceState: bool:
 	get:
 		match stateMachine.currentState:
-			"st_respawn":
+			"st_respawn_update":
 				return true
-			"st_dead":
+			"st_dead_update":
 				return true
 			_:
 				return false
 
-func get_direction_next_to_wall() -> Vector2:
-	for raycast in wallSlideRaycasts.get_children():
+func get_climb_stamina() -> float:
+	return climbStamina
+
+func get_climbable_dir_next_to_wall() -> Vector2:
+	for raycast: RayCast2D in climbWallRaycasts.get_children():
 		raycast.force_raycast_update()
 		if raycast.is_colliding():
 			if raycast.target_position.x > 0:
@@ -636,6 +651,32 @@ func get_direction_next_to_wall() -> Vector2:
 			else:
 				return Vector2.LEFT
 	return Vector2.ZERO
+
+func get_ledge_grabbable() -> bool:
+	var topRaycasts: Array = climbLedgeGrabTopRaycasts
+	var midRaycasts: Array = climbLedgeGrabMiddleRaycasts
+	var topIsColliding: bool = false
+	var midIsColliding: bool = false
+	
+	for i: RayCast2D in topRaycasts:
+		i.force_raycast_update()
+		if !i.is_colliding():
+			topIsColliding = false
+			print("top didnt colliding")
+			break
+		else:
+			print("top collided")
+	
+	for i: RayCast2D in midRaycasts:
+		i.force_raycast_update()
+		if i.is_colliding():
+			midIsColliding = true
+			print("mid collided")
+			break
+		else:
+			print("mid didnt collide")
+	
+	return topIsColliding && midIsColliding
 
 func create_dash_trail() -> void:
 	var ghostInstance: Sprite2D = dashGhost.instantiate()
@@ -650,28 +691,48 @@ func refill_dashes() -> bool:
 	if totalDashes < maxDashes:
 		totalDashes = maxDashes
 		return true
-	else:
-		return false
+	return false
+
+func refill_stamina() -> bool:
+	if climbStamina < climbMaxStamina:
+		climbStamina = climbMaxStamina
+		print("refilled stamina")
+		return true
+	return false
+
+func has_enough_stamina(move: climbStaminaActions):
+	var moveList = climbStaminaActions
+	match move:
+		moveList.jump:
+			if climbStamina > climbJumpStaminaDrain:
+				return true
+			else:
+				return false
+		moveList.climbUp:
+			if climbStamina > climbUpStaminaDrain:
+				return true
+			else:
+				return false
 
 #func get_debug_trail_color() -> Color:
 #	match stateMachine.currentState:
-#		"st_idle":
+#		"st_idle_update":
 #			return Color.WHITE
-#		"st_move":
+#		"st_move_update":
 #			return Color.AQUA
-#		"st_jump":
+#		"st_jump_update":
 #			return Color.DARK_RED
-#		"st_fall":
+#		"st_fall_update":
 #			return Color.DIM_GRAY
-#		"st_dash":
+#		"st_dash_update":
 #			return Color.PURPLE
-#		"st_climb":
+#		"st_climb_update":
 #			return Color.CORNFLOWER_BLUE
-#		"st_duck":
+#		"st_duck_update":
 #			return Color.DARK_ORANGE
-#		"st_respawn":
+#		"st_respawn_update":
 #			return Color.CRIMSON
-#		"st_dead":
+#		"st_dead_update":
 #			return Color.BLACK
 #		_:
 #			return Color.WHITE

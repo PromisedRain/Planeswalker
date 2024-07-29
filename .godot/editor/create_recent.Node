@@ -1,5 +1,6 @@
-Label
 Node2D
+HBoxContainer
+Label
 Sprite2D
 Button
 MarginContainer
@@ -11,4 +12,3 @@ TextureRect
 WorldEnvironment
 RayCast2D
 DashGhostComponent
-CPUParticles2D
