@@ -40,6 +40,7 @@ var isJumping: bool = false
 
 var climbInput: bool
 var climbStamina: float
+var previousClimbStamina: float = -1.0
 
 var dashInput: bool 
 var dashCooldownTimer: float
@@ -110,6 +111,8 @@ enum climbStaminaActions {
 	climbUp
 }
 
+signal climbStaminaChanged(climbStaminaValue: float)
+
 func _ready() -> void:
 	stateMachine = StateMachine.new()
 	stateMachine.add_states("idle", Callable(self, "st_idle_update"), Callable(self, "st_enter_idle"), Callable(self, "st_leave_idle"))
@@ -123,8 +126,12 @@ func _ready() -> void:
 	stateMachine.add_states("dead", Callable(self, "st_dead_update"), Callable(self, "st_enter_dead"), Callable(self, "st_leave_dead"))
 	stateMachine.set_initial_state(Callable(self, "st_idle_update"))
 	
+	#signals
 	healthComponent.connect("died", Callable(self, "st_dead"))
+	
+	#initial emits
 	start_jump_buffer_timer()
+	emit_signal("climbStaminaChanged", climbMaxStamina)
 
 # physics
 func _physics_process(delta: float) -> void:
@@ -213,6 +220,10 @@ func update(delta: float) -> void:
 	#stamina
 	if is_on_floor() && stateMachine.previousState == Callable(self, "st_climb_update"):
 		refill_stamina()
+	
+	if climbStamina != previousClimbStamina:
+		emit_signal("climbStaminaChanged", climbStamina)
+		previousClimbStamina = climbStamina
 	
 	#corner correction
 	if velocity.y < 0 && test_move(global_transform, Vector2(0, velocity.y * delta)):
@@ -502,7 +513,7 @@ func st_climb_update(delta: float) -> Callable:
 		climbStamina -= delta
 		velocity.y *= climbFriction
 	
-	print(climbStamina)
+	#print(climbStamina)
 	
 	if jumpInput && has_enough_stamina(climbStaminaActions.jump):
 		

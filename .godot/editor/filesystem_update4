@@ -11,3 +11,6 @@ res://src/scenes/gameObjects/player/player.gd
 res://src/scenes/managers/debugManager.gd
 res://src/components/hurtboxComponent.tscn
 res://src/components/healthComponent.gd
+res://src/scenes/main.gd
+res://src/gui/playerUi/playerUi.tscn
+res://src/gui/playerUi/playerUi.gd
