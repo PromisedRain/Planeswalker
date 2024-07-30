@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var player: CharacterBody2D = NodeUtility.get_player()
+@onready var player: CharacterBody2D = Utils.get_player()
 
 var rotSpeed: float = 0.05
 

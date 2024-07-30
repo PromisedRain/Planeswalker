@@ -1,6 +1,6 @@
 extends Node
 
-@onready var player: CharacterBody2D = NodeUtility.get_player()
+@onready var player: CharacterBody2D = Utils.get_player()
 @onready var animationPlayer: AnimationPlayer = $HUD/AnimationPlayer
 
 @onready var window: Window = get_window() 
@@ -13,7 +13,7 @@ extends Node
 
 
 func _ready() -> void: 
-	SaveManager.load_game()
+	#SaveManager.load_game()
 	var world: Node2D = load(LevelManager.currentVolumePath).instantiate()
 	LevelManager.currentWorld = world
 	volume.add_child(world)

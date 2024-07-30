@@ -11,7 +11,6 @@ func _process(delta) -> void:
 	
 	
 	targetPosX = NodeUtility.int_lerp(global_position.x, target.x, 0.6)
-	
 	targetPosY = NodeUtility.int_lerp(global_position.y, target.y, 0.6)
 	
 	#targetPosX = int(target.x)

@@ -2,7 +2,7 @@ extends CharacterBody2D
 #lilith
 
 @onready var sprite: Sprite2D = $Visuals/Body
-@onready var main: Node = NodeUtility.get_main()
+@onready var main: Node = Utils.get_main()
 
 @onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 @onready var healthComponent: HealthComponent = $HealthComponent
@@ -185,31 +185,31 @@ func update(delta: float) -> void:
 	
 	if dashLengthTimer > 0.0:
 		dashLengthTimer -= delta
-	if NodeUtility.is_approximately_equal(dashLengthTimer, 0.0, 0.01):
+	if Utils.is_approximately_equal(dashLengthTimer, 0.0, 0.01):
 		isDashing = false
 	
 	#jump
 	if jumpGraceTimer > 0.0:
 		jumpGraceTimer -= delta
-	if NodeUtility.is_approximately_equal(jumpGraceTimer, 0.0, 0.01):
+	if Utils.is_approximately_equal(jumpGraceTimer, 0.0, 0.01):
 		canJump = false
 	
 	if jumpBufferTimer > 0.0:
 		jumpBufferTimer -= delta
-	if NodeUtility.is_approximately_equal(jumpBufferTimer, 0.0, 0.01):
+	if Utils.is_approximately_equal(jumpBufferTimer, 0.0, 0.01):
 		jumpBuffer = false
 	
 	#superjump
 	#if superJumpLengthTimer > 0.0:
 	#	superJumpLengthTimer -= delta
 	#	print(superJumpLengthTimer)
-	#if NodeUtility.is_approximately_equal(superJumpLengthTimer, 0.0, 0.1):
+	#if Utils.is_approximately_equal(superJumpLengthTimer, 0.0, 0.1):
 	#	isSuperJumping = false
 	
 	#respawn
 	if respawnTimer > 0.0:
 		respawnTimer -= delta
-	if NodeUtility.is_approximately_equal(respawnTimer, 0.0, 0.01):
+	if Utils.is_approximately_equal(respawnTimer, 0.0, 0.01):
 		respawn = true
 	
 	if justRespawned && (velocity != Vector2.ZERO):
@@ -314,7 +314,7 @@ func st_idle_update(delta: float) -> Callable:
 	player_movement(delta)
 	canJump = true
 	
-	if !NodeUtility.is_approximately_equal(velocity.x, 0):
+	if !Utils.is_approximately_equal(velocity.x, 0):
 		return Callable(self, "st_move_update")
 	
 	if (jumpInput || jumpBuffer) && canJump:
@@ -349,7 +349,7 @@ func st_move_update(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
 	
-	if NodeUtility.is_approximately_equal(velocity.x, 0):
+	if Utils.is_approximately_equal(velocity.x, 0):
 		return Callable(self, "st_idle_update")
 	
 	if jumpInput || jumpBuffer:
@@ -412,7 +412,7 @@ func st_fall_update(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
 	
-	if is_on_floor() && !NodeUtility.is_approximately_equal(velocity.x, 0):
+	if is_on_floor() && !Utils.is_approximately_equal(velocity.x, 0):
 		return Callable(self, "st_move_update")
 	
 	if is_on_floor():

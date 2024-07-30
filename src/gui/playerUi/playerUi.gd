@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-@onready var player: CharacterBody2D = NodeUtility.get_player()
+@onready var player: CharacterBody2D = Utils.get_player()
 
 @onready var staminaBar: TextureProgressBar = $Control/MarginContainer/Stamina/MarginContainer/Control/StaminaBar
 @onready var stopwatchLabel: Label = $Control/MarginContainer/Stopwatch/MarginContainer/Control/StopwatchLabel

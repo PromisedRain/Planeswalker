@@ -21,7 +21,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-NodeUtility="*res://src/lib/nodeUtility.gd"
+Utils="*res://src/lib/utils.gd"
 InteractionManager="*res://src/scenes/managers/interactionManager.tscn"
 SignalManager="*res://src/scenes/managers/signalManager.gd"
 SaveManager="*res://src/scenes/managers/saveManager.gd"

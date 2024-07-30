@@ -22,7 +22,7 @@ var mSec: float = 0.0
 
 func _process(delta: float) -> void:
 	if player == null:
-		player = NodeUtility.get_player()
+		player = Utils.get_player()
 		if player == null:
 			return
 	

@@ -3,33 +3,27 @@ extends CanvasLayer
 @export var playerUi: PackedScene
 @export var debugManager: PackedScene 
 @export var mainMenu: PackedScene
-@export var slotSelection: PackedScene
 
 @onready var vignette: CanvasLayer = $Vignette
 @onready var pauseMenu: CanvasLayer = $PauseMenu
 
-var loadedComponents: Dictionary = {}
+var loaded: Dictionary = {}
 
+const scenesDict: Dictionary = {
+	mainMenu = "mainMenu",
+	debugManager = "debugManager"
+}
 
 func _ready() -> void:
 	init_vignette()
 	init_main_menu()
 	init_debug_manager()
 
-func _process(delta: float) -> void:
-	pass
-
 func init_main_menu() -> void:
-	open_ui_component("mainMenu", mainMenu, true)
+	open_ui_component(scenesDict.mainMenu, mainMenu, true)
 
 func free_main_menu() -> void:
-	free_ui_component("mainMenu")
-
-func open_slot_selection() -> void:
-	open_ui_component("slotSelection", slotSelection, true)
-
-func free_slot_selection() -> void:
-	free_ui_component("slotSelection")
+	free_ui_component(scenesDict.mainMenu)
 
 func init_vignette() -> void:
 	vignette.visible = true
@@ -37,22 +31,24 @@ func init_vignette() -> void:
 	colorRect.material.set_shader_parameter("Vignette Opacity", lerp(0.5, 0.261, 0.50))
 
 func init_debug_manager() -> void:
-	open_ui_component("debugManager", debugManager, false)
+	open_ui_component(scenesDict.debugManager, debugManager, false)
 
 func open_debug_mode() -> void:
-	if debugManager == null:
+	if loaded[scenesDict.debugManager] == null:
 		return
-	#open mode
-	if !debugManager.visible && canDebug:
-		print("[console] debug on")
-		debugManager.visible = true
 	
-	#close mode
-	elif debugManager.visible:
+	if !loaded[scenesDict.debugManager].visible && canDebug:
+		print("[console] debug on")
+		loaded[scenesDict.debugManager].visible = true
+	
+	elif loaded[scenesDict.debugManager].visible:
 		print("[console] debug off")
-		debugManager.visible = false
+		loaded[scenesDict.debugManager].visible = false
 
 func open_pause_menu() -> void:
+	if pauseMenu == null:
+		return
+	
 	if !pauseMenu.visible && canPause:
 		print("[console] pause on")
 		pauseMenu.visible = true
@@ -64,9 +60,9 @@ func open_pause_menu() -> void:
 		get_tree().paused = false
 
 func open_ui_component(name: String, component: PackedScene, showOnready: bool) -> void:
-	if !loadedComponents.has(name):
+	if !loaded.has(name):
 		var instance = component.instantiate()
-		loadedComponents[name] = instance
+		loaded[name] = instance
 		add_child(instance)
 		if instance is CanvasLayer:
 			instance.hide() 
@@ -76,23 +72,28 @@ func open_ui_component(name: String, component: PackedScene, showOnready: bool) 
 	if !showOnready:
 		return
 	
-	if loadedComponents[name] is CanvasLayer:
-		loadedComponents[name].show()
-	elif loadedComponents[name] is Node2D:
-		loadedComponents[name].visible = true
-
+	var instance = loaded[name]
+	if instance is CanvasLayer:
+		instance.show()
+	elif instance is Node2D:
+		instance.visible = true
 
 func free_ui_component(name: String) -> void:
-	if loadedComponents.has(name):
-		var instance = loadedComponents[name]
+	if loaded.has(name):
+		var instance = loaded[name]
 		instance.queue_free()
-		loadedComponents.erase(name)
+		loaded.erase(name)
 
 #getters
 var canPause: bool:
 	get:
-		return true
+		return is_not_in_non_pausable_state()
 
 var canDebug: bool:
 	get:
-		return true
+		return is_not_in_non_pausable_state()
+
+func is_not_in_non_pausable_state() -> bool:
+	if loaded[scenesDict.mainMenu] != null:
+		return false
+	return true

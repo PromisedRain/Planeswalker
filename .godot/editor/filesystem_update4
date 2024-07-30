@@ -37,3 +37,7 @@ res://src/gui/mainMenuSlotSelection/mainMenuSlotSelection.tscn
 res://src/gui/mainMenuSettings/mainMenuSettings.gd
 res://src/gui/mainMenuSlotSelection/mainMenuSlotSelection.gd
 res://src/scenes/managers/debugManager.gd
+res://src/scenes/managers/sceneTransitionManager.tscn
+res://src/scenes/managers/sceneTransitionManager.gd
+res://src/scenes/managers/interactionManager.gd
+res://src/scenes/objects/dashRefillOrb/dashRefillOrb.gd

@@ -1,7 +1,7 @@
 extends Node
 
 
-@onready var player = NodeUtility.get_player()
+@onready var player = Utils.get_player()
 @onready var interactLabel = $InteractLabel
 
 const baseInteractText: String = "[E/C] to interact"
