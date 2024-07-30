@@ -1,7 +1,5 @@
 extends CanvasLayer
 
-@onready var player = NodeUtility.get_player()
-
 @onready var stateLabel: Label = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer/StateLabel
 @onready var fpsLabel: Label = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer/FpsLabel
 @onready var deathsLabel: Label = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer/DeathsLabel
@@ -14,6 +12,8 @@ extends CanvasLayer
 
 @onready var totalDashesSessionLabel: Label = $Control/MarginContainer/Control/HBoxContainer/VBoxContainer3/TotalDashesSessionLabel
   
+var player = null
+
 var time: float = 0.0
 var minutes: float = 0.0
 var seconds: float = 0.0
@@ -21,6 +21,11 @@ var mSec: float = 0.0
 
 
 func _process(delta: float) -> void:
+	if player == null:
+		player = NodeUtility.get_player()
+		if player == null:
+			return
+	
 	stateLabel.text = "state: %s" %player.stateMachine.get_current_state_name()
 	var fps = Engine.get_frames_per_second()
 	

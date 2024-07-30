@@ -349,6 +349,7 @@ hframes = 8
 metadata/_edit_lock_ = true
 
 [node name="ClimbLedgeGrabRaycasts" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="TopRight" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
 position = Vector2(0, -15)

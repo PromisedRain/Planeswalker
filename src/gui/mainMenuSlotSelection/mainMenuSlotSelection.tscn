@@ -1,0 +1,279 @@
+[gd_scene load_steps=5 format=3 uid="uid://bsd25rh4i6yxk"]
+
+[ext_resource type="Script" path="res://src/gui/mainMenuSlotSelection/mainMenuSlotSelection.gd" id="1_bdf3y"]
+[ext_resource type="Theme" uid="uid://blxx1x6h8a1qw" path="res://src/resources/themes/mainMenuButtons.tres" id="2_rq5lo"]
+[ext_resource type="Texture2D" uid="uid://b4vw2ps85vui3" path="res://src/media/ui/titleDoor.png" id="3_x2ixr"]
+
+[sub_resource type="Curve" id="Curve_1m0d1"]
+_data = [Vector2(0, 1), 0.0, -0.0665132, 0, 0, Vector2(1, 0), -3.2967, 0.0, 0, 0]
+point_count = 2
+
+[node name="MainMenuSlotSelection" type="Node2D"]
+script = ExtResource("1_bdf3y")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Background" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="StarParticles" type="CPUParticles2D" parent="CanvasLayer"]
+position = Vector2(159, 86)
+emitting = false
+amount = 100
+lifetime = 2.5
+randomness = 0.66
+emission_shape = 3
+emission_rect_extents = Vector2(155, 85)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 4.0
+initial_velocity_max = 4.0
+scale_amount_max = 2.0
+scale_amount_curve = SubResource("Curve_1m0d1")
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Control2" type="Control" parent="CanvasLayer/Control/MarginContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/Control2"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme = ExtResource("2_rq5lo")
+theme_override_font_sizes/font_size = 32
+text = "Slots"
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 5
+
+[node name="Slot1" type="Control" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = ExtResource("3_x2ixr")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer/TextureRect/MarginContainer"]
+layout_mode = 2
+
+[node name="Slot1Title" type="Label" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer/TextureRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_rq5lo")
+text = "slot 1"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Slot1Select" type="Button" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_rq5lo")
+
+[node name="Slot2" type="Control" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = ExtResource("3_x2ixr")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/VBoxContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/VBoxContainer/TextureRect/MarginContainer"]
+layout_mode = 2
+
+[node name="Slot2Title" type="Label" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/VBoxContainer/TextureRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_rq5lo")
+text = "slot 2"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Slot2Select" type="Button" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_rq5lo")
+
+[node name="Slot3" type="Control" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = ExtResource("3_x2ixr")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/VBoxContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/VBoxContainer/TextureRect/MarginContainer"]
+layout_mode = 2
+
+[node name="Slot3Title" type="Label" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/VBoxContainer/TextureRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_rq5lo")
+text = "slot 3"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Slot3Select" type="Button" parent="CanvasLayer/Control/MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_rq5lo")

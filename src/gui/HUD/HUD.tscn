@@ -1,0 +1,23 @@
+[gd_scene load_steps=8 format=3 uid="uid://dimjcq438a4r4"]
+
+[ext_resource type="PackedScene" uid="uid://c6s0hvw0hsy5t" path="res://src/scenes/managers/debugManager.tscn" id="1_fdxb7"]
+[ext_resource type="Script" path="res://src/gui/HUD/HUD.gd" id="1_fhtnr"]
+[ext_resource type="PackedScene" uid="uid://cevaoxwk4veu4" path="res://src/gui/playerUI/playerUI.tscn" id="3_3f1p3"]
+[ext_resource type="PackedScene" uid="uid://ckceh1hxaxh4x" path="res://src/gui/vignette/vignette.tscn" id="3_tuq7a"]
+[ext_resource type="PackedScene" uid="uid://ba7tc2g1wlo02" path="res://src/gui/pauseMenu/pauseMenu.tscn" id="5_4l4dx"]
+[ext_resource type="PackedScene" uid="uid://bsd25rh4i6yxk" path="res://src/gui/mainMenuSlotSelection/mainMenuSlotSelection.tscn" id="5_my5ed"]
+[ext_resource type="PackedScene" uid="uid://cg6g17qc8awr2" path="res://src/gui/mainMenu/mainMenu.tscn" id="6_jsa62"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_fhtnr")
+playerUi = ExtResource("3_3f1p3")
+debugManager = ExtResource("1_fdxb7")
+mainMenu = ExtResource("6_jsa62")
+slotSelection = ExtResource("5_my5ed")
+
+[node name="Vignette" parent="." instance=ExtResource("3_tuq7a")]
+visible = false
+
+[node name="PauseMenu" parent="." instance=ExtResource("5_4l4dx")]
+process_mode = 2
+visible = false

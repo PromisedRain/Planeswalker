@@ -7,3 +7,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	pass
+
+func load_game() -> void:
+	pass

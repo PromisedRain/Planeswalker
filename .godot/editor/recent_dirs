@@ -1,6 +1,9 @@
+res://src/gui/mainMenuSettings
+res://src/gui/slotSelection
+res://src/resources/themes
+res://src/scenes/managers
 res://src/gui/pauseMenu
 res://src/gui
-res://src/scenes/managers
 res://src/gui/vignette
 res://src/resources/shaders
 res://src/gui/playerUi

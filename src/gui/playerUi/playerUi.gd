@@ -15,10 +15,10 @@ var seconds: float = 0.0
 var minutes: float = 0.0
 
 func _ready() -> void:
-	init_stamina_bar()
+	#init_stamina_bar()
 	init_stopwatch_timer()
 	
-	player.climbStaminaChanged.connect(on_stamina_changed)
+	#player.climbStaminaChanged.connect(on_stamina_changed)
 
 func _process(delta: float) -> void:
 	update(delta)
@@ -31,7 +31,6 @@ func update(delta: float) -> void:
 	minutes = fmod(time, 3600) / 60
 	stopwatchLabel.text = "%03d: %02d. %02d" %[milliseconds, seconds, minutes]
 	
-	#
 
 func init_stopwatch_timer() -> void:
 	stopwatchLabel.text = "000: 00. 00"

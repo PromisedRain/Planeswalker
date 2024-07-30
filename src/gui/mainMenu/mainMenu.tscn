@@ -1,26 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://cg6g17qc8awr2"]
+[gd_scene load_steps=6 format=3 uid="uid://cg6g17qc8awr2"]
 
 [ext_resource type="Script" path="res://src/gui/mainMenu/mainMenu.gd" id="1_t4hh1"]
 [ext_resource type="FontFile" uid="uid://gejvyowi0g8l" path="res://src/media/fonts/m5x7.ttf" id="2_2dmta"]
 [ext_resource type="Texture2D" uid="uid://b4vw2ps85vui3" path="res://src/media/ui/titleDoor.png" id="2_nlmjx"]
+[ext_resource type="Theme" uid="uid://blxx1x6h8a1qw" path="res://src/resources/themes/mainMenuButtons.tres" id="3_8xaqh"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bmjn2"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6rfvv"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1x8kd"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pp202"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gkpjh"]
-
-[sub_resource type="Theme" id="Theme_cij8g"]
-default_font = ExtResource("2_2dmta")
-Button/styles/disabled = SubResource("StyleBoxEmpty_bmjn2")
-Button/styles/focus = SubResource("StyleBoxEmpty_6rfvv")
-Button/styles/hover = SubResource("StyleBoxEmpty_1x8kd")
-Button/styles/normal = SubResource("StyleBoxEmpty_pp202")
-Button/styles/pressed = SubResource("StyleBoxEmpty_gkpjh")
+[sub_resource type="Curve" id="Curve_ikyvp"]
+_data = [Vector2(0, 1), 0.0, -0.0665132, 0, 0, Vector2(1, 0), -3.2967, 0.0, 0, 0]
+point_count = 2
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_t4hh1")
@@ -37,49 +24,125 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 metadata/_edit_lock_ = true
 
-[node name="Door3" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(160, 90)
-scale = Vector2(1.8, 1.8)
-texture = ExtResource("2_nlmjx")
+[node name="StarParticles" type="CPUParticles2D" parent="CanvasLayer"]
+position = Vector2(159, 86)
+emitting = false
+amount = 100
+lifetime = 2.5
+randomness = 0.66
+emission_shape = 3
+emission_rect_extents = Vector2(155, 85)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 4.0
+initial_velocity_max = 4.0
+scale_amount_max = 2.0
+scale_amount_curve = SubResource("Curve_ikyvp")
 
-[node name="Door2" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(160, 90)
-scale = Vector2(1.4, 1.4)
-texture = ExtResource("2_nlmjx")
-
-[node name="Door" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(160, 90)
-texture = ExtResource("2_nlmjx")
-
-[node name="Title" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(160, 90)
-
-[node name="Button" type="Button" parent="CanvasLayer"]
-offset_left = 143.5
-offset_top = 115.0
-offset_right = 176.5
-offset_bottom = 128.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = SubResource("Theme_cij8g")
-text = "Play"
-
-[node name="Label" type="Label" parent="CanvasLayer"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -51.5
-offset_top = -35.0
-offset_right = 51.5
-offset_bottom = -11.9999
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="Seperator" type="Control" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
 theme_override_fonts/font = ExtResource("2_2dmta")
 theme_override_font_sizes/font_size = 32
 text = "Planeswalker"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
+[node name="Seperator2" type="Control" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Enter" type="Button" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("3_8xaqh")
+text = "Enter"
+
+[node name="Seperator3" type="Control" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Settings" type="Button" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("3_8xaqh")
+text = "Settings"
+
+[node name="Seperator4" type="Control" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Quit" type="Button" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("3_8xaqh")
+text = "Quit"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = ExtResource("2_nlmjx")
+
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer/VBoxContainer/Enter" to="." method="_on_enter_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Control/HBoxContainer/MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

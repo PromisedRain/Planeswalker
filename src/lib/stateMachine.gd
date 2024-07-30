@@ -51,6 +51,7 @@ class StateFlows:
 	var enterState: Callable
 	var leaveState: Callable
 	
+	@warning_ignore("shadowed_variable")
 	func _init(normal: Callable, enterState: Callable, leaveState: Callable):
 		self.normal = normal
 		self.enterState = enterState

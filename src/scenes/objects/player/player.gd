@@ -230,12 +230,12 @@ func update(delta: float) -> void:
 	if velocity.y < 0 && test_move(global_transform, Vector2(0, velocity.y * delta)):
 		
 		for i in range(1, upwardCornerCorrection * 2 + 1):
-			for direction in [-1.0, 1.0]:
-				var offset = Vector2(i * direction / 2, 0)
+			for dir in [-1.0, 1.0]:
+				var offset = Vector2(i * dir / 2, 0)
 				
-				if !test_move(global_transform.translated(Vector2(i * direction / 2, 0)), Vector2(0, velocity.y * delta)):
+				if !test_move(global_transform.translated(Vector2(i * dir / 2, 0)), Vector2(0, velocity.y * delta)):
 					translate(offset)
-					if velocity.x * direction < 0: velocity.x = 0
+					if velocity.x * dir < 0: velocity.x = 0
 					return
 
 func update_sprite(delta: float) -> void:

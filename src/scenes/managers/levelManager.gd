@@ -1,11 +1,27 @@
 extends Node
 
+@export var player: PackedScene
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+#vars
+var currentVolumePath: String
+var currentWorld: Node2D
+var mainScene: Node
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+#consts
+
+#others 
+enum volumes {
+	volume1 = 1
+}
+
+func _ready() -> void:
+	#get current volumes from saveManager later placeholder setup for now.
+	currentVolumePath = volume_id_to_path(volumes.volume1)
+
+func volume_id_to_path(id: volumes) -> String:
+	match id:
+		volumes.volume1:
+			return "res://src/scenes/levels/volume1.tscn"
+		_:
+			return ""
