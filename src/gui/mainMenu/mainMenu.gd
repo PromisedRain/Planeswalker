@@ -1,5 +1,6 @@
 extends Node2D
 
+@onready var window: Window = get_window() 
 @onready var windowScreenSize: Vector2i = get_viewport().get_visible_rect().size
 @onready var starParticles: CPUParticles2D = $"CanvasLayer/StarParticles"
 
@@ -16,11 +17,16 @@ func _ready() -> void:
 		placeholderScreen.visible = true
 	
 	hide_and_show_screens(placeholderScreen, menuTitleScreen)
+	window.size_changed.connect(on_size_changed)
 
 func start_star_particles() -> void:
 	starParticles.emission_rect_extents = windowScreenSize
 	starParticles.emitting = true
 
+func on_size_changed() -> void:
+	# TODO get screen size in pixels based off of how big the screen actually is, 
+	# so i can apply stars everywhere
+	starParticles.emission_rect_extents = windowScreenSize
 
 
 func hide_and_show_screens(hide: Control, show: Control):

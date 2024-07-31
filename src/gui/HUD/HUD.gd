@@ -38,11 +38,11 @@ func open_debug_mode() -> void:
 		return
 	
 	if !loaded[scenesDict.debugManager].visible && canDebug:
-		print("[console] debug on")
+		print("[HUD] Debug on")
 		loaded[scenesDict.debugManager].visible = true
 	
 	elif loaded[scenesDict.debugManager].visible:
-		print("[console] debug off")
+		print("[HUD] Debug off")
 		loaded[scenesDict.debugManager].visible = false
 
 func open_pause_menu() -> void:
@@ -50,12 +50,12 @@ func open_pause_menu() -> void:
 		return
 	
 	if !pauseMenu.visible && canPause:
-		print("[console] pause on")
+		print("[HUD] Pause on")
 		pauseMenu.visible = true
 		get_tree().paused = true
 	
 	elif pauseMenu.visible:
-		print("[console] pause off")
+		print("[HUD] Pause off")
 		pauseMenu.visible = false
 		get_tree().paused = false
 
