@@ -13,3 +13,4 @@ res://src/lib/utils.gd
 res://src/gui/HUD/HUD.gd
 res://src/scenes/main.gd
 res://src/scenes/managers/sceneTransitionManager.gd
+res://README.md
