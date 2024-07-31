@@ -29,9 +29,9 @@ func on_size_changed() -> void:
 	starParticles.emission_rect_extents = windowScreenSize
 
 
-func hide_and_show_screens(hide: Control, show: Control):
-		hide.visible = false
-		show.visible = true
+func hide_and_show_screens(_hide: Control, _show: Control):
+		_hide.visible = false
+		_show.visible = true
 
 #mainMenu buttons
 func _on_title_screen_enter_pressed():

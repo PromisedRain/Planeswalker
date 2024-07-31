@@ -1,6 +1,5 @@
 extends Node
 
-
 @onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
 @onready var main: Node = get_tree().get_first_node_in_group("main")
 @onready var mainCamera: Camera2D = get_tree().get_first_node_in_group("mainCamera")

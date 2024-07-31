@@ -4,12 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://dimjcq438a4r4" path="res://src/gui/HUD/HUD.tscn" id="2_lx486"]
 [ext_resource type="PackedScene" uid="uid://c8n1y5fq0db07" path="res://src/scenes/objects/mainCamera/mainCamera.tscn" id="4_sh3qq"]
 
-[sub_resource type="Animation" id="Animation_qol18"]
-resource_name = "intro"
+[sub_resource type="Animation" id="Animation_81nc5"]
+resource_name = "dip_to_clear"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Darkness:color")
+tracks/0/path = NodePath("ColorRect:color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -19,12 +19,12 @@ tracks/0/keys = {
 "values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_pyjhf"]
+[sub_resource type="Animation" id="Animation_x5862"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Darkness:color")
+tracks/0/path = NodePath("ColorRect:color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -34,10 +34,10 @@ tracks/0/keys = {
 "values": [Color(0, 0, 0, 1)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_rteek"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mnkon"]
 _data = {
-"RESET": SubResource("Animation_pyjhf"),
-"intro": SubResource("Animation_qol18")
+"RESET": SubResource("Animation_x5862"),
+"dip_to_clear": SubResource("Animation_81nc5")
 }
 
 [node name="Main" type="Node"]
@@ -62,15 +62,15 @@ process_mode = 1
 process_mode = 1
 playerUi = null
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="HUD"]
-libraries = {
-"": SubResource("AnimationLibrary_rteek")
-}
-
-[node name="Darkness" type="ColorRect" parent="HUD"]
+[node name="ColorRect" type="ColorRect" parent="HUD"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUD"]
+libraries = {
+"": SubResource("AnimationLibrary_mnkon")
+}

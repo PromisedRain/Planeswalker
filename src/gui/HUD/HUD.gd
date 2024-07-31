@@ -14,7 +14,7 @@ const scenesDict: Dictionary = {
 	debugManager = "debugManager"
 }
 
-func _ready() -> void:
+func init_hud() -> void:
 	init_vignette()
 	init_main_menu()
 	init_debug_manager()
@@ -26,9 +26,12 @@ func free_main_menu() -> void:
 	free_ui_component(scenesDict.mainMenu)
 
 func init_vignette() -> void:
-	vignette.visible = true
-	var colorRect: ColorRect = vignette.get_node("ColorRect")
-	colorRect.material.set_shader_parameter("Vignette Opacity", lerp(0.5, 0.261, 0.50))
+	if SaveManager.get_specific_config_data("settings", "vignette_visible"):
+		vignette.visible = true
+		var colorRect: ColorRect = vignette.get_node("ColorRect")
+		colorRect.material.set_shader_parameter("Vignette Opacity", lerp(0.5, 0.261, 0.50))
+	else:
+		print("[HUD] Vignette off")
 
 func init_debug_manager() -> void:
 	open_ui_component(scenesDict.debugManager, debugManager, false)
@@ -59,30 +62,30 @@ func open_pause_menu() -> void:
 		pauseMenu.visible = false
 		get_tree().paused = false
 
-func open_ui_component(name: String, component: PackedScene, showOnready: bool) -> void:
-	if !loaded.has(name):
-		var instance = component.instantiate()
-		loaded[name] = instance
-		add_child(instance)
-		if instance is CanvasLayer:
-			instance.hide() 
-		elif instance is Node2D:
-			instance.visible = false
+func open_ui_component(_name: String, component: PackedScene, showOnready: bool) -> void:
+	if !loaded.has(_name):
+		var node = component.instantiate()
+		loaded[_name] = node
+		add_child(node)
+		if node is CanvasLayer:
+			node.hide() 
+		elif node is Node2D:
+			node.visible = false
 	
 	if !showOnready:
 		return
 	
-	var instance = loaded[name]
+	var instance = loaded[_name]
 	if instance is CanvasLayer:
 		instance.show()
 	elif instance is Node2D:
 		instance.visible = true
 
-func free_ui_component(name: String) -> void:
-	if loaded.has(name):
-		var instance = loaded[name]
+func free_ui_component(_name: String) -> void:
+	if loaded.has(_name):
+		var instance = loaded[_name]
 		instance.queue_free()
-		loaded.erase(name)
+		loaded.erase(_name)
 
 #getters
 var canPause: bool:

@@ -19,7 +19,7 @@ enum Volumes {
 
 func _ready() -> void:
 	#get current volumes from saveManager later placeholder setup for now.
-	currentVolumePath = volume_to_path(volumes["volume1"])
+	currentVolumePath = volume_to_path(Volumes.volume1)
 
 func volume_to_path(volume: Volumes) -> String:
 	match volume:

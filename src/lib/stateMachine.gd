@@ -1,8 +1,8 @@
 class_name StateMachine
 extends Node
 
-var states = {} 
-var stateNames = {}
+var states: Dictionary = {} 
+var stateNames: Dictionary = {}
 var currentState: Callable
 var previousState: Callable
 

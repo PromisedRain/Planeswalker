@@ -27,6 +27,7 @@ SignalManager="*res://src/scenes/managers/signalManager.gd"
 SaveManager="*res://src/scenes/managers/saveManager.gd"
 GlobalManager="*res://src/scenes/managers/globalManager.gd"
 LevelManager="*res://src/scenes/managers/levelManager.tscn"
+SceneTransitionManager="*res://src/scenes/managers/sceneTransitionManager.tscn"
 
 [display]
 

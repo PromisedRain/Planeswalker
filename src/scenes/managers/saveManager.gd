@@ -14,6 +14,10 @@ const securityKey: String = "A23I5B6925UIB32P572J283I65J" #change location in th
 var configFileLoadCheck: bool = false
 var metaDataLoadCheck: bool = false
 
+#TODO figure out why getting keys and values off the current... vars doesnt work (configdata and metadata)
+
+signal finishedLoadingBeforeGameData
+
 func _ready() -> void:
 	ensure_save_dir_exists()
 	ensure_meta_data_files_exists()
@@ -27,6 +31,7 @@ func load_before_game_data(metaDataFiles: int = 3) -> void:
 	var sucessfull: bool = get_load_check()
 	if sucessfull:
 		print("[saveManager] PASSED INITIAL CHECK")
+		emit_signal("finishedLoadingBeforeGameData")
 	else:
 		print("[saveManager] FAILED INITIAL CHECK")
 
@@ -39,11 +44,6 @@ func ensure_save_dir_exists() -> void:
 				print("[saveManager] Failed to create the save directory at: %s" % saveDirPath)
 		else:
 			dir = DirAccess.open(saveDirPath)
-	
-	#if !DirAccess.dir_exists_absolute(saveDirPath):
-	#	DirAccess.make_dir_absolute(saveDirPath)
-	#else:
-	#	print("[saveManager] Directory verified: %s" % saveDirPath)
 
 func ensure_config_file_exists() -> void:
 	if !FileAccess.file_exists(configFullPath):
@@ -80,7 +80,8 @@ func create_default_meta_data_template() -> Dictionary:
 func create_default_config_data_template() -> Dictionary:
 	var defaultTemplate: Dictionary = {
 		"settings": {
-			"vignette": true
+			"vignette_visible": true,
+			"player_ui_visible": true
 		}
 	}
 	return defaultTemplate
@@ -102,9 +103,11 @@ func load_config_file() -> Dictionary:
 	
 	for section in configFile.get_sections():
 		var sectionData: Dictionary = {}
-		for key in configFile.get_section_keys(section):
-			sectionData[key] = configFile.get_value(section, key)
-		loadedData[section] = sectionData
+		if configFile.has_section(section):
+			for key in configFile.get_section_keys(section):
+				sectionData[key] = configFile.get_value(section, key)
+			loadedData[section] = sectionData
+	currentConfigData = loadedData
 	configFileLoadCheck = true
 	return loadedData
 
@@ -267,11 +270,12 @@ func merge_with_default(defaultData: Dictionary, modifiedData: Dictionary, from:
 	for key in defaultData.keys():
 		if !modifiedData.has(key):
 			modifiedData[key] = defaultData[key]
-	print("[saveManager] Finished merging modified data with default data at: %s" % from)
+	#print("[saveManager] Finished merging modified data with default data at: %s" % from)
 	return modifiedData
 
-func verify_and_open_save_dir() -> DirAccess:
+func verify_and_open_save_dir(firePrint: bool = false) -> DirAccess:
 	var dir: DirAccess = DirAccess.open(saveDirPath)
+	
 	if dir == null:
 		if !DirAccess.dir_exists_absolute(saveDirPath):
 			print("[saveManager] Failed to create a directory at: %s" % saveDirPath)
@@ -282,19 +286,10 @@ func verify_and_open_save_dir() -> DirAccess:
 	if dir == null:
 		print("[saveManager] Error opening directory  at: %s" % saveDirPath)
 		return null
-	print("[saveManager] Directory verified at: %s" % saveDirPath)
-	return dir
 	
-	#DirAccess.make_dir_absolute(saveDirPath)
-	#if !DirAccess.dir_exists_absolute(saveDirPath):
-	#	DirAccess.make_dir_absolute(saveDirPath)
-	#else:
-	#	print("[saveManager] Directory verified: %s" % saveDirPath)
-	#
-	#var err = DirAccess.open(saveDirPath)
-	#if !err == OK:
-	#	print("[saveManager] Error opening directory %s" % DirAccess.get_open_error())
-	#return err
+	if firePrint:
+		print("[saveManager] Directory verified at: %s" % saveDirPath)
+	return dir
 
 func get_save_files() -> PackedStringArray:
 	var dir: DirAccess = verify_and_open_save_dir()
@@ -325,11 +320,15 @@ func get_specific_metadata(data: String, metaData: Dictionary = create_default_m
 		print("[saveManager] No '%s' key found in metaData" % data)
 		return null
 
-func get_specific_config_data(data: String, configData: Dictionary = create_default_config_data_template()):
-	if configData.has(data):
-		return configData[data]
+## section: String, key: String, #configData: Dictionary = currentConfigData
+func get_specific_config_data(section: String, key: String, _configData: Dictionary = currentConfigData):
+	if _configData.has(section):
+		var sectionData = _configData[section]
+		if sectionData.has(key):
+			return sectionData[key]
 	else:
-		print("[saveManager] No '%s' key found in configData" % data)
+		print("[saveManager] No '%s / %s' found in configData" % [section, key])
+		print(currentConfigData)
 		return null
 
 #func get_specific_save_data(data: String, type, saveData: Dictionary):
@@ -340,9 +339,20 @@ func get_specific_config_data(data: String, configData: Dictionary = create_defa
 #			pass
 
 func get_load_check() -> bool:
+	var loadCheck: bool
+	var currentDataCheck: bool
+	
 	if configFileLoadCheck && metaDataLoadCheck:
-		return true
+		loadCheck = true
 	else:
 		print("[saveManager] configFileLoadCheck: %s" % configFileLoadCheck)
 		print("[saveManager] metaDataLoadCheck: %s" % metaDataLoadCheck)
-		return false
+		loadCheck = false
+	
+	if currentConfigData != null:
+		currentDataCheck = true
+	else:
+		print("[saveManager] CurrentConfigData: %s" % currentConfigData)
+		currentDataCheck = false
+	
+	return loadCheck && currentDataCheck
