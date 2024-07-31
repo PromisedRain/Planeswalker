@@ -24,8 +24,7 @@ func start_star_particles() -> void:
 	starParticles.emitting = true
 
 func on_size_changed() -> void:
-	# TODO get screen size in pixels based off of how big the screen actually is, 
-	# so i can apply stars everywhere
+	# TODO get screen size in pixels based off of how big the screen actually is, currently doesnt work.
 	starParticles.emission_rect_extents = windowScreenSize
 
 
@@ -52,12 +51,29 @@ func _on_slot_selection_return_button_pressed():
 	hide_and_show_screens(slotSelectionScreen, menuTitleScreen)
 
 func _on_slot_1_select_pressed():
-	pass
+	print("[mainMenu] Slot 1 selected")
+	var slotNum: int = 1
+	verify_open_or_create_slot(slotNum)
 
 func _on_slot_2_select_pressed():
-	pass
+	print("[mainMenu] Slot 2 selected")
+	var slotNum: int = 2
+	verify_open_or_create_slot(slotNum)
 
 func _on_slot_3_select_pressed():
-	pass
+	print("[mainMenu] Slot 3 selected")
+	var slotNum: int = 3
+	verify_open_or_create_slot(slotNum)
+
+func verify_open_or_create_slot(slot: int) -> void:
+	var slotExists: bool = SaveManager.ensure_slot_file_exists(slot)
+	match slotExists:
+		true:
+			SaveManager.load_slot(slot)
+		false:
+			SaveManager.save_slot(slot, SaveManager.create_default_slot_data_template())
+
+
+
 
 

@@ -7,10 +7,7 @@ res://src/scenes/managers/debugManager.tscn
 res://src/gui/pauseMenu/pauseMenu.tscn
 res://src/scenes/managers/levelManager.tscn
 res://src/scenes/managers/sceneTransitionManager.tscn
+res://src/scenes/objects/player/player.tscn
 res://src/scenes/managers/saveManager.gd
-res://src/lib/CameraAnchor.gd
-res://src/lib/utils.gd
-res://src/gui/HUD/HUD.gd
 res://src/scenes/main.gd
-res://src/scenes/managers/sceneTransitionManager.gd
-res://README.md
+res://src/gui/mainMenu/mainMenu.gd

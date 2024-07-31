@@ -40,7 +40,6 @@ func window_size_changed() -> void:
 	var scale: Vector2i = window.size/windowBaseSize 
 	window.content_scale_size = window.size / (scale.y if scale.y <= scale.x else scale.x)
 
-#getters
 var canControl: bool:
 	get:
 		return true
