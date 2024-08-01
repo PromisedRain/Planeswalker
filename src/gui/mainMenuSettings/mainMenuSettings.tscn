@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3 uid="uid://cod3fh2b66bae"]
+
+[ext_resource type="Script" path="res://src/gui/mainMenuSettings/mainMenuSettings.gd" id="1_i7fjh"]
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="2_bquv3"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_i7fjh")
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 5
+
+[node name="Control" type="Control" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Control2" type="Control" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="SettingsReturnButton" type="Button" parent="MarginContainer/Control2"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -13.0
+offset_right = 38.0
+grow_vertical = 0
+theme = ExtResource("2_bquv3")
+text = "Return"
+
+[connection signal="pressed" from="MarginContainer/Control2/SettingsReturnButton" to="." method="_on_settings_return_button_pressed"]

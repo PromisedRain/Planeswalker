@@ -1,5 +1,8 @@
-res://src/scenes/managers
 res://src/resources/themes
+res://src/gui/slotSelection
+res://src/gui/mainMenuSettings
+res://src/gui/titleScreen
+res://src/scenes/managers
 res://src/gui/pauseMenu
 res://src/gui
 res://src/gui/vignette

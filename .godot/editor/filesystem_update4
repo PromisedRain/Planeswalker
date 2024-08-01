@@ -6,8 +6,13 @@ res://src/gui/playerUI/playerUI.tscn
 res://src/scenes/managers/debugManager.tscn
 res://src/gui/pauseMenu/pauseMenu.tscn
 res://src/scenes/managers/levelManager.tscn
-res://src/scenes/managers/sceneTransitionManager.tscn
-res://src/scenes/objects/player/player.tscn
-res://src/scenes/managers/saveManager.gd
-res://src/scenes/main.gd
+res://src/gui/mainMenuSettings/mainMenuSettings.tscn
 res://src/gui/mainMenu/mainMenu.gd
+res://src/gui/titleScreen/titleScreen.tscn
+res://src/gui/slotSelection/slotSelection.tscn
+res://src/gui/titleScreen/titleScreen.gd
+res://src/gui/slotSelection/slotSelection.gd
+res://src/gui/mainMenuSettings/mainMenuSettings.gd
+res://src/resources/saveProfileData.gd
+res://src/resources/themes/mainMenuButtons.tres
+res://src/testing/slotSelection/slotSelection.gd

@@ -336,9 +336,13 @@ func get_save_files() -> PackedStringArray:
 	return filteredFiles
 
 func load_saved_slots_meta_data() -> void:
-	for i in 3:
+	for i: int in 3:
 		if ensure_slot_file_exists(i + 1):
-			pass # check if metadata file exists then make one
+			print("slot existed: %s" % [i + 1])
+			if ensure_meta_data_file_exists(i + 1):
+				load_meta_data(i + 1)
+			else:
+				save_meta_data(i + 1, create_default_meta_data_template())
 
 #getters
 func get_specific_game_data(data: String, slotData: Dictionary = currentSlotData):
@@ -369,11 +373,11 @@ func get_runtime_check() -> bool:
 	var loadCheck: bool
 	var currentDataCheck: bool
 	
-	if configFileLoadCheck && metaDataLoadCheck:
+	if configFileLoadCheck: #&& metaDataLoadCheck:
 		loadCheck = true
 	else:
 		print("[saveManager] configFileLoadCheck: %s" % configFileLoadCheck)
-		print("[saveManager] metaDataLoadCheck: %s" % metaDataLoadCheck)
+		#print("[saveManager] metaDataLoadCheck: %s" % metaDataLoadCheck)
 		loadCheck = false
 	
 	if currentConfigData != null:

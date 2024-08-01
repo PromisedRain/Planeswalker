@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://die2cxin47g0l"]
 
-[ext_resource type="Script" path="res://src/testing/scenes/objects/testInteraction/testInteraction.gd" id="1_cjxtw"]
+[ext_resource type="Script" path="res://src/testing/testInteraction/testInteraction.gd" id="1_cjxtw"]
 [ext_resource type="Texture2D" uid="uid://b284suiag4hae" path="res://icon.svg" id="2_qpf5m"]
 [ext_resource type="PackedScene" uid="uid://b17hm2sxc2fl3" path="res://src/components/interactionAreaComponent.tscn" id="3_2plhl"]
 

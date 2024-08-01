@@ -1,0 +1,338 @@
+[gd_scene load_steps=6 format=3 uid="uid://ceqbiwerqme85"]
+
+[ext_resource type="Script" path="res://src/testing/slotSelection/slotSelection.gd" id="1_g6te1"]
+[ext_resource type="Texture2D" uid="uid://b4vw2ps85vui3" path="res://src/media/ui/slotSelectionDoor/slotSelectionDoorOpen.png" id="2_6eapp"]
+[ext_resource type="Theme" uid="uid://blxx1x6h8a1qw" path="res://src/resources/themes/mainMenuButtons.tres" id="2_ta2dc"]
+[ext_resource type="FontFile" uid="uid://c6puhvxl5gut6" path="res://src/media/fonts/mago1.ttf" id="4_l6bkq"]
+[ext_resource type="FontFile" uid="uid://dxl5qo013sh3d" path="res://src/media/fonts/MinimalPixel v2.ttf" id="5_3e011"]
+
+[node name="SlotSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g6te1")
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+metadata/_edit_lock_ = true
+
+[node name="Control" type="Control" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 40
+metadata/_edit_lock_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Control/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 5
+metadata/_edit_lock_ = true
+
+[node name="Slot1" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="DoorTexture1" type="TextureRect" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = ExtResource("2_6eapp")
+metadata/_edit_lock_ = true
+
+[node name="Slot1SaveInfoMargin" type="MarginContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer/DoorTexture1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SlotSaveProfile" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer/DoorTexture1/Slot1SaveInfoMargin"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer/DoorTexture1/Slot1SaveInfoMargin/SlotSaveProfile"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer/DoorTexture1/Slot1SaveInfoMargin/SlotSaveProfile/MarginContainer"]
+layout_mode = 2
+
+[node name="Chapter" type="Label" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer/DoorTexture1/Slot1SaveInfoMargin/SlotSaveProfile/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("2_ta2dc")
+theme_override_fonts/font = ExtResource("4_l6bkq")
+theme_override_font_sizes/font_size = 16
+text = "Chapter 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Collectibles" type="Label" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer/DoorTexture1/Slot1SaveInfoMargin/SlotSaveProfile/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_ta2dc")
+theme_override_fonts/font = ExtResource("5_3e011")
+theme_override_font_sizes/font_size = 7
+text = "Collectibles x1"
+horizontal_alignment = 1
+
+[node name="Deaths" type="Label" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer/DoorTexture1/Slot1SaveInfoMargin/SlotSaveProfile/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_ta2dc")
+theme_override_font_sizes/font_size = 7
+text = "Deaths x1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Time" type="Label" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/VBoxContainer/DoorTexture1/Slot1SaveInfoMargin/SlotSaveProfile/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_ta2dc")
+theme_override_fonts/font = ExtResource("5_3e011")
+theme_override_font_sizes/font_size = 7
+text = "Playtime 00.00.000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 3
+metadata/_edit_lock_ = true
+
+[node name="Slot1Select" type="Button" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/Control/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("2_ta2dc")
+metadata/_edit_lock_ = true
+
+[node name="Slot2" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="DoorTexture2" type="TextureRect" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = ExtResource("2_6eapp")
+metadata/_edit_lock_ = true
+
+[node name="Slot2SaveInfoMargin" type="MarginContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/VBoxContainer/DoorTexture2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Slot2SaveInfo" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/VBoxContainer/DoorTexture2/Slot2SaveInfoMargin"]
+layout_mode = 2
+
+[node name="Slot2NoSaveInfo" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/VBoxContainer/DoorTexture2/Slot2SaveInfoMargin"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 3
+metadata/_edit_lock_ = true
+
+[node name="Slot2Select" type="Button" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/Control/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("2_ta2dc")
+metadata/_edit_lock_ = true
+
+[node name="Slot3" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="DoorTexture3" type="TextureRect" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = ExtResource("2_6eapp")
+metadata/_edit_lock_ = true
+
+[node name="Slot3SaveInfoMargin" type="MarginContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/VBoxContainer/DoorTexture3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Slot3SaveInfo" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/VBoxContainer/DoorTexture3/Slot3SaveInfoMargin"]
+layout_mode = 2
+
+[node name="Slot3NoSaveInfo" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/VBoxContainer/DoorTexture3/Slot3SaveInfoMargin"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 3
+metadata/_edit_lock_ = true
+
+[node name="Slot3Select" type="Button" parent="MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/Control/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("2_ta2dc")
+metadata/_edit_lock_ = true
+
+[node name="Control3" type="Control" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="SlotSelectionReturnButton" type="Button" parent="MarginContainer/Control3"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -17.0
+offset_top = -13.0
+offset_right = 17.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_ta2dc")
+text = "Return"
+metadata/_edit_lock_ = true
+
+[connection signal="pressed" from="MarginContainer/Control/MarginContainer/HBoxContainer/Slot1/Control/MarginContainer/Slot1Select" to="." method="_on_slot_1_select_pressed"]
+[connection signal="pressed" from="MarginContainer/Control/MarginContainer/HBoxContainer/Slot2/Control/MarginContainer/Slot2Select" to="." method="_on_slot_2_select_pressed"]
+[connection signal="pressed" from="MarginContainer/Control/MarginContainer/HBoxContainer/Slot3/Control/MarginContainer/Slot3Select" to="." method="_on_slot_3_select_pressed"]
+[connection signal="pressed" from="MarginContainer/Control3/SlotSelectionReturnButton" to="." method="_on_slot_selection_return_button_pressed"]

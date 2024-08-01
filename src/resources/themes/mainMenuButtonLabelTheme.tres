@@ -1,0 +1,23 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bbvixcv2opc1q"]
+
+[ext_resource type="FontFile" uid="uid://c53lfl05xshk2" path="res://src/media/fonts/mago3.ttf" id="1_5s7gm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uietj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xd4p5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gs027"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xuh3j"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tvimn"]
+
+[resource]
+default_font = ExtResource("1_5s7gm")
+Button/fonts/font = ExtResource("1_5s7gm")
+Button/styles/disabled = SubResource("StyleBoxEmpty_uietj")
+Button/styles/focus = SubResource("StyleBoxEmpty_xd4p5")
+Button/styles/hover = SubResource("StyleBoxEmpty_gs027")
+Button/styles/normal = SubResource("StyleBoxEmpty_xuh3j")
+Button/styles/pressed = SubResource("StyleBoxEmpty_tvimn")
+Label/fonts/font = ExtResource("1_5s7gm")
