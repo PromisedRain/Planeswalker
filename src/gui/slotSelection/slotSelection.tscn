@@ -103,10 +103,16 @@ layout_mode = 2
 theme = ExtResource("1_qw8gh")
 text = "Return"
 
-[node name="SlotDeleteButton" type="Button" parent="MarginContainer/Control3/HBoxContainer"]
+[node name="SlotEraseButton" type="Button" parent="MarginContainer/Control3/HBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_qw8gh")
-text = "Delete"
+text = "Erase all saves"
+
+[node name="SlotPlayButton" type="Button" parent="MarginContainer/Control3/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_qw8gh")
+text = "Play"
 
 [connection signal="pressed" from="MarginContainer/Control3/HBoxContainer/SlotSelectionReturnButton" to="." method="_on_slot_selection_return_button_pressed"]
-[connection signal="pressed" from="MarginContainer/Control3/HBoxContainer/SlotDeleteButton" to="." method="_on_slot_delete_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Control3/HBoxContainer/SlotEraseButton" to="." method="_on_slot_erase_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Control3/HBoxContainer/SlotPlayButton" to="." method="_on_slot_play_button_pressed"]

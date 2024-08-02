@@ -1,13 +1,13 @@
-Button
-Label
+MarginContainer
 Control
+Label
+Button
 VBoxContainer
 HSlider
 Panel
 BoxContainer
 HBoxContainer
 Container
-MarginContainer
 ScrollContainer
 VScrollBar
 HSeparator

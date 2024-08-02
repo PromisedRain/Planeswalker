@@ -285,7 +285,7 @@ func save_meta_data(slot: int, _metaData: Dictionary) -> void:
 		print("[saveManager] Metadata file created/saved at: %s" % fullFilePath)
 
 #deleting
-func delete_save_file(slot: int, file: String) -> void:
+func delete_save_file(file: String, slot: int) -> void:
 	var fileName: String = "%s%s.json" % [file, slot]
 	var fullFilePath: String = saveDirPath + fileName
 	var dir: DirAccess = verify_and_open_save_dir()

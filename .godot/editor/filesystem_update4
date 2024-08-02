@@ -7,7 +7,6 @@ res://src/gui/mainMenuSettings/mainMenuSettings.tscn
 res://src/gui/slotSelection/slotSelection.tscn
 res://src/gui/slotSelectionComponents/usedSlot.tscn
 res://src/gui/slotSelectionComponents/emptySlot.tscn
-res://src/scenes/managers/saveManager.gd
-res://src/gui/slotSelection/slotSelection.gd
 res://src/gui/slotSelectionComponents/usedSlot.gd
-res://src/gui/slotSelectionComponents/emptySlot.gd
+res://src/gui/slotSelection/slotSelection.gd
+res://src/scenes/managers/saveManager.gd
