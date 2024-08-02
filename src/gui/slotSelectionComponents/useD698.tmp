@@ -1,0 +1,77 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnso1trspauhu"]
+
+[ext_resource type="Script" path="res://src/gui/slotSelectionComponents/usedSlot.gd" id="1_dvviv"]
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="2_7bin6"]
+
+[node name="Slot" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+script = ExtResource("1_dvviv")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+
+[node name="SlotCurrentChapter" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_7bin6")
+text = "Chapter 1"
+
+[node name="SlotCollectibles" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_7bin6")
+text = "Collectibles x7"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+
+[node name="SlotPlaytime" type="Label" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("2_7bin6")
+text = "00:00:00"
+horizontal_alignment = 2
+
+[node name="SlotDeaths" type="Label" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("2_7bin6")
+text = "Deaths x1"
+horizontal_alignment = 2
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="SlotSelect" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_7bin6")
+
+[connection signal="pressed" from="Control/SlotSelect" to="." method="_on_slot_select_pressed"]

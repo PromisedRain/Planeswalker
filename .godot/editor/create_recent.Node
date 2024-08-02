@@ -1,9 +1,10 @@
 Button
+Label
 Control
+VBoxContainer
+HSlider
 Panel
 BoxContainer
-Label
-VBoxContainer
 HBoxContainer
 Container
 MarginContainer
@@ -11,4 +12,3 @@ ScrollContainer
 VScrollBar
 HSeparator
 AnimationPlayer
-ColorRect
