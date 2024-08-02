@@ -1,13 +1,11 @@
 class_name EmptySlot
 extends Control
 
-signal emptySlotPressed
+var slot: int
 
-func _ready():
-	pass
-
+signal slotPressed(slot: int)
 
 
 func _on_button_pressed() -> void:
-	emit_signal("emptySlotPressed")
-	print("empty slot")
+	emit_signal("slotPressed", slot)
+	print("pressed %s" % slot)

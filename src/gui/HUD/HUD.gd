@@ -26,10 +26,11 @@ func free_main_menu() -> void:
 	free_ui_component(scenesDict.mainMenu)
 
 func init_vignette() -> void:
-	if SaveManager.get_specific_config_data("settings", "vignette_visible"):
+	if SaveManager.get_config_data("settings", "vignette_visible"):
 		vignette.visible = true
 		var colorRect: ColorRect = vignette.get_node("ColorRect")
 		colorRect.material.set_shader_parameter("Vignette Opacity", lerp(0.5, 0.261, 0.50))
+		#SaveManager.set_config_data("settings", "vignette_visible", false)
 	else:
 		print("[HUD] Vignette off")
 

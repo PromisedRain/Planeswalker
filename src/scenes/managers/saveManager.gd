@@ -1,24 +1,24 @@
 extends Node
 
-var currentSlotData: Dictionary
-var currentConfigData: Dictionary
-var currentMetaData: Dictionary
-
-const saveDirPath: String = "user://saves/"
-
-const configFilename: String = "configFile.ini"
-const configFullPath: String = saveDirPath + configFilename
-const metaDataFilename: String = "metaData.json"
-const metaDataFullPath: String = saveDirPath + metaDataFilename
-
-const securityKey: String = "A23I5B6925UIB32P572J283I65J" #change location in the future, but who cares rn.
-
 var configFileLoadCheck: bool = false
 var metaDataLoadCheck: bool = false
 var currentSaveSlotLoadCheck: bool = false
 
-var fireSuccessPrint: bool = false #for firing off print statements on success of action
+var currentSlotData: Dictionary
+var currentConfigData: Dictionary
+var currentMetaData: Dictionary
 
+var fireSuccessPrint: bool = false
+
+const saveDirPath: String = "user://saves/"
+const configFilename: String = "config.ini"
+const configFullPath: String = saveDirPath + configFilename
+const metaDataFilename: String = "metadata.json"
+const metaDataFullPath: String = saveDirPath + metaDataFilename
+#const saveDataFilename: String = "savedata%s.json"
+#const saveDataFullPath: String = saveDirPath + saveDataFilename
+
+const securityKey: String = "A23I5B6925UIB32P572J283I65J" #change location in the future, but who cares rn, doesnt matter
 
 signal finishedLoadBeforeGameData
 
@@ -32,8 +32,6 @@ func load_before_game_data() -> void:
 	ensure_meta_data_file_exists()
 	currentMetaData = load_all_meta_data()
 	
-	#load_saved_slots_meta_data()
-	
 	var passedRuntime: bool = get_runtime_check()
 	if passedRuntime:
 		print("[saveManager] PASSED RUNTIME LOAD CHECK")
@@ -41,7 +39,7 @@ func load_before_game_data() -> void:
 	else:
 		print("[saveManager] FAILED RUNTIME LOAD CHECK")
 
-#ensuring existence of files needed before choosing slots.
+#ensuring existence of stuff needed before choosing slots.
 func ensure_save_dir_exists() -> void:
 	var dir: DirAccess = verify_and_open_save_dir()
 	if dir == null:
@@ -56,32 +54,13 @@ func ensure_config_file_exists() -> void:
 		print("[saveManager] ConfigFile not created, creating at: %s" % configFullPath)
 		save_config_file(create_default_config_data_template())
 
-#func ensure_meta_data_files_exists(numFiles: int = 3) -> void:
-#	for i in range(numFiles):
-#		var metaFilePath: String = metaDataFullPath % str(i + 1)
-#		if !FileAccess.file_exists(metaFilePath):
-#			print("[saveManager] MetaDatafile not created, creating at: %s" % metaFilePath)
-#			save_meta_data(i + 1, create_default_meta_data_template(i + 1))
-
-#func ensure_meta_data_file_exists(slot: int, fireSuccess: bool = fireSuccessPrint) -> bool:
-#	var metaDataFilename: String = "metaData%s.json" % slot
-#	var metaDataFilePath: String = saveDirPath + metaDataFilename
-#	
-#	if !FileAccess.file_exists(metaDataFilePath):
-#		print("[saveManager] Cannot open non-existent file at: %s" % metaDataFilePath)
-#		return false
-#	else:
-#		if fireSuccess:
-#			print("[saveManager] metaData verified at: %s" % metaDataFilePath)
-#		return true
-
 func ensure_meta_data_file_exists(fireSuccess: bool = fireSuccessPrint) -> void:
 	if !FileAccess.file_exists(metaDataFullPath):
 		print("[saveManager] MetaDatafile not created, creating at: %s" % metaDataFullPath)
 		save_meta_data(1 , create_meta_data_template())
 
 func ensure_slot_file_exists(slot: int, fireSuccess: bool = fireSuccessPrint) -> bool:
-	var fileName: String = "saveslot%s.json" % slot
+	var fileName: String = "savedata%s.json" % slot
 	var slotFilePath: String = saveDirPath + fileName
 	
 	if !FileAccess.file_exists(slotFilePath):
@@ -157,7 +136,7 @@ func save_config_file(configData: Dictionary = create_default_config_data_templa
 	var config: ConfigFile = ConfigFile.new()
 	
 	var err = config.load(configFullPath)
-	if err != OK and err != ERR_FILE_NOT_FOUND:
+	if err != OK && err != ERR_FILE_NOT_FOUND:
 		print("[saveManager] Error loading config file: %s" % err)
 		return
 	
@@ -171,7 +150,7 @@ func save_config_file(configData: Dictionary = create_default_config_data_templa
 
 #multiple slots saving and loading
 func load_slot(slot: int) -> Dictionary:
-	var fileName: String = "saveslot%s.json" % slot
+	var fileName: String = "savedata%s.json" % slot
 	var fullFilePath: String = saveDirPath + fileName
 	
 	if !FileAccess.file_exists(fullFilePath):
@@ -198,8 +177,8 @@ func load_slot(slot: int) -> Dictionary:
 			currentSaveSlotLoadCheck = true
 			return merge_with_default(create_default_slot_data_template(slot), loadedData, fileName)
 
-func save_slot(slot, slotData: Dictionary = create_default_slot_data_template(slot)) -> void:
-	var fileName: String = "saveslot%s.json" % slot
+func save_slot(slot: int, slotData: Dictionary = create_default_slot_data_template(slot)) -> void:
+	var fileName: String = "savedata%s.json" % slot
 	var fullFilePath: String = saveDirPath + fileName
 	
 	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, securityKey)
@@ -231,7 +210,7 @@ func load_meta_data(slot: int) -> Dictionary:
 		var json = JSON.new()
 		var err = json.parse(data)
 		
-		if !err == OK:
+		if err != OK:
 			print("[saveManager] Error message parsing JSON: %s" % json.get_error_message())
 			print("[saveManager] Error line at: %s" % json.get_error_line())
 			return create_default_meta_data_template(slot)
@@ -262,11 +241,12 @@ func load_all_meta_data() -> Dictionary:
 		var json = JSON.new()
 		var err = json.parse(data)
 		
-		if !err == OK:
+		if err != OK:
 			print("[saveManager] Error message parsing JSON: %s" % json.get_error_message())
 			print("[saveManager] Error line at: %s" % json.get_error_line())
 			return create_meta_data_template()
 		else:
+			metaDataLoadCheck = true
 			return json.data
 
 func save_meta_data(slot: int, _metaData: Dictionary) -> void:
@@ -288,7 +268,7 @@ func save_meta_data(slot: int, _metaData: Dictionary) -> void:
 			var json = JSON.new()
 			var err = json.parse(data)
 			
-			if !err == OK:
+			if err != OK:
 				metaData = create_meta_data_template()
 			else:
 				metaData = json.data
@@ -314,7 +294,7 @@ func delete_save_file(slot: int, file: String) -> void:
 		print("[saveManager] Cannot open non-existent file at: %s" % fullFilePath)
 	else:
 		var err = dir.remove(fullFilePath)
-		if !err == OK:
+		if err != OK:
 			print("[saveManager] Error deleting file: %s" % fileName)
 		else:
 			print("[saveManager] File sucessfully deleted: %s" % fileName)
@@ -328,7 +308,7 @@ func delete_config_file(path: String = configFullPath) -> void:
 			file.close()  
 			var dir = verify_and_open_save_dir()
 			var err = dir.remove(configFilename)
-			if !err == OK:
+			if err != OK:
 				print("[saveManager] Error deleting file at: %s" % path)
 			else:
 				print("[saveManager] File successfully deleted at: %s" % path)
@@ -361,7 +341,7 @@ func verify_and_open_save_dir(fireSucess: bool = fireSuccessPrint) -> DirAccess:
 		print("[saveManager] Directory verified at: %s" % saveDirPath)
 	return dir
 
-func get_save_files() -> PackedStringArray:
+func get_dir_json_files() -> PackedStringArray:
 	var dir: DirAccess = verify_and_open_save_dir()
 	var files: PackedStringArray = dir.get_files()
 	
@@ -384,33 +364,58 @@ func get_save_files() -> PackedStringArray:
 #			else:
 #				save_meta_data(i + 1, create_default_meta_data_template(i + 1))
 
-#getters
-func get_specific_game_data(data: String, slotData: Dictionary = currentSlotData):
-	if slotData.has(data):
-		return slotData[data]
-	else:
-		print("[saveManager] No '%s' key found in slotData" % data)
-		return null #Dictionary()
-
-func get_specific_config_data(section: String, key: String, _configData: Dictionary = currentConfigData):
-	if _configData.has(section):
-		var sectionData = _configData[section]
-		if sectionData.has(key):
-			return sectionData[key]
-	else:
-		print("[saveManager] No '%s / %s' found in configData" % [section, key])
+#getters and setters
+func get_config_data(section: String, key: String, _configData: Dictionary = currentConfigData) -> Variant:
+	if !_configData.has(section):
+		print("[saveManager] No '%s' section found in configdata" % section)
 		print(currentConfigData)
 		return null
+	else:
+		var sectionData = _configData[section]
+		if !sectionData.has(key):
+			print("[saveManager] No '%s' key found in config section" % key)
+			return null
+		else:
+			return sectionData[key]
+
+func set_config_data(section: String, key: String, value: Variant, _configData: Dictionary = currentConfigData) -> void:
+	if !_configData.has(section):
+		_configData[section] = {}
+		print("[saveManager] No '%s' section found, creating one" % section)
+	
+	_configData[section][key] = value
+	save_config_file(_configData)
+	print("[saveManager] Set '%s/%s' to '%s' in configdata" % [section, key, value])
+
+func get_slot_data(key: String, slotData: Dictionary = currentSlotData) -> Variant:
+	if slotData.has(key):
+		return slotData[key]
+	else:
+		print("[saveManager] No '%s' found in slotData" % key)
+		return null
+
+func get_slot_meta_data(slot: int) -> Variant:
+	print(slot)
+	return null
+
+func get_all_slot_meta_data(slot: int) -> Variant:
+	var slotKey = "slot_%d" % slot
+	if !currentMetaData.has(slotKey):
+		print("booho")
+	else:
+		print("ok you have slot_%" % slot)
+	
+	return null
 
 func get_runtime_check() -> bool:
 	var loadCheck: bool
 	var currentDataCheck: bool
 	
-	if configFileLoadCheck: #&& metaDataLoadCheck:
+	if configFileLoadCheck && metaDataLoadCheck:
 		loadCheck = true
 	else:
 		print("[saveManager] configFileLoadCheck: %s" % configFileLoadCheck)
-		#print("[saveManager] metaDataLoadCheck: %s" % metaDataLoadCheck)
+		print("[saveManager] metaDataLoadCheck: %s" % metaDataLoadCheck)
 		loadCheck = false
 	
 	if currentConfigData != null:
@@ -424,14 +429,14 @@ func get_runtime_check() -> bool:
 func get_available_slot_count() -> int:
 	var counter: int = 1
 	var foundAvailableCount: bool = false
-	var saveFiles: PackedStringArray = get_save_files()
+	var saveFiles: PackedStringArray = get_dir_json_files()
 	
 	while !foundAvailableCount:
-		var fileName: String = "saveslot%s.json" % counter 
+		var fileName: String = "savedata%s.json" % counter 
 		var noMatch: bool = false 
 		
 		for file: String in saveFiles:
-			if !fileName == file && file.begins_with("saveslot"):
+			if !fileName == file && file.begins_with("savedata"):
 				noMatch = true
 				break
 		
@@ -444,6 +449,4 @@ func get_available_slot_count() -> int:
 	#save_slot(counter, defaultGameData)
 	return counter
 
-func get_slot_meta_data(slot: int) -> Dictionary:
-	print(slot)
-	return Dictionary()
+
