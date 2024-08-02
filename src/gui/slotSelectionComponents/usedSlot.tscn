@@ -28,15 +28,16 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 theme_override_constants/separation = 0
 
-[node name="SlotCurrentChapter" type="Label" parent="HBoxContainer/VBoxContainer"]
+[node name="SlotCurrentVolume" type="Label" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_7bin6")
-text = "Chapter 1"
+text = "Volume 1
+"
 
 [node name="SlotCollectibles" type="Label" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_7bin6")
-text = "Collectibles x7"
+text = "Collectibles x0"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
@@ -53,7 +54,7 @@ horizontal_alignment = 2
 [node name="SlotDeaths" type="Label" parent="HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme = ExtResource("2_7bin6")
-text = "Deaths x1"
+text = "Deaths x0"
 horizontal_alignment = 2
 
 [node name="Control" type="Control" parent="."]

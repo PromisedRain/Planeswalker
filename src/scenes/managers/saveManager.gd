@@ -87,7 +87,7 @@ func create_default_slot_data_template(slot: int) -> Dictionary:
 func create_default_meta_data_template(slot: int) -> Dictionary:
 	return {
 		"save_slot_number": slot,
-		"total_slot_playtime": 0,
+		"total_slot_playtime": "00:00:00",
 		"total_collectibles_collected": 0,
 		"total_slot_deaths": 0,
 		"current_volume": 1
@@ -95,7 +95,7 @@ func create_default_meta_data_template(slot: int) -> Dictionary:
 
 func create_meta_data_template() -> Dictionary:
 	var template: Dictionary = {}
-	for slot in range(1, 4):
+	for slot: int in range(1, 4):
 		template["slot_%d" % slot] = create_default_meta_data_template(slot)
 	return template
 
@@ -355,15 +355,6 @@ func get_dir_json_files() -> PackedStringArray:
 			filteredFiles.append(file)
 	return filteredFiles
 
-#func load_saved_slots_meta_data() -> void:
-#	for i: int in 3:
-#		if ensure_slot_file_exists(i + 1):
-#			#print("slot existed: %s" % [i + 1])
-#			if ensure_meta_data_file_exists(i + 1):
-#				load_meta_data(i + 1)
-#			else:
-#				save_meta_data(i + 1, create_default_meta_data_template(i + 1))
-
 #getters and setters
 func get_config_data(section: String, key: String, _configData: Dictionary = currentConfigData) -> Variant:
 	if !_configData.has(section):
@@ -398,14 +389,13 @@ func get_slot_meta_data(slot: int) -> Variant:
 	print(slot)
 	return null
 
-func get_all_slot_meta_data(slot: int) -> Variant:
+func get_all_slot_meta_data(slot: int, _metaData: Dictionary = currentMetaData) -> Dictionary:
 	var slotKey = "slot_%d" % slot
-	if !currentMetaData.has(slotKey):
-		print("booho")
+	if !_metaData.has(slotKey):
+		print("[saveManager] No '%s' found in metadata" % slotKey)
+		return Dictionary()
 	else:
-		print("ok you have slot_%" % slot)
-	
-	return null
+		return _metaData[slotKey]
 
 func get_runtime_check() -> bool:
 	var loadCheck: bool
