@@ -1,9 +1,15 @@
 extends Node2D
 
-@export_range(1,2) var volumeID: int
-@export var defaultVolumeSpawnLocation: Marker2D
+@export var volumeGivenName: String
+@export_range(1,3) var volumeID: int
+@export var defaultVolumeSpawnLocation: Vector2i
 @export var volumeSpawn: bool
 
 
 func _ready() -> void:
-	pass
+	
+	
+	LevelManager.currentWorld = self
+
+func player_died() -> void:
+	print("player died")

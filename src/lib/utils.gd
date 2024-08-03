@@ -13,6 +13,9 @@ func get_main() -> Node:
 func get_main_camera() -> Camera2D:
 	return mainCamera
 
+func update_references() -> void:
+	player = get_tree().get_first_node_in_group("player")
+
 func is_approximately_equal(a: float, b: float, epsilon: float = 0.01) -> bool:
 	return abs(a - b) < epsilon
 

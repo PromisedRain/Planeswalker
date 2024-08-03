@@ -1,29 +1,58 @@
 extends Node
 
-@export var player: PackedScene
+@export var player: PackedScene = preload("res://src/scenes/objects/player/player.tscn")
+@export var mainCamera: PackedScene = preload("res://src/scenes/objects/mainCamera/mainCamera.tscn")
+
+@onready var worldContainer: Node2D
 
 #vars
-var currentVolumePath: String
-var currentWorld: Node2D
 var mainScene: Node
 
+var currentVolumePath: String
+var currentWorld: Node2D
+
+var currentSpawn
+var currentRoomName
+var currentRoom: Room
+
+
 #consts
-const volumes: Dictionary = {
-	"volume1": Volumes.volume1
+const volumePaths: Dictionary = {
+	"volume1": "res://src/scenes/levels/volume1.tscn",
+	"volume2": "res://src/scenes/levels/volume2.tscn"
 }
 
-#others
 enum Volumes {
-	volume1
+	volume1,
+	volume2,
+	volume3
 }
 
 func _ready() -> void:
-	#get current volumes from saveManager later placeholder setup for now.
-	currentVolumePath = volume_to_path(Volumes.volume1)
+	pass
+	#currentVolumePath = volumePaths.get("volume1", null)
 
-func volume_to_path(volume: Volumes) -> String:
+func change_current_volume(volume: Volumes) -> void:
+	var volumePath: String = get_volume_path(volume)
+	if !volumePath != "":
+		print("[levelManager] Invalid volume path for at: %s" % volumePath)
+	else:
+		free_world_instance()
+		var instance: Node2D = load(volumePath).instantiate()
+		worldContainer.add_child(instance)
+		print("[levelManager] Changed volume to: %s" % volumePath)
+
+func get_volume_path(volume: Volumes) -> String:
 	match volume:
-		volumes.volume1:
-			return "res://src/scenes/levels/volume1.tscn"
+		Volumes.volume1:
+			return volumePaths["volume1"]
+		Volumes.volume2:
+			return volumePaths["volume2"]
 		_:
-			return ""
+			return volumePaths["volume1"]
+
+func free_world_instance() -> void:
+	if currentWorld != null:
+		currentWorld.queue_free()
+		currentWorld = null
+

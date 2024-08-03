@@ -27,10 +27,11 @@ func _ready() -> void:
 	ensure_config_file_exists()
 	ensure_meta_data_file_exists()
 
-func load_before_game_data() -> void:
+func load_pre_game_data() -> void:
 	currentConfigData = load_config_file()
 	ensure_meta_data_file_exists()
 	currentMetaData = load_all_meta_data()
+	save_config_file() #remove this when settings is implemented
 	
 	var passedRuntime: bool = get_runtime_check()
 	if passedRuntime:
@@ -54,7 +55,7 @@ func ensure_config_file_exists() -> void:
 		print("[saveManager] ConfigFile not created, creating at: %s" % configFullPath)
 		save_config_file(create_default_config_data_template())
 
-func ensure_meta_data_file_exists(fireSuccess: bool = fireSuccessPrint) -> void:
+func ensure_meta_data_file_exists() -> void:
 	if !FileAccess.file_exists(metaDataFullPath):
 		print("[saveManager] MetaDatafile not created, creating at: %s" % metaDataFullPath)
 		save_meta_data(1 , create_meta_data_template())
@@ -275,13 +276,13 @@ func save_meta_data(slot: int, _metaData: Dictionary) -> void:
 	
 	metaData["slot_%d" % slot] = _metaData
 	
-	var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.WRITE)
-	if !file:
+	var _file: FileAccess = FileAccess.open(fullFilePath, FileAccess.WRITE)
+	if !_file:
 		print("[saveManager] Error opening the metadata file for writing at: %s" % fullFilePath)
 	else:
 		var data: String = JSON.stringify(_metaData)
-		file.store_string(data)
-		file.close()
+		_file.store_string(data)
+		_file.close()
 		print("[saveManager] Metadata file created/saved at: %s" % fullFilePath)
 
 #deleting

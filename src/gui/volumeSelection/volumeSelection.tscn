@@ -1,0 +1,144 @@
+[gd_scene load_steps=4 format=3 uid="uid://ju8hbn5ionoq"]
+
+[ext_resource type="Script" path="res://src/gui/volumeSelection/volumeSelection.gd" id="1_ssv84"]
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="2_owvrl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y2sl0"]
+bg_color = Color(1, 1, 1, 1)
+border_width_top = 1
+
+[node name="VolumeSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ssv84")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("2_owvrl")
+theme_override_font_sizes/font_size = 32
+text = "Select Volume"
+metadata/_edit_lock_ = true
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_y2sl0")
+metadata/_edit_lock_ = true
+
+[node name="Control" type="Control" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_bottom = 26
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Control/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Volume1Container" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Volume1Button" type="Button" parent="MarginContainer/Control/MarginContainer/HBoxContainer/VBoxContainer/Volume1Container"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_owvrl")
+text = "Volume 1"
+
+[node name="Volume2Container" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Volume3Container" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Volume4Container" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Volume5Container" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Volume6Container" type="Control" parent="MarginContainer/Control/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Control2" type="Control" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Control2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VolumeSelectionReturnButton" type="Button" parent="MarginContainer/Control2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme = ExtResource("2_owvrl")
+text = "Return"
+
+[connection signal="pressed" from="MarginContainer/Control/MarginContainer/HBoxContainer/VBoxContainer/Volume1Container/Volume1Button" to="." method="_on_volume_1_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Control2/HBoxContainer/VolumeSelectionReturnButton" to="." method="_on_volume_selection_return_button_pressed"]

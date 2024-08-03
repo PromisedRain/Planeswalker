@@ -50,13 +50,14 @@ func instantiate_used_slot(slot: int) -> void:
 	instance.slotPressed.connect(on_used_slot_pressed)
 	instance.update_ui()
 	
-	var container: Control = get_slot_container(slot)
+	var container: Control = slotContainers.get(slot, null)
 	if container: #&& container.get_child_count() <= 0:
 		container.add_child(instance)
 	else:
 		print("container%s already used" % slot)
 
 func on_used_slot_pressed(slot: int) -> void:
+	load_save(slot)
 	emit_signal("selectedSlot", slot)
 	print("[slotSelection] Selected slot_%d" % slot)
 
@@ -65,7 +66,7 @@ func instantiate_empty_slot(slot: int) -> void:
 	instance.slot = slot
 	instance.slotPressed.connect(on_empty_slot_pressed)
 	
-	var container: Control = get_slot_container(slot)
+	var container: Control = slotContainers.get(slot, null)
 	if container: #&& container.get_children().size() <= 0:
 		container.add_child(instance)
 	else:
@@ -73,26 +74,25 @@ func instantiate_empty_slot(slot: int) -> void:
 
 func on_empty_slot_pressed(slot: int) -> void:
 	instantiate_used_slot(slot)
-	open_or_create_slot(slot)
-
-func get_slot_container(slot: int) -> Control:
-	return slotContainers.get(slot, null)
+	load_save(slot)
+	SaveManager.currentSlotData = {}
 
 func _on_slot_selection_return_button_pressed() -> void:
 	emit_signal("slotSelectionPressedReturn")
 
-func open_or_create_slot(slot: int) -> void:
+func load_save(slot: int) -> void:
 	var slotExists: bool = SaveManager.ensure_slot_file_exists(slot)
 	match slotExists:
 		true:
-			SaveManager.load_slot(slot)
+			SaveManager.currentSlotData = SaveManager.load_slot(slot)
 		false:
 			SaveManager.save_slot(slot, SaveManager.create_default_slot_data_template(slot))
+			SaveManager.currentSlotData = SaveManager.load_slot(slot)
 
 func _on_slot_erase_button_pressed() -> void:
 	for slot: int in range(1, 4):
 		SaveManager.delete_save_file("savedata", slot)
-		var container = get_slot_container(slot)
+		var container = slotContainers.get(slot, null)
 		var containerChildren = container.get_children()
 		for child in containerChildren:
 			child.queue_free()

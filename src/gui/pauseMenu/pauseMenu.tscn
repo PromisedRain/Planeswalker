@@ -1,6 +1,10 @@
-[gd_scene format=3 uid="uid://ba7tc2g1wlo02"]
+[gd_scene load_steps=3 format=3 uid="uid://ba7tc2g1wlo02"]
+
+[ext_resource type="Script" path="res://src/gui/pauseMenu/pauseMenu.gd" id="1_cay6y"]
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="2_cr1mw"]
 
 [node name="PauseMenu" type="CanvasLayer"]
+script = ExtResource("1_cay6y")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -25,25 +29,37 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 2
-theme_override_constants/margin_bottom = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 5
 
-[node name="PauseMenu" type="Control" parent="Control/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/MarginContainer/PauseMenu"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -28.5
-offset_top = -11.5
-offset_right = 28.5
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "paused"
+[node name="SettingsButton" type="Button" parent="Control/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_cr1mw")
+text = "Settings"
+
+[node name="MainMenuButton" type="Button" parent="Control/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_cr1mw")
+text = "Main Menu"
+
+[node name="QuitToDesktopButton" type="Button" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_cr1mw")
+text = "Quit To Desktop"
+
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/QuitToDesktopButton" to="." method="_on_quit_to_desktop_button_pressed"]

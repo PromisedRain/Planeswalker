@@ -1,13 +1,14 @@
+res://src/scenes/managers
+res://src/resources/shaders
+res://src/gui/volumeSelection
 res://src/gui/slotSelectionComponents
 res://src/resources/themes
 res://src/gui/slotSelection
 res://src/gui/mainMenuSettings
 res://src/gui/titleScreen
-res://src/scenes/managers
 res://src/gui/pauseMenu
 res://src/gui
 res://src/gui/vignette
-res://src/resources/shaders
 res://src/gui/playerUi
 res://src/gui/mainMenu
 res://src/media/fonts
