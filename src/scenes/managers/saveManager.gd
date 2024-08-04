@@ -20,7 +20,7 @@ const metaDataFullPath: String = saveDirPath + metaDataFilename
 
 const securityKey: String = "A23I5B6925UIB32P572J283I65J" #change location in the future, but who cares rn, doesnt matter
 
-signal finishedLoadBeforeGameData
+signal finishedLoadingPreGameData
 
 func _ready() -> void:
 	ensure_save_dir_exists()
@@ -36,7 +36,7 @@ func load_pre_game_data() -> void:
 	var passedRuntime: bool = get_runtime_check()
 	if passedRuntime:
 		print("[saveManager] PASSED RUNTIME LOAD CHECK")
-		emit_signal("finishedLoadBeforeGameData")
+		emit_signal("finishedLoadingPreGameData")
 	else:
 		print("[saveManager] FAILED RUNTIME LOAD CHECK")
 

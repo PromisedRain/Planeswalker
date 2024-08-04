@@ -1,20 +1,20 @@
 extends Node
 
-@export var player: PackedScene = preload("res://src/scenes/objects/player/player.tscn")
-@export var mainCamera: PackedScene = preload("res://src/scenes/objects/mainCamera/mainCamera.tscn")
+@export var playerPath: PackedScene = preload("res://src/scenes/objects/player/player.tscn")
+@export var mainCameraPath: PackedScene = preload("res://src/scenes/objects/mainCamera/mainCamera.tscn")
 
 @onready var worldContainer: Node2D
 
 #vars
 var mainScene: Node
 
+var currentVolume: Node2D
 var currentVolumePath: String
-var currentWorld: Node2D
 
 var currentSpawn
-var currentRoomName
 var currentRoom: Room
-
+var currentRoomPath: String
+var currentRoomPosition: Vector2
 
 #consts
 const volumePaths: Dictionary = {
@@ -52,7 +52,16 @@ func get_volume_path(volume: Volumes) -> String:
 			return volumePaths["volume1"]
 
 func free_world_instance() -> void:
-	if currentWorld != null:
-		currentWorld.queue_free()
-		currentWorld = null
+	if currentVolume != null:
+		currentVolume.queue_free()
+		currentVolume = null
 
+func create_player_instance() -> CharacterBody2D: 
+	var player: CharacterBody2D = playerPath.instantiate() 
+	
+	return player
+
+func create_camera_instance() -> Camera2D:
+	var camera: Camera2D = mainCameraPath.instantiate()
+	
+	return camera

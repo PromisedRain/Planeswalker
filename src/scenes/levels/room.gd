@@ -16,16 +16,17 @@ var minY: int
 var maxX: int
 var maxY: int
 
+signal enteredRoom(room: Room)
+
 func _ready() -> void:
 	#var fileName = get_name()
 	#print(fileName)
-	
+	emit_signal("enteredRoom", self)
 	calc_room_bounds()
 	print(minX, minY, maxX, maxY)
 
-
 func calc_room_bounds() -> void:
-	var cells = blackBorderBackground.get_used_cells(1)
+	var cells = blackBorderBackground.get_used_cells(0)
 	if cells.size() == 0:
 		return
 	
