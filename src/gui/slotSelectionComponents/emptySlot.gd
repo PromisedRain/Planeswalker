@@ -7,6 +7,6 @@ signal slotPressed(slot: int)
 
 
 func _on_button_pressed() -> void:
-	emit_signal("slotPressed", slot)
+	slotPressed.emit(slot)
 	queue_free()
 	#print("pressed %s" % slot)

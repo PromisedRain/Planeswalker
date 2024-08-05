@@ -16,7 +16,7 @@ func update_current_room(inputRoom: Room) -> void:
 	currentRoom = inputRoom
 	LevelManager.currentRoom = currentRoom
 	LevelManager.currentRoomFilepath = currentRoom.scene_file_path
-	LevelManager.currentRoomPos = currentRoom.global_position
+	LevelManager.currentRoomPosition = currentRoom.global_position
 
 func player_died() -> void:
 	print("player died")

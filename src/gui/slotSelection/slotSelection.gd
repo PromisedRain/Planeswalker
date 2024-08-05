@@ -58,7 +58,7 @@ func instantiate_used_slot(slot: int) -> void:
 
 func on_used_slot_pressed(slot: int) -> void:
 	load_save(slot)
-	emit_signal("selectedSlot", slot)
+	selectedSlot.emit(slot)
 	print("[slotSelection] Selected slot_%d" % slot)
 
 func instantiate_empty_slot(slot: int) -> void:
@@ -78,7 +78,7 @@ func on_empty_slot_pressed(slot: int) -> void:
 	SaveManager.currentSlotData = {}
 
 func _on_slot_selection_return_button_pressed() -> void:
-	emit_signal("slotSelectionPressedReturn")
+	slotSelectionPressedReturn.emit()
 
 func load_save(slot: int) -> void:
 	var slotExists: bool = SaveManager.ensure_slot_file_exists(slot)

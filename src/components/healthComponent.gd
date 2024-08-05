@@ -28,12 +28,12 @@ func update() -> void:
 		currentHealth = 0
 	
 	if currentHealth <= 0:
-		emit_signal("died")
+		died.emit()
 		currentHealth += 1 #testing purposes
 
 func damage(amount: int) -> void:
 	currentHealth -= amount
-	emit_signal("healthChanged")
+	healthChanged.emit()
 	update()
 
 func heal(amount: int) -> void:

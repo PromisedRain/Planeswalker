@@ -33,4 +33,4 @@ func update_ui() -> void:
 signal slotPressed(slot: int)
 
 func _on_slot_select_pressed() -> void:
-	emit_signal("slotPressed", slot)
+	slotPressed.emit(slot)

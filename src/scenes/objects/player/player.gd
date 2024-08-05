@@ -223,7 +223,7 @@ func update(delta: float) -> void:
 		refill_stamina()
 	
 	if climbStamina != previousClimbStamina:
-		emit_signal("climbStaminaChanged", climbStamina)
+		climbStaminaChanged.emit(climbStamina)
 		previousClimbStamina = climbStamina
 	
 	#corner correction
@@ -697,7 +697,7 @@ func create_dash_trail() -> void:
 	ghostInstance.global_position = sprite.global_position
 	ghostInstance.flip_h = sprite.flip_h
 	ghostInstance.modulate = ghostDashColor
-	get_parent().get_node("PlayerSFXContainer").add_child(ghostInstance)
+	#get_parent().add_child(ghostInstance)
 
 func refill_dashes() -> bool:
 	if totalDashes < maxDashes:
@@ -708,7 +708,7 @@ func refill_dashes() -> bool:
 func refill_stamina() -> bool:
 	if climbStamina < climbMaxStamina:
 		climbStamina = climbMaxStamina
-		emit_signal("climbStaminaChanged", climbStamina)
+		climbStaminaChanged.emit(climbStamina)
 		return true
 	return false
 

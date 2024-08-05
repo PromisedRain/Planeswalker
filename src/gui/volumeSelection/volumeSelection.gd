@@ -11,7 +11,7 @@ func init_selectable_volumes() -> void:
 
 
 func _on_volume_selection_return_button_pressed() -> void:
-	emit_signal("volumeSelectionPressedReturn")
+	volumeSelectionPressedReturn.emit()
 
 
 func _on_volume_1_button_pressed():

@@ -40,7 +40,7 @@ _data = {
 "black_to_clear": SubResource("Animation_u1xj1")
 }
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" groups=["main"]]
 process_mode = 3
 script = ExtResource("1_gewu3")
 

@@ -7,8 +7,9 @@ var currentSaveSlotLoadCheck: bool = false
 var currentSlotData: Dictionary
 var currentConfigData: Dictionary
 var currentMetaData: Dictionary
+var currentSaveSlot: int
 
-var fireSuccessPrint: bool = false
+const fireSuccessPrint: bool = false
 
 const saveDirPath: String = "user://saves/"
 const configFilename: String = "config.ini"
@@ -27,7 +28,7 @@ func _ready() -> void:
 	ensure_config_file_exists()
 	ensure_meta_data_file_exists()
 
-func load_pre_game_data() -> void:
+func load_initial_data() -> void:
 	currentConfigData = load_config_file()
 	ensure_meta_data_file_exists()
 	currentMetaData = load_all_meta_data()
@@ -36,7 +37,7 @@ func load_pre_game_data() -> void:
 	var passedRuntime: bool = get_runtime_check()
 	if passedRuntime:
 		print("[saveManager] PASSED RUNTIME LOAD CHECK")
-		emit_signal("finishedLoadingPreGameData")
+		SignalManager.initialLoadComplete.emit()
 	else:
 		print("[saveManager] FAILED RUNTIME LOAD CHECK")
 
@@ -176,6 +177,7 @@ func load_slot(slot: int) -> Dictionary:
 		else:
 			var loadedData: Dictionary = json.data
 			currentSaveSlotLoadCheck = true
+			currentSaveSlot = slot
 			return merge_with_default(create_default_slot_data_template(slot), loadedData, fileName)
 
 func save_slot(slot: int, slotData: Dictionary = create_default_slot_data_template(slot)) -> void:
@@ -189,6 +191,7 @@ func save_slot(slot: int, slotData: Dictionary = create_default_slot_data_templa
 		var data: String = JSON.stringify(slotData)
 		file.store_string(data)
 		file.close()
+		SignalManager.saving.emit(false)
 		print("[saveManager] slotData file created/saved at: %s" % fullFilePath)
 
 #metadata for slots saving and loading

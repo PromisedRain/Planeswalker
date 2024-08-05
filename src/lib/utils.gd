@@ -21,3 +21,21 @@ func is_approximately_equal(a: float, b: float, epsilon: float = 0.01) -> bool:
 
 func int_lerp(start: int, target: int, multiplier: float) -> int:
 	return int(start + (target - start) * multiplier)
+
+#static func generate_uuid() -> String:
+#	var uuid = PoolStringArray()
+#	for i in range(16):
+#		uuid.append(rand_range(0, 255).hex().pad_zeros(2))
+#	return uuid.join("")
+
+static func generate_uuid() -> String:
+	var chars: String = "0123456789abcdefghijklmnopqrstuvxyz"
+	var uuid: String = ""
+	for i in range(32):
+		uuid += chars[randi() % chars.length()]
+	return uuid
+
+
+func _ready():
+	var uid = generate_uuid()
+	print(uid)

@@ -11,20 +11,23 @@ extends Node
 
 @onready var volume: Node2D = $Volume
 
+func _ready() -> void:
+	SignalManager.initialLoadComplete.connect(initial_data_loaded)
+	SaveManager.load_initial_data()
 
-func _ready() -> void: 
-	SaveManager.load_pre_game_data()
+func initial_data_loaded() -> void: 
 	#var world: Node2D = load(LevelManager.currentVolumePath).instantiate()
 	#LevelManager.currentWorld = world
 	#volume.add_child(world)
 	LevelManager.mainScene = self
-	LevelManager.worldContainer = volume
+	LevelManager.volumeContainer = volume
 	
-	#match LevelManager.currentWorld:
+	#match LevelManager.currentVolume:
 	#	"volume1":
-	#		print("ttttypee shii")
+	#		print("volume 1")
+	#	_:
+	#		print("volume ???")
 	
-	#print("[main] Screen size: %s" % windowScreenSize)
 	window.size_changed.connect(window_size_changed)
 	UiManager.init()
 	animationPlayer.play("black_to_clear")

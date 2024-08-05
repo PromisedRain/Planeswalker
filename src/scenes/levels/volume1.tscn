@@ -13,13 +13,15 @@ script = ExtResource("1_ddas4")
 volumeGivenName = "Volume 1"
 volumeID = 1
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_77io1")
-
-[node name="Objects" type="Node2D" parent="."]
-
 [node name="Rooms" type="Node2D" parent="."]
 script = ExtResource("2_7xnfi")
 metadata/_edit_lock_ = true
 
 [node name="Room0" parent="Rooms" instance=ExtResource("1_38e1n")]
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_77io1")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]

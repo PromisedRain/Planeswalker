@@ -1,3 +1,6 @@
+CanvasModulate
+Camera2D
+Marker2D
 TileMap
 Node2D
 VBoxContainer
@@ -10,5 +13,3 @@ ColorRect
 AnimationPlayer
 CanvasLayer
 TextureRect
-PanelContainer
-HSlider

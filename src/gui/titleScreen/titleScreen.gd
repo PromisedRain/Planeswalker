@@ -6,10 +6,10 @@ signal titleScreenPressedQuit
 
 
 func _on_title_screen_enter_pressed() -> void:
-	emit_signal("titleScreenPressedEnter")
+	titleScreenPressedEnter.emit()
 
 func _on_title_screen_settings_pressed() -> void:
-	emit_signal("titleScreenPressedSettings")
+	titleScreenPressedSettings.emit()
 
 func _on_title_screen_quit_pressed() -> void:
-	emit_signal("titleScreenPressedQuit")
+	titleScreenPressedQuit.emit()

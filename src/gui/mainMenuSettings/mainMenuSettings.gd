@@ -12,4 +12,4 @@ func _process(delta: float) -> void:
 
 
 func _on_settings_return_button_pressed() -> void:
-	emit_signal("mainMenuSettingsScreenPressedReturn")
+	mainMenuSettingsScreenPressedReturn.emit()
