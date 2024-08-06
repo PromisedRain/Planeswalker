@@ -1,3 +1,6 @@
+CollisionShape2D
+RayCast2D
+Area2D
 CanvasModulate
 Camera2D
 Marker2D
@@ -10,6 +13,3 @@ Label
 Control
 HBoxContainer
 ColorRect
-AnimationPlayer
-CanvasLayer
-TextureRect

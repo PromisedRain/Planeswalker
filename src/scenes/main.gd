@@ -15,10 +15,14 @@ func _ready() -> void:
 	SignalManager.initialLoadComplete.connect(initial_data_loaded)
 	SaveManager.load_initial_data()
 
-func initial_data_loaded() -> void: 
+func initial_data_loaded(finishedProgress: bool) -> void: 
+	if !finishedProgress:
+		print("what the fuck")
+		return
 	#var world: Node2D = load(LevelManager.currentVolumePath).instantiate()
 	#LevelManager.currentWorld = world
 	#volume.add_child(world)
+	
 	LevelManager.mainScene = self
 	LevelManager.volumeContainer = volume
 	
@@ -39,6 +43,7 @@ func _unhandled_input(event) -> void:
 		UiManager.open_pause_menu()
 
 func window_size_changed() -> void: 
+	print("size changed")
 	var scale: Vector2i = window.size/windowBaseSize 
 	window.content_scale_size = window.size / (scale.y if scale.y <= scale.x else scale.x)
 

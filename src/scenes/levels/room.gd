@@ -16,6 +16,7 @@ var minY: int
 var maxX: int
 var maxY: int
 
+
 signal enteredRoom(room: Room)
 
 
@@ -23,8 +24,12 @@ func _ready() -> void:
 	#var fileName = get_name()
 	#print(fileName)
 	enteredRoom.emit(self)
+	
+	for door: RoomSwitcher in doors.get_children():
+		pass
+	
 	calc_room_bounds()
-	print("room bounds: ", minX, minY, maxX, maxY)
+	#print("room bounds: ", minX, minY, maxX, maxY)
 
 
 func calc_room_bounds() -> void:
@@ -46,3 +51,14 @@ func calc_room_bounds() -> void:
 			minY = cell.y
 		if cell.y > maxY:
 			maxY = cell.y
+
+func set_parent_for_room_switchers() -> void:
+	for door: RoomSwitcher in doors.get_children():
+		door.parentRoom = self
+
+func get_adjacent_rooms() -> Array:
+	adjacentRooms.append(self)
+	for door: RoomSwitcher in doors.get_children():
+		if door.get_adjacent_room() != null:
+			adjacentRooms.append(door.get_adjacent_room())
+	return adjacentRooms

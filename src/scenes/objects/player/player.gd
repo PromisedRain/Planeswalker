@@ -138,7 +138,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	stateMachine.update(delta)
 	update(delta)
-	if canControl:
+	if canControl && GlobalManager.noCutscene:
 		facing = Vector2.ZERO
 		direction = Vector2.ZERO
 		player_input()

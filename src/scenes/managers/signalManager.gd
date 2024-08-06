@@ -2,6 +2,6 @@ extends Node
 
 # system
 
-signal initialLoadComplete
+signal initialLoadComplete(finishedProgress: bool)
 
 signal saving(inProgress: bool)

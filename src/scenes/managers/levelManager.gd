@@ -1,7 +1,7 @@
 extends Node
 
 @export var playerPath: PackedScene = preload("res://src/scenes/objects/player/player.tscn")
-@export var mainCameraPath: PackedScene = preload("res://src/scenes/objects/mainCamera/mainCamera.tscn")
+@export var cameraPath: PackedScene = preload("res://src/scenes/objects/mainCamera/mainCamera.tscn")
 
 @onready var volumeContainer: Node2D
 
@@ -37,7 +37,7 @@ func change_current_volume(volume: Volumes) -> void:
 	if !volumePath != "":
 		print("[levelManager] Invalid volume path for at: %s" % volumePath)
 	else:
-		free_world_instance()
+		free_volume_instance()
 		var volumeInstance: Node2D = load(volumePath).instantiate()
 		volumeContainer.add_child(volumeInstance)
 		print("[levelManager] Changed volume to: %s" % volumePath)
@@ -51,24 +51,16 @@ func get_volume_path(volume: Volumes) -> String:
 		_:
 			return volumePaths["volume1"]
 
-func free_world_instance() -> void:
+func free_volume_instance() -> void:
 	if currentVolume != null:
 		currentVolume.queue_free()
 		currentVolume = null
 
 func create_player_instance() -> CharacterBody2D: 
 	var player: CharacterBody2D = playerPath.instantiate() 
-	
 	return player
 
 func create_camera_instance() -> Camera2D:
-	var camera: Camera2D = mainCameraPath.instantiate()
-	
+	var camera: Camera2D = cameraPath.instantiate()
 	return camera
 
-
-func follow_player(cameraInstance: Camera2D, playerInstance: CharacterBody2D) -> void:
-	if cameraInstance == null:
-		return
-	
-	cameraInstance.global_position = playerInstance.global_position

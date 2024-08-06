@@ -36,10 +36,10 @@ func load_initial_data() -> void:
 	
 	var passedRuntime: bool = get_runtime_check()
 	if passedRuntime:
-		print("[saveManager] PASSED RUNTIME LOAD CHECK")
-		SignalManager.initialLoadComplete.emit()
+		print("[saveManager] Passed runtime load check")
+		SignalManager.initialLoadComplete.emit(true)
 	else:
-		print("[saveManager] FAILED RUNTIME LOAD CHECK")
+		print("[saveManager] Failed runtime load check")
 
 #ensuring existence of stuff needed before choosing slots.
 func ensure_save_dir_exists() -> void:
