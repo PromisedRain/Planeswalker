@@ -33,3 +33,4 @@ func generate_uuid() -> String:
 func _ready():
 	var uid = generate_uuid()
 	print(uid)
+	

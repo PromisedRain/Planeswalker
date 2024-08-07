@@ -1,8 +1,9 @@
-res://src/scenes/levels/volume1.tscn
+res://src/scenes/objects/roomSwitcher/roomSwitcher.tscn
 res://src/resources/shaders/vignette.gdshader
 res://src/resources/shaders/fog.gdshader
-res://src/scenes/levels/room.gd
-res://RoomSwitcher.gd
-res://src/scenes/objects/roomSwitcher/roomSwitcher.tscn
 res://src/scenes/managers/levelManager.gd
+res://src/scenes/main.tscn
+res://src/scenes/levels/volume1.tscn
+res://src/scenes/levels/rooms/room1.tscn
 res://src/scenes/levels/volume.gd
+res://src/lib/utils.gd

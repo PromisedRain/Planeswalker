@@ -1,10 +1,10 @@
 class_name Volume
 extends Node2D
 
-@onready var roomsContainer = $Rooms
-@onready var objects = $Objects
-@onready var worldEnvironment = $WorldEnvironment
-@onready var canvasModulate = $CanvasModulate
+@onready var roomsContainer: Node2D = $Rooms
+@onready var objects: Node2D = $Objects
+@onready var worldEnvironment: WorldEnvironment = $WorldEnvironment
+@onready var canvasModulate: CanvasModulate = $CanvasModulate
 
 @export var volumeGivenTitle: String
 @export_range(1,3) var volumeID: int
@@ -17,9 +17,6 @@ var currentPlayer: CharacterBody2D
 var rooms
 
 func _ready() -> void:
-	
-	
-	
 	update_current_volume()
 	free_all_rooms()
 	load_current_room()
@@ -29,12 +26,13 @@ func load_current_room() -> void:
 	
 	if roomName == null || roomName == "":
 		print("[volume] No saved room found, loading default")
-		var defaultFirstRoom: String = get_current_volume_first_room()
-		LevelManager.load_room(defaultFirstRoom) 
+		var defaultFirstRoom: String = get_current_volume_first_room_name()
+		#print(defaultFirstRoom)
+		LevelManager.load_room(defaultFirstRoom, roomsContainer)
 		return
 	
 	print("[volume] Loading saved room")
-	LevelManager.load_room(roomName)
+	LevelManager.load_room(roomName, roomsContainer)
 
 func update_current_volume() -> void:
 	print("updating current volume")
@@ -50,12 +48,7 @@ func update_current_room(inputRoom: Room) -> void:
 	LevelManager.currentRoomName = currentRoom.roomName
 	LevelManager.currentRoomPosition = currentRoom.global_position
 
-func load_room(roomName: String) -> void:
-	var roomsPath: DirAccess = SaveManager.verify_and_open_dir(LevelManager.roomsPath)
-	# do this in levelmanager.
-	print(roomsPath)
-
-func get_current_volume_first_room() -> String:
+func get_current_volume_first_room_name() -> String:
 	var volume: String = LevelManager.currentVolumeName.to_lower()
 	
 	var defaultVolume1: String = "room1"
@@ -78,7 +71,7 @@ func player_died() -> void:
 	
 	reload_room()
 	reload_camera()
-	var player = LevelManager.create_player_instance()
+	var player = LevelManager.get_player_instance()
 	player.global_position = LevelManager.currentSpawn.round() + Vector2.UP
 
 func free_all_rooms() -> void:
