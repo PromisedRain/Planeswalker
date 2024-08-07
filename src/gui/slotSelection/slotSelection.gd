@@ -24,7 +24,7 @@ func init_slots_data() -> void:
 		
 		for file: String in saveFiles:
 			if file == expectedFilename:
-				print("savedata found: %d" % i)
+				print("[slotSelection] Savedata found: %d" % i)
 				instantiate_used_slot(i)
 				saveFound = true
 				break

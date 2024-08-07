@@ -43,7 +43,7 @@ func load_initial_data() -> void:
 
 #ensuring existence of stuff needed before choosing slots.
 func ensure_save_dir_exists() -> void:
-	var dir: DirAccess = verify_and_open_save_dir()
+	var dir: DirAccess = verify_and_open_dir(saveDirPath)
 	if dir == null:
 		if !DirAccess.dir_exists_absolute(saveDirPath):
 			if DirAccess.make_dir_absolute(saveDirPath) != OK:
@@ -77,13 +77,13 @@ func ensure_slot_file_exists(slot: int, fireSuccess: bool = fireSuccessPrint) ->
 func create_default_slot_data_template(slot: int) -> Dictionary:
 	return {
 		"save_slot_number": slot,
-		"current_volume": 1,
-		"current_level": 1,
 		"unlocked_volumes": [
 			true,
 			false,
 			false
-		]
+		],
+		"current_volume": 1,
+		"current_room": ""
 	}
 
 func create_default_meta_data_template(slot: int) -> Dictionary:
@@ -108,6 +108,52 @@ func create_default_config_data_template() -> Dictionary:
 			"player_ui_visible": true
 		}
 	}
+
+#multiple slots saving and loading
+func load_slot(slot: int) -> Dictionary:
+	var fileName: String = "savedata%s.json" % slot
+	var fullFilePath: String = saveDirPath + fileName
+	
+	if !FileAccess.file_exists(fullFilePath):
+		print("[saveManager] Cannot open non-existent file at %s" % fullFilePath)
+		return create_default_slot_data_template(slot)
+	
+	#var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.READ, securityKey) #decryption
+	var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.READ) #no decryption
+	if !file:
+		print("[saveManager] Error opening the file for reading: %s" % fileName)
+		return create_default_slot_data_template(slot)
+	else:
+		var data: String = file.get_as_text()
+		file.close()
+		
+		var json = JSON.new()
+		var err = json.parse(data)
+		
+		if err != OK:
+			print("[saveManager] Error message parsing JSON: %s" % json.get_error_message())
+			print("[saveManager] Error line at: %s" % json.get_error_line())
+			return create_default_slot_data_template(slot)
+		else:
+			var loadedData: Dictionary = json.data
+			currentSaveSlotLoadCheck = true
+			currentSaveSlot = slot
+			return merge_with_default(create_default_slot_data_template(slot), loadedData, fileName)
+
+func save_slot(slot: int, slotData: Dictionary = create_default_slot_data_template(slot)) -> void:
+	var fileName: String = "savedata%s.json" % slot
+	var fullFilePath: String = saveDirPath + fileName
+	
+	#var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, securityKey) #encryption
+	var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.WRITE) #no encryption
+	if !file:
+		print("[saveManager] Error opening the slotData file for writing at: %s" % fullFilePath)
+	else:
+		var data: String = JSON.stringify(slotData)
+		file.store_string(data)
+		file.close()
+		SignalManager.saving.emit(false)
+		print("[saveManager] slotData file created/saved at: %s" % fullFilePath)
 
 #config file saving and loading
 func load_config_file() -> Dictionary:
@@ -149,50 +195,6 @@ func save_config_file(configData: Dictionary = create_default_config_data_templa
 	err = config.save(configFullPath)
 	if err != OK:
 		print("[saveManager] Error saving config file: %s" % err)
-
-#multiple slots saving and loading
-func load_slot(slot: int) -> Dictionary:
-	var fileName: String = "savedata%s.json" % slot
-	var fullFilePath: String = saveDirPath + fileName
-	
-	if !FileAccess.file_exists(fullFilePath):
-		print("[saveManager] Cannot open non-existent file at %s" % fullFilePath)
-		return create_default_slot_data_template(slot)
-	
-	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.READ, securityKey)
-	if !file:
-		print("[saveManager] Error opening the file for reading: %s" % fileName)
-		return create_default_slot_data_template(slot)
-	else:
-		var data: String = file.get_as_text()
-		file.close()
-		
-		var json = JSON.new()
-		var err = json.parse(data)
-		
-		if err != OK:
-			print("[saveManager] Error message parsing JSON: %s" % json.get_error_message())
-			print("[saveManager] Error line at: %s" % json.get_error_line())
-			return create_default_slot_data_template(slot)
-		else:
-			var loadedData: Dictionary = json.data
-			currentSaveSlotLoadCheck = true
-			currentSaveSlot = slot
-			return merge_with_default(create_default_slot_data_template(slot), loadedData, fileName)
-
-func save_slot(slot: int, slotData: Dictionary = create_default_slot_data_template(slot)) -> void:
-	var fileName: String = "savedata%s.json" % slot
-	var fullFilePath: String = saveDirPath + fileName
-	
-	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, securityKey)
-	if !file:
-		print("[saveManager] Error opening the slotData file for writing at: %s" % fullFilePath)
-	else:
-		var data: String = JSON.stringify(slotData)
-		file.store_string(data)
-		file.close()
-		SignalManager.saving.emit(false)
-		print("[saveManager] slotData file created/saved at: %s" % fullFilePath)
 
 #metadata for slots saving and loading
 func load_meta_data(slot: int) -> Dictionary:
@@ -292,7 +294,7 @@ func save_meta_data(slot: int, _metaData: Dictionary) -> void:
 func delete_save_file(file: String, slot: int) -> void:
 	var fileName: String = "%s%s.json" % [file, slot]
 	var fullFilePath: String = saveDirPath + fileName
-	var dir: DirAccess = verify_and_open_save_dir()
+	var dir: DirAccess = verify_and_open_dir(saveDirPath)
 	
 	if !FileAccess.file_exists(fullFilePath):
 		print("[saveManager] Cannot open non-existent file at: %s" % fullFilePath)
@@ -310,7 +312,7 @@ func delete_config_file(path: String = configFullPath) -> void:
 		var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 		if file:
 			file.close()  
-			var dir = verify_and_open_save_dir()
+			var dir = verify_and_open_dir(saveDirPath)
 			var err = dir.remove(configFilename)
 			if err != OK:
 				print("[saveManager] Error deleting file at: %s" % path)
@@ -327,18 +329,18 @@ func merge_with_default(defaultData: Dictionary, modifiedData: Dictionary, from:
 		print("[saveManager] Finished merging modified data with default data at: %s" % from)
 	return modifiedData
 
-func verify_and_open_save_dir(fireSucess: bool = fireSuccessPrint) -> DirAccess:
-	var dir: DirAccess = DirAccess.open(saveDirPath)
+func verify_and_open_dir(dirPath: String, fireSucess: bool = fireSuccessPrint) -> DirAccess:
+	var dir: DirAccess = DirAccess.open(dirPath)
 	
 	if dir == null:
-		if !DirAccess.dir_exists_absolute(saveDirPath):
-			print("[saveManager] Failed to create a directory at: %s" % saveDirPath)
+		if !DirAccess.dir_exists_absolute(dirPath):
+			print("[saveManager] Failed to create a directory at: %s" % dirPath)
 			return null
 		else:
-			dir = DirAccess.open(saveDirPath)
+			dir = DirAccess.open(dirPath)
 	
 	if dir == null:
-		print("[saveManager] Error opening directory  at: %s" % saveDirPath)
+		print("[saveManager] Error opening directory  at: %s" % dirPath)
 		return null
 	
 	if fireSucess:
@@ -346,7 +348,7 @@ func verify_and_open_save_dir(fireSucess: bool = fireSuccessPrint) -> DirAccess:
 	return dir
 
 func get_dir_json_files() -> PackedStringArray:
-	var dir: DirAccess = verify_and_open_save_dir()
+	var dir: DirAccess = verify_and_open_dir(saveDirPath)
 	var files: PackedStringArray = dir.get_files()
 	
 	if files.size() == 0:
@@ -388,6 +390,24 @@ func get_slot_data(key: String, slotData: Dictionary = currentSlotData) -> Varia
 	else:
 		print("[saveManager] No '%s' found in slotData" % key)
 		return null
+
+func set_slot_data(key: String, value: Variant, _slotData: Dictionary = currentSlotData) -> void:
+	if !_slotData.has(key):
+		_slotData[key] = {}
+		print("[saveManager] No '%s' key found, creating one" % key)
+	
+	_slotData[key] = value
+	
+	var slot: int = get_slot_for_setting_slot_data()
+	save_slot(slot, _slotData)
+	print("[saveManager] Set '%s' to '%s' in saveData" % [key, value])
+
+func get_slot_for_setting_slot_data() -> int:
+	var _slotData: Dictionary = currentSlotData
+	var slot: int = _slotData["save_slot_number"]
+	if slot == null:
+		return 1
+	return slot
 
 func get_slot_meta_data(slot: int) -> Variant:
 	print(slot)

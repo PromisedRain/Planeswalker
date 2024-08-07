@@ -18,7 +18,6 @@ var roomSwitcherType: String = "ROOMSWITCHER"
 var adjacentRoomSwitcher: RoomSwitcher = null
 var parentRoom: Room = null
 
-
 func get_adjacent_room() -> Room:
 	if adjacentRoomSwitcher != null:
 		return
@@ -39,3 +38,10 @@ func get_adjacent_room() -> Room:
 			_adjacentRoomSwitcher.adjacentRoomSwitcher = self
 			return adjacentRoomSwitcher.parentRoom
 	return null
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if !body is Player:
+		return
+	
+	playerEntered.emit(self)

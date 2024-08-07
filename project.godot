@@ -40,6 +40,22 @@ window/size/window_height_override=540
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 
+[file_customization]
+
+folder_colors={
+"res://src/addons/": "gray",
+"res://src/builds/": "gray",
+"res://src/common/": "gray",
+"res://src/components/": "red",
+"res://src/gui/": "green",
+"res://src/lib/": "pink",
+"res://src/media/": "purple",
+"res://src/resources/": "yellow",
+"res://src/scenes/": "blue",
+"res://src/shared/": "gray",
+"res://src/testing/": "gray"
+}
+
 [input]
 
 up={

@@ -19,7 +19,7 @@ func unregister_area(area: InteractionAreaComponent) -> void:
 	if areaIndex != -1:
 		registeredAreas.remove_at(areaIndex)
 
-func _process(delta):
+func _process(_delta: float) -> void:
 	interactLabel.z_index = interactLabelZIndex
 	if registeredAreas.size() > 0 && canInteract:
 		registeredAreas.sort_custom(_sort_by_distance_to_player)

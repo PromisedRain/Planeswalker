@@ -17,7 +17,6 @@ func _ready() -> void:
 
 func initial_data_loaded(finishedProgress: bool) -> void: 
 	if !finishedProgress:
-		print("what the fuck")
 		return
 	#var world: Node2D = load(LevelManager.currentVolumePath).instantiate()
 	#LevelManager.currentWorld = world
@@ -40,13 +39,10 @@ func _unhandled_input(event) -> void:
 	if event.is_action_pressed("debug"):
 		UiManager.open_debug_mode()
 	if event.is_action_pressed("pause"):
-		UiManager.open_pause_menu()
+		UiManager.open_pause_menu(true)
 
+#int scaling on float
 func window_size_changed() -> void: 
 	print("size changed")
 	var scale: Vector2i = window.size/windowBaseSize 
 	window.content_scale_size = window.size / (scale.y if scale.y <= scale.x else scale.x)
-
-var canControl: bool:
-	get:
-		return true

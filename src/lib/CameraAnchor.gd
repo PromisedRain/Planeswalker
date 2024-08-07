@@ -1,7 +1,7 @@
 extends Marker2D
 
 @onready var player: CharacterBody2D = null
-@onready var mainCamera: Camera2D = Utils.get_main_camera()
+@onready var playerCamera: Camera2D = Utils.get_player_camera()
 
 
 func _process(delta) -> void:
@@ -22,6 +22,6 @@ func _process(delta) -> void:
 	#targetPosY = int(target.y)
 	
 	global_position = Vector2(targetPosX, targetPosY)
-	mainCamera.position = global_position
+	playerCamera.position = global_position
 
 

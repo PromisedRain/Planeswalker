@@ -1,15 +1,14 @@
+Camera2D
+Label
 CollisionShape2D
 RayCast2D
 Area2D
 CanvasModulate
-Camera2D
 Marker2D
 TileMap
 Node2D
 VBoxContainer
 MarginContainer
 Button
-Label
 Control
 HBoxContainer
-ColorRect

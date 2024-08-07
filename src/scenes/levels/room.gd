@@ -26,11 +26,13 @@ func _ready() -> void:
 	enteredRoom.emit(self)
 	
 	for door: RoomSwitcher in doors.get_children():
-		pass
+		door.playerEntered.connect(room_entered)
 	
 	calc_room_bounds()
 	#print("room bounds: ", minX, minY, maxX, maxY)
 
+func room_entered() -> void:
+	pass
 
 func calc_room_bounds() -> void:
 	var cells = blackBorderBackground.get_used_cells(0)

@@ -53,7 +53,7 @@ func title_screen_pressed_quit() -> void:
 	get_tree().quit()
 
 #slotselection
-func slot_selection_screen_selected_slot(slot: int) -> void:
+func slot_selection_screen_selected_slot(_slot: int) -> void:
 	if slotSelectionScreen.visible:
 		slotSelectionScreen.visible = false
 	if !volumeSelectionScreen.visible:

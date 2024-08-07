@@ -48,17 +48,24 @@ func open_debug_mode() -> void:
 		print("[uiManager] Debug off")
 		loaded[scenesDict.debugManager].visible = false
 
-func open_pause_menu() -> void:
+func open_pause_menu(hideMouse: bool) -> void:
 	if pauseMenu == null:
 		return
 	
+	#open menu
 	if !pauseMenu.visible && canPause:
 		print("[uiManager] Paused")
+		#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		pauseMenu.visible = true
 		get_tree().paused = true
 	
+	#close menu
 	elif pauseMenu.visible:
 		print("[uiManager] Not paused")
+		#Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+		if hideMouse:
+			pass
+			#Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 		pauseMenu.visible = false
 		get_tree().paused = false
 
@@ -97,7 +104,7 @@ var canDebug: bool:
 		return check_if_main_screen()
 
 func check_if_main_screen() -> bool:
-	if main.get_node("Volume").get_children().size() > 0: #checks if a world is instantiated 
+	if main.get_node("Volume").get_children().size() > 0: #checks if a volume is instantiated 
 		print("[uiManager] Can pause")
 		return true
 	else:
