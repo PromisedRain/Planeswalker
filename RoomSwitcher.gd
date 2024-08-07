@@ -7,7 +7,7 @@ extends Node2D
 @onready var collisionShape2d: CollisionShape2D = $Area2D/CollisionShape2D
 
 
-@export_enum("north", "east", "south", "west") var roomDirection
+@export_enum("left", "right", "up", "down") var roomDirection
 @export var pushDistance: int = 16
 @export var collisionShapeScale: Vector2 = Vector2(1.0, 1.0)
 

@@ -31,30 +31,41 @@ enum Volumes {
 	volume2,
 }
 
+signal scenePathFailedLoad(scenePath: String)
+signal scenePathInvalid(scenePath: String)
+signal sceneStartedLoading(scene)
+
+
 func _ready() -> void:
 	SignalManager.chosenVolume.connect(change_volume)
+	scenePathFailedLoad.connect(on_scene_path_failed_load)
+	scenePathInvalid.connect(on_scene_path_invalid)
+	sceneStartedLoading.connect(on_scene_started_loading)
 
 func change_volume(volume: Volumes) -> void:
 	change_current_volume(volume)
 
 func change_current_volume(volume: Volumes) -> void:
-	var volumePath: String = get_volume_path(volume)
-	if volumePath == "":
-		print("[levelManager] Invalid volume path at: %s" % volumePath)
+	#var volumePath: String = get_volume_path(volume)
+	var volumesPath: String = "res://src/scenes/levels/"
+	var volumeName: String = get_volume_name(volume)
+	
+	if volumesPath == "":
+		print("[levelManager] Invalid volume path at: %s" % volumesPath)
 	else:
 		free_volume_instance()
-		print("[levelManager] Changed volume to: %s" % volumePath)
-		var volumeInstance: Node2D = load(volumePath).instantiate()
-		volumeContainer.add_child(volumeInstance)
+		print("[levelManager] Changed volume to: %s" % volumesPath)
+		#var volumeInstance: Node2D = load(volumePath).instantiate()
+		#volumeContainer.add_child(volumeInstance)
 
-func get_volume_path(volume: Volumes) -> String:
+func get_volume_name(volume: Volumes) -> String:
 	match volume:
 		Volumes.volume1:
-			return fullVolumePaths["volume1"]
+			return "volume1"
 		Volumes.volume2:
-			return fullVolumePaths["volume2"]
+			return "volume2"
 		_:
-			return fullVolumePaths["volume1"]
+			return "volume1"
 
 func free_volume_instance() -> void:
 	if currentVolume != null:
@@ -69,4 +80,24 @@ func create_camera_instance() -> Camera2D:
 	var camera: Camera2D = playerCamera.instantiate()
 	return camera
 
+func load_room(roomName: String) -> void:
+	load_scene(roomName, roomsPath)
 
+func load_scene(sceneFilename: String, scenePath: String, monitorLoading: bool = false) -> void:
+	sceneStartedLoading
+	
+	var dir: DirAccess = SaveManager.verify_and_open_dir(scenePath)
+	
+
+func monitor_loading() -> void:
+	pass
+
+
+func on_scene_path_failed_load() -> void:
+	print("")
+
+func on_scene_path_invalid() -> void:
+	print("")
+
+func on_scene_started_loading() -> void:
+	print("")

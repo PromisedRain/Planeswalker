@@ -30,11 +30,11 @@ func load_current_room() -> void:
 	if roomName == null || roomName == "":
 		print("[volume] No saved room found, loading default")
 		var defaultFirstRoom: String = get_current_volume_first_room()
-		load_room(defaultFirstRoom) 
+		LevelManager.load_room(defaultFirstRoom) 
 		return
 	
 	print("[volume] Loading saved room")
-	load_room(roomName)
+	LevelManager.load_room(roomName)
 
 func update_current_volume() -> void:
 	print("updating current volume")
