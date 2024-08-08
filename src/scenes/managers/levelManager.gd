@@ -100,17 +100,14 @@ func clear_scene_cache() -> void:
 
 func load_scene(fileName: String, filePath: String, fileParent: Node) -> void:
 	fileStartedLoading.emit(fileName)
-	
 	var dir: DirAccess = SaveManager.verify_and_open_dir(filePath)
-	var fullFilePath: String = "%s/%s.tscn" % [filePath, fileName]
 	
+	var fullFilePath: String = "%s/%s.tscn" % [filePath, fileName]
 	if !FileAccess.file_exists(fullFilePath):
 		filePathInvalid.emit(fullFilePath)
 		return
 	
 	var cachedScene: PackedScene = get_cached_scene(fullFilePath)
-	print(cachedScene)
-	
 	if cachedScene:
 		fileParent.add_child(cachedScene.instantiate())
 		loadInProgress = false
@@ -169,7 +166,6 @@ func on_file_path_failed_load(path: String) -> void:
 func on_file_path_invalid(path: String) -> void:
 	print("[levelManager] Cannot open non-existent file at: %s" % path)
 
-
 #getters
 func get_player_instance() -> Player: 
 	var player: Player = playerPath.instantiate() 
@@ -193,7 +189,7 @@ func get_cached_scene(filePath: String) -> PackedScene:
 	if cachedScene is PackedScene:
 		return cachedScene
 	else:
-		print("[levelManager > get_cached_scene()] CachedScene: %s" % cachedScene)
+		print("[levelManager] CachedScene not found or invalid: %s" % cachedScene)
 		return null
 	
 	#if cachedScene != null:
