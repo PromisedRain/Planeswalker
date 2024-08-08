@@ -23,14 +23,30 @@ func int_lerp(start: int, target: int, multiplier: float) -> int:
 	return int(start + (target - start) * multiplier)
 
 func generate_uuid() -> String:
-	var chars: String = "0123456789abcdefghijklmnopqrstuvxyz"
+	var pattern: String = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
 	var uuid: String = ""
-	for i in range(32):
-		uuid += chars[randi() % chars.length()]
+	
+	for i: int in pattern.length():
+		var c: String = pattern[i]
+		
+		if c == "x" || c == "y":
+			var r: int = randi() % 16
+			var v: int
+			
+			if c == "x":
+				v = r
+			else:
+				v = (r & 0x3) | 0x8
+			uuid += to_hex_char(v)
+		else:
+			uuid += c
 	return uuid
 
+func to_hex_char(value: int) -> String:
+	var hexChars: Array[String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"]
+	return hexChars[value]
 
 func _ready():
-	var uid = generate_uuid()
-	print(uid)
+	var uuid = generate_uuid()
+	print("[utils] Test uuid: %s" % uuid)
 	

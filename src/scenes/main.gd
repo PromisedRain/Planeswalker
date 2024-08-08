@@ -1,13 +1,10 @@
 extends Node
 
-@onready var player: CharacterBody2D = Utils.get_player()
 @onready var animationPlayer: AnimationPlayer = $UILayer/AnimationPlayer
 
 @onready var window: Window = get_window() 
 @onready var windowBaseSize: Vector2i = window.content_scale_size
 @onready var windowScreenSize: Vector2i = get_viewport().get_visible_rect().size
-
-#@onready var hud: CanvasLayer = $HUD
 
 @onready var volume: Node2D = $Volume
 
@@ -18,12 +15,9 @@ func _ready() -> void:
 func initial_data_loaded(finishedProgress: bool) -> void: 
 	if !finishedProgress:
 		return
-	#var world: Node2D = load(LevelManager.currentVolumePath).instantiate()
-	#LevelManager.currentWorld = world
-	#volume.add_child(world)
 	
 	LevelManager.mainScene = self
-	LevelManager.volumeContainer = volume
+	LevelManager.volumesParent = volume
 	
 	#match LevelManager.currentVolume:
 	#	"volume1":

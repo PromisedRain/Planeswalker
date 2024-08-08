@@ -54,12 +54,12 @@ func instantiate_used_slot(slot: int) -> void:
 	if container: #&& container.get_child_count() <= 0:
 		container.add_child(instance)
 	else:
-		print("container%s already used" % slot)
+		print("[slotSelection] Container%s already used" % slot)
 
 func on_used_slot_pressed(slot: int) -> void:
 	load_save(slot)
 	selectedSlot.emit(slot)
-	print("[slotSelection] Selected slot_%d" % slot)
+	print("[slotSelection] Selected slot%d" % slot)
 
 func instantiate_empty_slot(slot: int) -> void:
 	var instance: EmptySlot = emptySlot.instantiate()

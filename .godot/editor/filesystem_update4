@@ -7,3 +7,8 @@ res://src/scenes/levels/volume1.tscn
 res://src/scenes/levels/rooms/room1.tscn
 res://src/scenes/levels/volume.gd
 res://src/lib/utils.gd
+res://src/scenes/main.gd
+res://src/scenes/managers/saveManager.gd
+res://src/gui/slotSelection/slotSelection.gd
+res://RoomSwitcher.gd
+res://src/scenes/levels/room.gd

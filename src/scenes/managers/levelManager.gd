@@ -3,7 +3,7 @@ extends Node
 @export var playerPath: PackedScene = preload("res://src/scenes/objects/player/player.tscn")
 @export var playerCamera: PackedScene = preload("res://src/scenes/objects/playerCamera/playerCamera.tscn")
 
-@onready var volumeContainer: Node2D
+@onready var volumesParent: Node2D
 
 #vars
 var mainScene: Node
@@ -12,24 +12,23 @@ var currentVolume: Volume
 var currentVolumePath: String
 var currentVolumeName: String
 
-
 var currentSpawn
 var currentRoom: Room
 var currentRoomPath: String
 var currentRoomPosition: Vector2
 
 var loadTimer: Timer
-var loadFileParent: Node
 var loadInProgress: bool = false
+var loadQueue: Array[Node] = []
+
+var sceneCache: Dictionary = {}
+var sceneCacheOrder: Array[String] = []
 
 #consts
-const roomsPath: String = "res://src/scenes/levels/rooms/"
+const roomsPath: String = "res://src/scenes/levels/rooms"
 const volumePath: String = "res://src/scenes/levels"
 
-const fullVolumePaths: Dictionary = {
-	"volume1": "res://src/scenes/levels/volume1.tscn",
-	"volume2": "res://src/scenes/levels/volume2.tscn"
-}
+const maxSceneCacheSize: int = 10
 
 enum Volumes {
 	volume1,
@@ -39,7 +38,7 @@ enum Volumes {
 signal filePathFailedLoad(filePath: String)
 signal filePathInvalid(filePath: String)
 signal fileStartedLoading(fileName: String)
-signal fileFinishedLoading(file: Node, parent: Node)
+signal fileFinishedLoading(file: Node, parent: Node, path: String)
 
 func _ready() -> void:
 	SignalManager.chosenVolume.connect(change_volume) # from volumeSelection
@@ -56,62 +55,66 @@ func change_current_volume(volume: Volumes) -> void:
 	#var volumePath: String = get_volume_path(volume)
 	var volumesPath: String = volumePath
 	var volumeName: String = get_volume_name(volume)
-	var volumeParent: Node2D = volumeContainer
+	var volumeParent: Node2D = volumesParent
 	
 	if volumesPath == "":
 		print("[levelManager] Invalid volume path at: %s" % volumesPath)
 	else:
 		free_volume_instance()
 		load_volume(volumeName, volumesPath, volumeParent)
-		#volumeContainer.add_child(volumeInstance
-		#var volumeInstance: Node2D = load(volumePath).instantiate()
-		#volumeContainer.add_child(volumeInstance)
-
-func get_volume_name(volume: Volumes) -> String:
-	match volume:
-		Volumes.volume1:
-			return "volume1"
-		Volumes.volume2:
-			return "volume2"
-		_:
-			return "volume1"
 
 func free_volume_instance() -> void:
 	if currentVolume != null:
 		currentVolume.queue_free()
 		currentVolume = null
 
-func get_player_instance() -> Player: 
-	var player: Player = playerPath.instantiate() 
-	return player
-
-func get_player_camera_instance() -> Camera2D:
-	var camera: Camera2D = playerCamera.instantiate()
-	return camera
-
-func load_room(_roomName: String, _roomParent: Node) -> void:
+#loading of scenes
+func load_room(_roomName: String, _roomParent: Node) -> bool:
 	if loadInProgress:
-		print("[levelManager] Loading in progress")
 		push_warning("[levelManager] Loading in progress")
-		return
+		return false
 	
 	load_scene(_roomName, roomsPath, _roomParent)
+	return true
 
-func load_volume(_volumeName: String, _volumePath: String, _volumeParent: Node) -> void:
+func load_volume(_volumeName: String, _volumePath: String, _volumeParent: Node) -> bool:
 	if loadInProgress:
-		print("[levelManager] Loading in progress")
 		push_warning("[levelManager] Loading in progress")
-		return
+		return false
 	
 	load_scene(_volumeName, _volumePath, _volumeParent)
+	return true
+
+func cache_scene(filePath: String, scene: PackedScene) -> void:
+	if sceneCache.size() >= maxSceneCacheSize:
+		var oldest: String = sceneCacheOrder.pop_front()
+		sceneCache.erase(oldest)
+	
+	sceneCache[filePath] = scene
+	sceneCacheOrder.append(filePath)
+
+func clear_scene_cache() -> void:
+	sceneCache.clear()
+	sceneCacheOrder.clear()
+	print("[levelManager] Cleared scene cache")
 
 func load_scene(fileName: String, filePath: String, fileParent: Node) -> void:
 	fileStartedLoading.emit(fileName)
-	var dir: DirAccess = SaveManager.verify_and_open_dir(filePath)
 	
+	var dir: DirAccess = SaveManager.verify_and_open_dir(filePath)
 	var fullFilePath: String = "%s/%s.tscn" % [filePath, fileName]
+	
 	if !FileAccess.file_exists(fullFilePath):
 		filePathInvalid.emit(fullFilePath)
+		return
+	
+	var cachedScene: PackedScene = get_cached_scene(fullFilePath)
+	print(cachedScene)
+	
+	if cachedScene:
+		fileParent.add_child(cachedScene.instantiate())
+		loadInProgress = false
+		print("[levelManager] Loaded from cache: %s" % fullFilePath)
 		return
 	
 	var loader = ResourceLoader.load_threaded_request(fullFilePath)
@@ -136,7 +139,7 @@ func monitor_load_progress(filePath: String, fileParent: Node) -> void:
 			loadTimer.stop()
 			return
 		ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-			print("[levelManager] thread in progress: %s% " % progress) #TODO make it instantiate loadbar and shit in UiManager
+			print("[levelManager] thread in progress: %s%% " % progress) #TODO make it instantiate loadbar and shit in UiManager
 		ResourceLoader.THREAD_LOAD_FAILED:
 			filePathFailedLoad.emit(filePath)
 			loadTimer.stop()
@@ -144,14 +147,16 @@ func monitor_load_progress(filePath: String, fileParent: Node) -> void:
 		ResourceLoader.THREAD_LOAD_LOADED:
 			loadTimer.stop()
 			loadTimer.queue_free()
-			fileFinishedLoading.emit(ResourceLoader.load_threaded_get(filePath).instantiate(), fileParent)
+			fileFinishedLoading.emit(ResourceLoader.load_threaded_get(filePath), fileParent, filePath)
 			return
 
-func on_file_finished_loading(loadedFile: Node, fileParent: Node) -> void:
-	print("[levelManager] Finished loading '%s'" % loadedFile.get_name().to_lower())
+func on_file_finished_loading(incomingFile: PackedScene, fileParent: Node, filePath: String) -> void:
+	print("[levelManager] Finished loading '%s'" % incomingFile.get_name().to_lower())
+	#sceneCache[filePath] = incomingFile
+	cache_scene(filePath, incomingFile)
 	
 	loadInProgress = false
-	fileParent.add_child(loadedFile)
+	fileParent.add_child(incomingFile.instantiate())
 
 func on_file_started_loading(fileName) -> void:
 	print("[levelManager] Started loading '%s'" % fileName)
@@ -163,3 +168,35 @@ func on_file_path_failed_load(path: String) -> void:
 
 func on_file_path_invalid(path: String) -> void:
 	print("[levelManager] Cannot open non-existent file at: %s" % path)
+
+
+#getters
+func get_player_instance() -> Player: 
+	var player: Player = playerPath.instantiate() 
+	return player
+
+func get_player_camera_instance() -> Camera2D:
+	var camera: Camera2D = playerCamera.instantiate()
+	return camera
+
+func get_volume_name(volume: Volumes) -> String:
+	match volume:
+		Volumes.volume1:
+			return "volume1"
+		Volumes.volume2:
+			return "volume2"
+		_:
+			return "volume1"
+
+func get_cached_scene(filePath: String) -> PackedScene:
+	var cachedScene: Variant = sceneCache.get(filePath, null)
+	if cachedScene is PackedScene:
+		return cachedScene
+	else:
+		print("[levelManager > get_cached_scene()] CachedScene: %s" % cachedScene)
+		return null
+	
+	#if cachedScene != null:
+	#	return cachedScene
+	#else:
+	#	return null

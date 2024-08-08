@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1723033952
+::res://::1723065671
 icon.svg::CompressedTexture2D::4351437927719067752::1721505348::1721505354::1::::<><>::
 README.md::TextFile::-1::1722457099::0::1::::<><>::
 RoomSwitcher.gd::GDScript::-1::1723033908::0::1::::RoomSwitcher<>Node2D<>::
@@ -29,8 +29,8 @@ pauseMenu.tscn::PackedScene::2453639394883836701::1722653997::0::1::::<><>::res:
 ::res://src/gui/playerUI/::1722477152
 playerUI.gd::GDScript::-1::1722457099::0::1::::<>CanvasLayer<>::
 playerUI.tscn::PackedScene::5096974918404944653::1722477152::0::1::::<><>::res://src/gui/playerUI/playerUI.gd<>uid://gejvyowi0g8l::::res://src/media/fonts/m5x7.ttf
-::res://src/gui/slotSelection/::1722999089
-slotSelection.gd::GDScript::-1::1722999089::0::1::::<>Control<>::
+::res://src/gui/slotSelection/::1723065503
+slotSelection.gd::GDScript::-1::1723065503::0::1::::<>Control<>::
 slotSelection.tscn::PackedScene::3445696236881109652::1722620795::0::1::::<><>::res://src/gui/slotSelection/slotSelection.gd<>uid://bbvixcv2opc1q::::res://src/resources/themes/mainMenuButtonLabelTheme.tres
 ::res://src/gui/slotSelectionComponents/::1722824705
 emptySlot.gd::GDScript::-1::1722824705::0::1::::EmptySlot<>Control<>::
@@ -45,10 +45,10 @@ vignette.tscn::PackedScene::5479115305269708133::1722621278::0::1::::<><>::res:/
 ::res://src/gui/volumeSelection/::1722994719
 volumeSelection.gd::GDScript::-1::1722994719::0::1::::<>Control<>::
 volumeSelection.tscn::PackedScene::675003383122241296::1722973460::0::1::::<><>::res://src/gui/volumeSelection/volumeSelection.gd<>uid://bbvixcv2opc1q::::res://src/resources/themes/mainMenuButtonLabelTheme.tres
-::res://src/lib/::1722994621
+::res://src/lib/::1723062932
 CameraAnchor.gd::GDScript::-1::1722994621::0::1::::<>Marker2D<>::
 stateMachine.gd::GDScript::-1::1722457099::0::1::::StateMachine<>Node<>::
-utils.gd::GDScript::-1::1722994600::0::1::::<>Node<>::
+utils.gd::GDScript::-1::1723062932::0::1::::<>Node<>::
 ::res://src/media/::1722025167
 ::res://src/media/audio/::1721738315
 ::res://src/media/effects/::1721738316
@@ -85,33 +85,33 @@ slotSelectionDoorOpen.png::CompressedTexture2D::4466633889504629412::1722044369:
 healthBarOver.png::CompressedTexture2D::1953801841197201724::1722457099::1722457099::1::::<><>::
 healthBarUnder.png::CompressedTexture2D::2248191212317725231::1722457099::1722457099::1::::<><>::
 ::res://src/resources/::1722481718
-::res://src/resources/shaders/::1723033897
-fog.gdshader::Shader::-1::1723033897::0::1::::<><>::
-vignette.gdshader::Shader::-1::1723033897::0::1::::<><>::
+::res://src/resources/shaders/::1723065673
+fog.gdshader::Shader::-1::1723065673::0::1::::<><>::
+vignette.gdshader::Shader::-1::1723065673::0::1::::<><>::
 ::res://src/resources/themes/::1722959897
 mainMenuButtonLabelTheme.tres::Theme::2500488408101984004::1722959897::0::1::::<><>::uid://c53lfl05xshk2::::res://src/media/fonts/mago3.ttf
 mainMenuButtons.tres::Theme::3207422829818155982::1722482927::0::1::::<><>::uid://dxl5qo013sh3d::::res://src/media/fonts/MinimalPixel v2.ttf
-::res://src/scenes/::1723004484
-main.gd::GDScript::-1::1722971169::0::1::::<>Node<>::
-main.tscn::PackedScene::2073297301119077872::1723004484::0::1::::<><>::res://src/scenes/main.gd<>uid://bbvixcv2opc1q::::res://src/resources/themes/mainMenuButtonLabelTheme.tres<>uid://dxl5qo013sh3d::::res://src/media/fonts/MinimalPixel v2.ttf
-::res://src/scenes/levels/::1723033908
+::res://src/scenes/::1723065672
+main.gd::GDScript::-1::1723062766::0::1::::<>Node<>::
+main.tscn::PackedScene::2073297301119077872::1723065672::0::1::::<><>::res://src/scenes/main.gd<>uid://bbvixcv2opc1q::::res://src/resources/themes/mainMenuButtonLabelTheme.tres<>uid://dxl5qo013sh3d::::res://src/media/fonts/MinimalPixel v2.ttf
+::res://src/scenes/levels/::1723065672
 room.gd::GDScript::-1::1723033908::0::1::::Room<>Node2D<>::
 rooms.gd::GDScript::-1::1722962122::0::1::::<>Node2D<>::
-volume1.tscn::PackedScene::6250263964812228064::1723004967::0::1::::<><>::uid://hkeot3pu0jvn::::res://src/scenes/levels/rooms/room1.tscn<>res://src/scenes/levels/volume.gd<>res://src/scenes/levels/rooms.gd
+volume1.tscn::PackedScene::6250263964812228064::1723065672::0::1::::<><>::uid://hkeot3pu0jvn::::res://src/scenes/levels/rooms/room1.tscn<>res://src/scenes/levels/volume.gd<>res://src/scenes/levels/rooms.gd
 volume2.tscn::PackedScene::7089019670421580714::1722656294::0::1::::<><>::res://src/scenes/levels/volume.gd
-volume.gd::GDScript::-1::1723033908::0::1::::Volume<>Node2D<>::
-::res://src/scenes/levels/rooms/::1723004484
-room1.tscn::PackedScene::512234593999987043::1723004484::0::1::::<><>::uid://h37voowtdgto::::res://src/media/sprites/grayboxingTileset8x8.png<>res://src/scenes/levels/room.gd<>uid://c1lem771graw2::::res://src/media/sprites/blackBackgroundTile8x8.png
-::res://src/scenes/managers/::1723033908
+volume.gd::GDScript::-1::1723065658::0::1::::Volume<>Node2D<>::
+::res://src/scenes/levels/rooms/::1723065673
+room1.tscn::PackedScene::512234593999987043::1723065673::0::1::::<><>::uid://h37voowtdgto::::res://src/media/sprites/grayboxingTileset8x8.png<>res://src/scenes/levels/room.gd<>uid://c1lem771graw2::::res://src/media/sprites/blackBackgroundTile8x8.png
+::res://src/scenes/managers/::1723063213
 debugManager.gd::GDScript::-1::1722457099::0::1::::<>CanvasLayer<>::
 debugManager.tscn::PackedScene::6987385883236804239::1722477152::0::1::::<><>::res://src/scenes/managers/debugManager.gd<>uid://gejvyowi0g8l::::res://src/media/fonts/m5x7.ttf
 globalManager.gd::GDScript::-1::1722890578::0::1::::<>Node<>::
 interactionManager.gd::GDScript::-1::1722959368::0::1::::<>Node<>::
 interactionManager.tscn::PackedScene::6890947160848516417::1722085127::0::1::::<><>::res://src/scenes/managers/interactionManager.gd
-levelManager.gd::GDScript::-1::1723033908::0::1::::<>Node<>::
+levelManager.gd::GDScript::-1::1723062784::0::1::::<>Node<>::
 levelManager.tscn::PackedScene::455945739986075628::1722477152::0::1::::<><>::res://src/scenes/managers/levelManager.gd<>uid://cm0lw3nd0kw7d::::res://src/scenes/objects/player/player.tscn
 progressionManager.gd::GDScript::-1::1722801600::0::1::::<>Node<>::
-saveManager.gd::GDScript::-1::1723000816::0::1::::<>Node<>::
+saveManager.gd::GDScript::-1::1723063213::0::1::::<>Node<>::
 sceneTransitionManager.gd::GDScript::-1::1722457099::0::1::::<>Node<>::
 sceneTransitionManager.tscn::PackedScene::7234835819357658735::1722653997::0::1::::<><>::res://src/scenes/managers/sceneTransitionManager.gd
 signalManager.gd::GDScript::-1::1722955909::0::1::::<>Node<>::
@@ -127,10 +127,11 @@ player.tscn::PackedScene::5667425600186819611::1722460109::0::1::::<><>::res://s
 ::res://src/scenes/objects/playerCamera/::1722994630
 playerCamera.gd::GDScript::-1::1722994561::0::1::::<>Camera2D<>::
 playerCamera.tscn::PackedScene::3490598350790388278::1722994630::0::1::::<><>::res://src/scenes/objects/playerCamera/playerCamera.gd
-::res://src/scenes/objects/roomSwitcher/::1723004485
-roomSwitcher.tscn::PackedScene::8448995073972374091::1723004485::0::1::::<><>::res://RoomSwitcher.gd
+::res://src/scenes/objects/roomSwitcher/::1723065673
+roomSwitcher.tscn::PackedScene::8448995073972374091::1723065673::0::1::::<><>::res://RoomSwitcher.gd
 ::res://src/shared/::1721738329
-::res://src/testing/::1722483000
+::res://src/testing/::1723065697
+::res://src/testing/interactionManager/::1723065697
 ::res://src/testing/slotSelection/::1722824897
 slotSelection.gd::GDScript::-1::1722824897::0::1::::<>Control<>::
 slotSelection.tscn::PackedScene::5086702951834475536::1722521232::0::1::::<><>::res://src/testing/slotSelection/slotSelection.gd<>uid://b4vw2ps85vui3::::res://src/media/ui/slotSelectionDoor/slotSelectionDoorOpen.png<>uid://blxx1x6h8a1qw::::res://src/resources/themes/mainMenuButtons.tres<>uid://c6puhvxl5gut6::::res://src/media/fonts/mago1.ttf<>uid://dxl5qo013sh3d::::res://src/media/fonts/MinimalPixel v2.ttf

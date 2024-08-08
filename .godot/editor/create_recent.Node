@@ -1,4 +1,5 @@
 Camera2D
+Player
 Label
 CollisionShape2D
 RayCast2D
@@ -11,4 +12,3 @@ VBoxContainer
 MarginContainer
 Button
 Control
-HBoxContainer

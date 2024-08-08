@@ -13,7 +13,7 @@ extends Node2D
 
 var currentRoom: Room
 var currentCamera: Camera2D
-var currentPlayer: CharacterBody2D
+var currentPlayer: Player
 var rooms
 
 func _ready() -> void:
@@ -26,22 +26,24 @@ func load_current_room() -> void:
 	
 	if roomName == null || roomName == "":
 		print("[volume] No saved room found, loading default")
+		
 		var defaultFirstRoom: String = get_current_volume_first_room_name()
-		#print(defaultFirstRoom)
-		LevelManager.load_room(defaultFirstRoom, roomsContainer)
+		if !LevelManager.load_room(defaultFirstRoom, roomsContainer):
+			print("[volume] Failed to load default room: %s" % defaultFirstRoom)
 		return
 	
 	print("[volume] Loading saved room")
-	LevelManager.load_room(roomName, roomsContainer)
+	if !LevelManager.load_room(roomName, roomsContainer):
+		print("[volume] Failed to load saved room: %s" % roomName)
 
 func update_current_volume() -> void:
-	print("updating current volume")
+	print("[volume] Updating current volume")
 	
 	LevelManager.currentVolume = self
 	LevelManager.currentVolumeName = get_name()
 
 func update_current_room(inputRoom: Room) -> void:
-	print("updating current room")
+	print("[volume] Updating current room")
 	
 	currentRoom = inputRoom
 	LevelManager.currentRoom = currentRoom
@@ -51,23 +53,18 @@ func update_current_room(inputRoom: Room) -> void:
 func get_current_volume_first_room_name() -> String:
 	var volume: String = LevelManager.currentVolumeName.to_lower()
 	
-	var defaultVolume1: String = "room1"
-	var defaultVolume2: String = "room65"
+	var defaultVolume1Room: String = "room1"
+	var defaultVolume2Room: String = "room65"
 	
 	match volume:
 		"volume1":
-			print("volume is 1")
-			return defaultVolume1
+			return defaultVolume1Room
 		"volume2":
-			print("volume is 2")
-			return defaultVolume2
-	
+			return defaultVolume2Room
 	return "room1"
 
-
-
 func player_died() -> void:
-	print("player died")
+	print("[volume] Player died")
 	
 	reload_room()
 	reload_camera()
@@ -75,8 +72,6 @@ func player_died() -> void:
 	player.global_position = LevelManager.currentSpawn.round() + Vector2.UP
 
 func free_all_rooms() -> void:
-	print("freeing all rooms")
-	
 	for room: Room in roomsContainer.get_children():
 		room.queue_free()
 

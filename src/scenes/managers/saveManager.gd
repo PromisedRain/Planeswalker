@@ -19,14 +19,18 @@ const metaDataFullPath: String = saveDirPath + metaDataFilename
 #const saveDataFilename: String = "savedata%s.json"
 #const saveDataFullPath: String = saveDirPath + saveDataFilename
 
-const securityKey: String = "A23I5B6925UIB32P572J283I65J" #change location in the future, but who cares rn, doesnt matter
+const SAVE_SECURITY_KEY: String = "A23I5B6925UIB32P572J283I65J" #change location in the future, but who cares rn, doesnt matter
 
 signal finishedLoadingPreGameData
+
+signal filePathInvalid(filePath)
 
 func _ready() -> void:
 	ensure_save_dir_exists()
 	ensure_config_file_exists()
 	ensure_meta_data_file_exists()
+	
+	filePathInvalid.connect(on_file_path_invalid)
 
 func load_initial_data() -> void:
 	currentConfigData = load_config_file()
@@ -66,7 +70,7 @@ func ensure_slot_file_exists(slot: int, fireSuccess: bool = fireSuccessPrint) ->
 	var slotFilePath: String = saveDirPath + fileName
 	
 	if !FileAccess.file_exists(slotFilePath):
-		print("[saveManager] Cannot open non-existent file at %s" % slotFilePath)
+		filePathInvalid.emit(slotFilePath)
 		return false
 	else:
 		if fireSuccess:
@@ -115,11 +119,11 @@ func load_slot(slot: int) -> Dictionary:
 	var fullFilePath: String = saveDirPath + fileName
 	
 	if !FileAccess.file_exists(fullFilePath):
-		print("[saveManager] Cannot open non-existent file at %s" % fullFilePath)
+		filePathInvalid.emit(fullFilePath)
 		return create_default_slot_data_template(slot)
 	
-	#var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.READ, securityKey) #decryption
-	var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.READ) #no decryption
+	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.READ, SAVE_SECURITY_KEY) #decryption
+	#var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.READ) #no decryption
 	if !file:
 		print("[saveManager] Error opening the file for reading: %s" % fileName)
 		return create_default_slot_data_template(slot)
@@ -144,8 +148,8 @@ func save_slot(slot: int, slotData: Dictionary = create_default_slot_data_templa
 	var fileName: String = "savedata%s.json" % slot
 	var fullFilePath: String = saveDirPath + fileName
 	
-	#var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, securityKey) #encryption
-	var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.WRITE) #no encryption
+	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, SAVE_SECURITY_KEY) #encryption
+	#var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.WRITE) #no encryption
 	if !file:
 		print("[saveManager] Error opening the slotData file for writing at: %s" % fullFilePath)
 	else:
@@ -160,7 +164,7 @@ func load_config_file() -> Dictionary:
 	var configFile: ConfigFile = ConfigFile.new()
 	
 	if !FileAccess.file_exists(configFullPath):
-		print("[saveManager] Cannot open non-existent file at %s" % configFullPath)
+		filePathInvalid.emit(configFullPath)
 		return create_default_config_data_template()
 	
 	var err = configFile.load(configFullPath)
@@ -201,7 +205,7 @@ func load_meta_data(slot: int) -> Dictionary:
 	var fullFilePath: String = metaDataFullPath
 	
 	if !FileAccess.file_exists(fullFilePath):
-		print("[saveManager] Cannot open non-existent file at %s" % fullFilePath)
+		filePathInvalid.emit(fullFilePath)
 		return create_default_meta_data_template(slot)
 	
 	var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.READ)
@@ -232,7 +236,7 @@ func load_all_meta_data() -> Dictionary:
 	var fullFilePath: String = metaDataFullPath
 	
 	if !FileAccess.file_exists(fullFilePath):
-		print("[saveManager] Cannot open non-existent file at %s" % fullFilePath)
+		filePathInvalid.emit(fullFilePath)
 		return create_meta_data_template()
 	
 	var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.READ)
@@ -297,7 +301,7 @@ func delete_save_file(file: String, slot: int) -> void:
 	var dir: DirAccess = verify_and_open_dir(saveDirPath)
 	
 	if !FileAccess.file_exists(fullFilePath):
-		print("[saveManager] Cannot open non-existent file at: %s" % fullFilePath)
+		filePathInvalid.emit(fullFilePath)
 	else:
 		var err = dir.remove(fullFilePath)
 		if err != OK:
@@ -307,7 +311,7 @@ func delete_save_file(file: String, slot: int) -> void:
 
 func delete_config_file(path: String = configFullPath) -> void:
 	if !FileAccess.file_exists(path):
-		print("[saveManager] Cannot open non-existent file at: %s" % path)
+		filePathInvalid.emit(path)
 	else:
 		var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 		if file:
@@ -370,7 +374,7 @@ func get_config_data(section: String, key: String, _configData: Dictionary = cur
 	else:
 		var sectionData = _configData[section]
 		if !sectionData.has(key):
-			print("[saveManager] No '%s' key found in config section" % key)
+			print("[saveManager] No '%s' key found in configdata section" % key)
 			return null
 		else:
 			return sectionData[key]
@@ -388,7 +392,7 @@ func get_slot_data(key: String, slotData: Dictionary = currentSlotData) -> Varia
 	if slotData.has(key):
 		return slotData[key]
 	else:
-		print("[saveManager] No '%s' found in slotData" % key)
+		print("[saveManager] No '%s' found in slotdata" % key)
 		return null
 
 func set_slot_data(key: String, value: Variant, _slotData: Dictionary = currentSlotData) -> void:
@@ -400,7 +404,7 @@ func set_slot_data(key: String, value: Variant, _slotData: Dictionary = currentS
 	
 	var slot: int = get_slot_for_setting_slot_data()
 	save_slot(slot, _slotData)
-	print("[saveManager] Set '%s' to '%s' in saveData" % [key, value])
+	print("[saveManager] Set '%s' to '%s' in savedata" % [key, value])
 
 func get_slot_for_setting_slot_data() -> int:
 	var _slotData: Dictionary = currentSlotData
@@ -463,4 +467,5 @@ func get_available_slot_count() -> int:
 	#save_slot(counter, defaultGameData)
 	return counter
 
-
+func on_file_path_invalid(filePath) -> void:
+	print("[saveManager] Cannot open non-existent file at: %s" % filePath)
