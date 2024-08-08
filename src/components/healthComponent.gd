@@ -9,8 +9,6 @@ var hasDied: bool = false
 signal died
 signal healthChanged
 
-#TODO
-
 func _ready() -> void:
 	init_health()
 

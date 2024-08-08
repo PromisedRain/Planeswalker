@@ -61,6 +61,8 @@ func change_current_volume(volume: Volumes) -> void:
 		print("[levelManager] Invalid volume path at: %s" % volumesPath)
 	else:
 		free_volume_instance()
+		#var main = Utils.get_main()
+		#main.get_node("UiLayer/VersionLabel") #TODO make it hide the versionlabel when you arent in main menu
 		load_volume(volumeName, volumesPath, volumeParent)
 
 func free_volume_instance() -> void:
@@ -109,9 +111,9 @@ func load_scene(fileName: String, filePath: String, fileParent: Node) -> void:
 	
 	var cachedScene: PackedScene = get_cached_scene(fullFilePath)
 	if cachedScene:
-		fileParent.add_child(cachedScene.instantiate())
-		loadInProgress = false
 		print("[levelManager] Loaded from cache: %s" % fullFilePath)
+		#loadInProgress = false #TODO eventually have loadInProgress = false sets at the penultimate line before return. implement sceneQueueing for this
+		fileParent.add_child(cachedScene.instantiate())
 		return
 	
 	var loader = ResourceLoader.load_threaded_request(fullFilePath)

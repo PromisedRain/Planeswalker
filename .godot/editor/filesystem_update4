@@ -12,3 +12,4 @@ res://src/scenes/managers/saveManager.gd
 res://src/gui/slotSelection/slotSelection.gd
 res://RoomSwitcher.gd
 res://src/scenes/levels/room.gd
+res://src/components/healthComponent.gd
