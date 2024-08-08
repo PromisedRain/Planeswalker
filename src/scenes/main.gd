@@ -8,6 +8,8 @@ extends Node
 
 @onready var volume: Node2D = $Volume
 
+#TODO remember to turn off on_top before shipping game cause its a problem, on top for debug only i guess guh
+
 func _ready() -> void:
 	SignalManager.initialLoadComplete.connect(initial_data_loaded)
 	SaveManager.load_initial_data()
