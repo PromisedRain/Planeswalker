@@ -14,8 +14,8 @@ func _ready() -> void:
 	SignalManager.initialLoadComplete.connect(initial_data_loaded)
 	SaveManager.load_initial_data()
 
-func initial_data_loaded(finishedProgress: bool) -> void: 
-	if !finishedProgress:
+func initial_data_loaded(dataLoaded: bool) -> void: 
+	if !dataLoaded:
 		return
 	
 	LevelManager.mainScene = self
