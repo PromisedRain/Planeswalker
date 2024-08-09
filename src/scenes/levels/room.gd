@@ -29,7 +29,7 @@ func _ready() -> void:
 		door.playerEntered.connect(room_entered)
 	
 	calculate_room_bounds()
-	print("room bounds: ", minX, minY, maxX, maxY)
+	#print("room bounds: ", minX, minY, maxX, maxY)
 
 func room_entered() -> void:
 	pass

@@ -97,11 +97,11 @@ func free_ui_component(_name: String) -> void:
 #getters
 var canPause: bool:
 	get:
-		return check_if_main_screen()
+		return GlobalManager.canPause
 
 var canDebug: bool:
 	get: 
-		return check_if_main_screen()
+		return true #check_if_main_screen()
 
 func check_if_main_screen() -> bool:
 	if main.get_node("Volume").get_children().size() > 0: #checks if a volume is instantiated 

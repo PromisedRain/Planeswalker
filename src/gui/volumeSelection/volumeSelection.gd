@@ -16,4 +16,5 @@ func _on_volume_selection_return_button_pressed() -> void:
 func _on_volume_1_button_pressed():
 	UiManager.free_main_menu()
 	#Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
+	GlobalManager.canPause = true
 	SignalManager.signal_choosing_volume(SignalManager.Volumes.volume1)
