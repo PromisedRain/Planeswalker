@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://hkeot3pu0jvn"]
 
 [ext_resource type="Texture2D" uid="uid://h37voowtdgto" path="res://src/media/sprites/grayboxingTileset8x8.png" id="1_dhpyc"]
-[ext_resource type="Script" path="res://src/scenes/levels/room.gd" id="1_emgvt"]
+[ext_resource type="Script" path="res://src/lib/room.gd" id="1_emgvt"]
 [ext_resource type="Texture2D" uid="uid://c1lem771graw2" path="res://src/media/sprites/blackBackgroundTile8x8.png" id="3_e7e21"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sevgq"]

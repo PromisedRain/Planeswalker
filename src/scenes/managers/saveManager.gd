@@ -86,7 +86,7 @@ func create_default_slot_data_template(slot: int) -> Dictionary:
 			false,
 			false
 		],
-		"current_volume": 1,
+		"current_volume": 0,
 		"current_room": ""
 	}
 
@@ -96,7 +96,8 @@ func create_default_meta_data_template(slot: int) -> Dictionary:
 		"total_slot_playtime": "00:00:00",
 		"total_collectibles_collected": 0,
 		"total_slot_deaths": 0,
-		"current_volume": 1
+		"current_volume": 0,
+		"latest_volume_name": "Volume"
 	}
 
 func create_meta_data_template() -> Dictionary:
@@ -294,6 +295,22 @@ func save_meta_data(slot: int, _metaData: Dictionary) -> void:
 		_file.close()
 		print("[saveManager] Metadata file created/saved at: %s" % fullFilePath)
 
+
+#saving everything
+func save_slot_meta_data(_metaData: Dictionary = currentMetaData) -> void:
+	var slotMetaData: Dictionary = get_all_slot_meta_data(currentSaveSlot) 
+	
+	_metaData["slot_%d" % currentSaveSlot] = slotMetaData
+	SaveManager.save_meta_data(currentSaveSlot, _metaData)
+
+func save_game() -> void:
+	save_config_file()
+	save_slot_meta_data()
+	save_slot(currentSaveSlot)
+	UiManager.create_save_icon_notification()
+	print("[saveManager] Saved game")
+
+
 #deleting
 func delete_save_file(file: String, slot: int) -> void:
 	var fileName: String = "%s%s.json" % [file, slot]
@@ -308,6 +325,12 @@ func delete_save_file(file: String, slot: int) -> void:
 			print("[saveManager] Error deleting file: %s" % fileName)
 		else:
 			print("[saveManager] File sucessfully deleted: %s" % fileName)
+
+func delete_slot_meta_data_info(slot: int, _metaData: Dictionary = currentMetaData) -> void:
+	_metaData["slot_%d" % slot] = create_default_meta_data_template(slot)
+	save_slot_meta_data(_metaData)
+	print("[saveManager] Deleted and replaced a section of metadata file, slot replaced: slot_%d" % slot)
+
 
 func delete_config_file(path: String = configFullPath) -> void:
 	if !FileAccess.file_exists(path):
@@ -409,6 +432,7 @@ func set_slot_data(key: String, value: Variant, _slotData: Dictionary = currentS
 func get_slot_for_setting_slot_data() -> int:
 	var _slotData: Dictionary = currentSlotData
 	var slot: int = _slotData["save_slot_number"]
+	
 	if slot == null:
 		return 1
 	return slot
@@ -418,12 +442,27 @@ func get_slot_meta_data(slot: int) -> Variant:
 	return null
 
 func get_all_slot_meta_data(slot: int, _metaData: Dictionary = currentMetaData) -> Dictionary:
-	var slotKey = "slot_%d" % slot
-	if !_metaData.has(slotKey):
-		print("[saveManager] No '%s' found in metadata" % slotKey)
+	var _slot: String = "slot_%d" % slot
+	if !_metaData.has(_slot):
+		print("[saveManager] No '%s' found in metadata" % _slot)
 		return Dictionary()
 	else:
-		return _metaData[slotKey]
+		return _metaData[_slot]
+
+func set_specific_slot_meta_data(slot: int, key: String, value: Variant, _metaData: Dictionary = currentMetaData) -> void:
+	var _slot: String = "slot_%d" % slot
+	if!_metaData.has(_slot):
+		print("[saveManager] No '%s' slot found in metadata" % _slot)
+		return
+	
+	if !_metaData[_slot].has(key):
+		print("[saveManager] No '%s' key found in slot_%d metadata, making key" % [key, _slot])
+		_metaData[_slot] = {}
+	
+	_metaData[_slot][key] = value
+	
+	save_meta_data(slot, _metaData)
+	print("[saveManager] Set '%s' to '%s' in slot_%d metadata" % [key, value, slot])
 
 func get_runtime_check() -> bool:
 	var loadCheck: bool

@@ -8,13 +8,15 @@ extends Control
 
 var slot: int
 var slotCurrentVolume: int = 1
+var slotCurrentVolumeName: String = "Volume 1"
 var slotCollectibles: int = 0
 var slotPlaytime: String = "00:00:00"
 var slotDeaths: int = 0
 
 
 func _ready() -> void:
-	slotCurrentVolumeLabel.text = "Volume %s" % str(slotCurrentVolume)
+	#slotCurrentVolumeLabel.text = "Volume %s" % str(slotCurrentVolume)
+	slotCurrentVolumeLabel.text = str(slotCurrentVolumeName)
 	slotCollectiblesLabel.text = "Collectibles x%s" % str(slotCollectibles)
 	slotPlaytimeLabel.text = slotPlaytime
 	slotDeathsLabel.text = "Deaths x%s" % str(slotDeaths)

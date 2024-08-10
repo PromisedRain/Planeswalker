@@ -1,13 +1,13 @@
-extends Node2D
+extends CanvasLayer
 
 @onready var window: Window = get_window() 
 @onready var windowScreenSize: Vector2i = get_viewport().get_visible_rect().size
-@onready var starParticles: CPUParticles2D = $"CanvasLayer/StarParticles"
+@onready var starParticles: CPUParticles2D = $"StarParticles"
 
-@onready var titleScreen: Control = $CanvasLayer/TitleScreen
-@onready var settingsScreen: Control = $CanvasLayer/Settings
-@onready var slotSelectionScreen: Control = $CanvasLayer/SlotSelection
-@onready var volumeSelectionScreen: Control = $CanvasLayer/VolumeSelection
+@onready var titleScreen: Control = $TitleScreen
+@onready var settingsScreen: Control = $Settings
+@onready var slotSelectionScreen: Control = $SlotSelection
+@onready var volumeSelectionScreen: Control = $VolumeSelection
 
 signal chosenVolumeFromMainMenu(volume: int)
 

@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://4sk5yusr5vvs"]
+[gd_scene load_steps=8 format=3 uid="uid://4sk5yusr5vvs"]
 
 [ext_resource type="Script" path="res://src/scenes/main.gd" id="1_gewu3"]
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="4_w0p6m"]
 [ext_resource type="FontFile" uid="uid://dxl5qo013sh3d" path="res://src/media/fonts/MinimalPixel v2.ttf" id="5_gpm4t"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_qdbio"]
+viewport_path = NodePath("SubViewport")
 
 [sub_resource type="Animation" id="Animation_5gicn"]
 length = 0.001
@@ -44,8 +47,31 @@ _data = {
 process_mode = 3
 script = ExtResource("1_gewu3")
 
-[node name="Volume" type="Node2D" parent="."]
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+snap_2d_transforms_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(320, 180)
+
+[node name="World" type="Node2D" parent="SubViewport"]
 process_mode = 1
+
+[node name="ViewportLayer" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="ViewportLayer"]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("ViewportTexture_qdbio")
+
+[node name="Camera2D" type="Camera2D" parent="ViewportLayer"]
+visible = false
+position = Vector2(161, -84)
+enabled = false
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 

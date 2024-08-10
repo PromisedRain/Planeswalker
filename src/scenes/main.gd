@@ -6,7 +6,7 @@ extends Node
 @onready var windowBaseSize: Vector2i = window.content_scale_size
 @onready var windowScreenSize: Vector2i = get_viewport().get_visible_rect().size
 
-@onready var volume: Node2D = $Volume
+@onready var world: Node2D = $SubViewport/World
 
 #TODO remember to turn off on_top before shipping game cause its a problem, on top for debug only i guess guh
 
@@ -19,7 +19,7 @@ func initial_data_loaded(dataLoaded: bool) -> void:
 		return
 	
 	LevelManager.mainScene = self
-	LevelManager.volumesParent = volume
+	LevelManager.volumesParent = world
 	
 	#match LevelManager.currentVolume:
 	#	"volume1":

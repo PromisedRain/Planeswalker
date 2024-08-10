@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7tb75csliu12"]
+
+[ext_resource type="Script" path="res://src/gui/saveIconComponents/saveIcon1.gd" id="1_7y1up"]
+[ext_resource type="Texture2D" uid="uid://b21cjrfdmvygb" path="res://src/media/sprites/gameObjects/saveIcons/saveIco1.png" id="1_hbdcx"]
+
+[node name="SaveIcon1" type="Sprite2D"]
+process_mode = 3
+z_index = 5
+texture_filter = 1
+texture = ExtResource("1_hbdcx")
+script = ExtResource("1_7y1up")

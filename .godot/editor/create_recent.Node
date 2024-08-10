@@ -1,4 +1,9 @@
+Sprite2D
+CanvasLayer
 Camera2D
+TextureRect
+Node2D
+SubViewport
 Player
 Label
 CollisionShape2D
@@ -7,8 +12,3 @@ Area2D
 CanvasModulate
 Marker2D
 TileMap
-Node2D
-VBoxContainer
-MarginContainer
-Button
-Control

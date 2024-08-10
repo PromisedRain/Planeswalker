@@ -6,20 +6,28 @@ extends Node2D
 @onready var worldEnvironment: WorldEnvironment = $WorldEnvironment
 @onready var canvasModulate: CanvasModulate = $CanvasModulate
 
-@export var volumeGivenTitle: String
+@export var volumeGivenName: String
 @export_range(1,3) var volumeID: int
 @export var defaultVolumeSpawnLocation: Vector2i
 @export var volumeSpawn: bool
+
+@onready var icon: Sprite2D = $Icon
+
 
 var currentRoom: Room
 var currentCamera: Camera2D
 var currentPlayer: Player
 var rooms
 
+func _process(delta: float) -> void:
+	icon.rotate(0.0005)
+
 func _ready() -> void:
 	update_current_volume()
 	free_all_rooms()
 	load_current_room()
+	
+	SaveManager.save_game()
 
 func load_current_room() -> void:
 	var roomName: String = SaveManager.get_slot_data("current_room")
@@ -40,7 +48,16 @@ func update_current_volume() -> void:
 	print("[volume] Updating current volume")
 	
 	LevelManager.currentVolume = self
+	LevelManager.currentVolumePath = str(LevelManager.volumePath + "/" + LevelManager.currentVolumeName.to_lower())
 	LevelManager.currentVolumeName = get_name()
+	
+	var slot: int = SaveManager.currentSaveSlot
+	var latestVolumeID: int = int(SaveManager.get_slot_data("current_volume"))
+	
+	if volumeID > latestVolumeID:
+		print("[volume] New volume reached: Updating save and metadata")
+		SaveManager.set_specific_slot_meta_data(slot, "current_volume", volumeID)
+		SaveManager.set_specific_slot_meta_data(slot, "latest_volume_name", volumeGivenName)
 
 func update_current_room(inputRoom: Room) -> void:
 	print("[volume] Updating current room")

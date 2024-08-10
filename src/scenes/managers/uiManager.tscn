@@ -1,21 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://dimjcq438a4r4"]
+[gd_scene load_steps=8 format=3 uid="uid://dimjcq438a4r4"]
 
 [ext_resource type="Script" path="res://src/scenes/managers/uiManager.gd" id="1_jlpka"]
 [ext_resource type="PackedScene" uid="uid://cevaoxwk4veu4" path="res://src/gui/playerUI/playerUI.tscn" id="2_v6avp"]
 [ext_resource type="PackedScene" uid="uid://c6s0hvw0hsy5t" path="res://src/scenes/managers/debugManager.tscn" id="3_7fswh"]
 [ext_resource type="PackedScene" uid="uid://cg6g17qc8awr2" path="res://src/gui/mainMenu/mainMenu.tscn" id="4_ks5rj"]
 [ext_resource type="PackedScene" uid="uid://ckceh1hxaxh4x" path="res://src/gui/vignette/vignette.tscn" id="5_lnm1i"]
+[ext_resource type="PackedScene" uid="uid://b7tb75csliu12" path="res://src/gui/saveIconComponents/saveIcon1.tscn" id="5_otoeg"]
 [ext_resource type="PackedScene" uid="uid://ba7tc2g1wlo02" path="res://src/gui/pauseMenu/pauseMenu.tscn" id="6_rphhq"]
 
 [node name="UIManager" type="CanvasLayer"]
+layer = 2
 script = ExtResource("1_jlpka")
 playerUi = ExtResource("2_v6avp")
 debugManager = ExtResource("3_7fswh")
 mainMenu = ExtResource("4_ks5rj")
+savePopupIcon = ExtResource("5_otoeg")
 
 [node name="Vignette" parent="." instance=ExtResource("5_lnm1i")]
 visible = false
 
 [node name="PauseMenu" parent="." instance=ExtResource("6_rphhq")]
 process_mode = 2
+layer = 2
 visible = false

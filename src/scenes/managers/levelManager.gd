@@ -74,7 +74,6 @@ func free_volume_instance() -> void:
 		currentVolume.queue_free()
 		currentVolume = null
 
-#loading of scenes
 func load_room(_roomName: String, _roomParent: Node) -> bool:
 	#if sceneLoadInProgress:
 	#	load_scene(_roomName, roomsPath, _roomParent)
@@ -105,7 +104,6 @@ func on_load_next_scene_queue() -> void:
 	var fileName: String = nextSceneInfo["file_name"]
 	var filePath: String = nextSceneInfo["file_path"]
 	var fileParent: Node = nextSceneInfo["file_parent"]
-	
 	load_scene(fileName, filePath, fileParent)
 
 func cache_scene(filePath: String, scene: PackedScene) -> void:
@@ -123,20 +121,26 @@ func clear_scene_cache() -> void:
 
 func reset_scene_loading_state() -> void:
 	clear_scene_cache()
+	
+	if sceneLoadTimer != null:
+		sceneLoadTimer.queue_free()
+	
 	if sceneLoadInProgress:
 		sceneLoadInProgress = false
 		sceneLoadQueue.clear()
 	else:
 		sceneLoadQueue.clear()
+	
+	print("[levelManager] Reset scene loading state")
 
 func load_scene(fileName: String, filePath: String, fileParent: Node) -> void:
 	if sceneLoadInProgress:
-		printerr("[levelManager] Load currently in progress, adding '%s' to queue" % fileName)
+		print("[levelManager] Load currently in progress, adding '%s' to queue" % fileName)
 		add_to_scene_load_queue(fileName, filePath, fileParent)
 		#sceneLoadInProgress = false
 		return 
 	
-	print("fileParent Type: ", typeof(fileParent))
+	#print("fileParent Type: ", typeof(fileParent))
 	
 	fileStartedLoading.emit(fileName)
 	var dir: DirAccess = SaveManager.verify_and_open_dir(filePath)
@@ -151,7 +155,6 @@ func load_scene(fileName: String, filePath: String, fileParent: Node) -> void:
 		print("[levelManager] Loaded from cache: %s" % fullFilePath)
 		fileParent.add_child(cachedScene.instantiate())
 		sceneLoadInProgress = false #TODO eventually have sceneLoadInProgress = false sets at the penultimate line before return. implement sceneQueueing for this
-		
 		return
 	
 	var loader = ResourceLoader.load_threaded_request(fullFilePath)
@@ -188,7 +191,7 @@ func monitor_scene_load_progress(filePath: String, fileParent: Node) -> void:
 			return
 
 func on_file_finished_loading(incomingFile: PackedScene, fileParent: Node, filePath: String) -> void:
-	print("[levelManager] Finished loading '%s'" % incomingFile.get_name().to_lower())
+	print("[levelManager] Finished loading '%s'" % filePath)
 	cache_scene(filePath, incomingFile)
 	
 	fileParent.add_child(incomingFile.instantiate())
@@ -232,8 +235,3 @@ func get_cached_scene(filePath: String) -> PackedScene:
 	else:
 		print("[levelManager] CachedScene not found or invalid: %s" % cachedScene)
 		return null
-	
-	#if cachedScene != null:
-	#	return cachedScene
-	#else:
-	#	return null

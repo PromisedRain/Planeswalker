@@ -7,7 +7,7 @@ extends CanvasLayer
 @export var playerUi: PackedScene
 @export var debugManager: PackedScene 
 @export var mainMenu: PackedScene
-
+@export var savePopupIcon: PackedScene
 
 
 var loaded: Dictionary = {}
@@ -93,6 +93,12 @@ func free_ui_component(_name: String) -> void:
 		var instance = loaded[_name]
 		instance.queue_free()
 		loaded.erase(_name)
+
+func create_save_icon_notification() -> void:
+	var instance: Sprite2D = savePopupIcon.instantiate()
+	instance.position.x = 300
+	instance.position.y = 160
+	add_child(instance)
 
 #getters
 var canPause: bool:

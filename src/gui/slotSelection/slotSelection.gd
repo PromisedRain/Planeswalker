@@ -43,6 +43,7 @@ func instantiate_used_slot(slot: int) -> void:
 	var metaData: Dictionary = SaveManager.get_all_slot_meta_data(slot)
 	var instance: UsedSlot = usedSlot.instantiate()
 	instance.slot = slot
+	instance.slotCurrentVolumeName = metaData["latest_volume_name"]
 	instance.slotCurrentVolume = metaData["current_volume"]
 	instance.slotCollectibles = metaData["total_collectibles_collected"]
 	instance.slotPlaytime = metaData["total_slot_playtime"]
@@ -76,6 +77,8 @@ func on_empty_slot_pressed(slot: int) -> void:
 	instantiate_used_slot(slot)
 	load_save(slot)
 	SaveManager.currentSlotData = {}
+	#selectedSlot.emit(slot)
+	#print("[slotSelection] Selected slot%d" % slot)
 
 func _on_slot_selection_return_button_pressed() -> void:
 	slotSelectionPressedReturn.emit()
@@ -92,6 +95,7 @@ func load_save(slot: int) -> void:
 func _on_slot_erase_button_pressed() -> void:
 	for slot: int in range(1, 4):
 		SaveManager.delete_save_file("savedata", slot)
+		SaveManager.delete_slot_meta_data_info(slot)
 		var container = slotContainers.get(slot, null)
 		var containerChildren = container.get_children()
 		for child in containerChildren:

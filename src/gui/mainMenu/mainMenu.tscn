@@ -10,13 +10,11 @@
 _data = [Vector2(0, 1), 0.0, -0.0665132, 0, 0, Vector2(1, 0), -3.2967, 0.0, 0, 0]
 point_count = 2
 
-[node name="MainMenu" type="Node2D"]
+[node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1_t4hh1")
 metadata/_edit_lock_ = true
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Background" type="ColorRect" parent="CanvasLayer"]
+[node name="Background" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -25,7 +23,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 metadata/_edit_lock_ = true
 
-[node name="StarParticles" type="CPUParticles2D" parent="CanvasLayer"]
+[node name="StarParticles" type="CPUParticles2D" parent="."]
 position = Vector2(159, 86)
 emitting = false
 amount = 175
@@ -43,15 +41,15 @@ scale_amount_max = 2.0
 scale_amount_curve = SubResource("Curve_ikyvp")
 metadata/_edit_lock_ = true
 
-[node name="TitleScreen" parent="CanvasLayer" instance=ExtResource("2_0vxri")]
+[node name="TitleScreen" parent="." instance=ExtResource("2_0vxri")]
 visible = false
 
-[node name="Settings" parent="CanvasLayer" instance=ExtResource("4_ukfld")]
+[node name="Settings" parent="." instance=ExtResource("4_ukfld")]
 visible = false
 
-[node name="SlotSelection" parent="CanvasLayer" instance=ExtResource("3_h3vy1")]
+[node name="SlotSelection" parent="." instance=ExtResource("3_h3vy1")]
 visible = false
 
-[node name="VolumeSelection" parent="CanvasLayer" instance=ExtResource("5_u125w")]
+[node name="VolumeSelection" parent="." instance=ExtResource("5_u125w")]
 visible = false
 metadata/_edit_lock_ = true
