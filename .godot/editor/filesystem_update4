@@ -19,3 +19,4 @@ res://src/gui/pauseMenu/pauseMenu.gd
 res://src/gui/saveIconComponents/saveIcon1.tscn
 res://src/gui/saveIconComponents/saveIcon1.gd
 res://src/scenes/managers/uiManager.gd
+res://src/lib/volume.gd
