@@ -1,7 +1,7 @@
+res://src/resources/shaders
 res://src/gui/saveIconComponents
 res://src/scenes/objects/roomSwitcher
 res://src/scenes/managers
-res://src/resources/shaders
 res://src/gui/volumeSelection
 res://src/gui/slotSelectionComponents
 res://src/resources/themes

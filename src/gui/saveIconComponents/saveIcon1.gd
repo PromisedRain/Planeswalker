@@ -1,5 +1,7 @@
 class_name SaveIcon1
-extends Sprite2D
+extends Control
+
+@onready var textureRect: TextureRect = $MarginContainer/HBoxContainer/VBoxContainer/TextureRect
 
 const timerTime: float = 0.7
 
@@ -8,12 +10,12 @@ var vanish: bool = false
 var enter: bool = true
 
 func _ready() -> void:
-	modulate.a = 0.0
+	textureRect.modulate.a = 0.0
 	timerTimer = timerTime
 
 func _physics_process(delta: float) -> void:
 	if enter:
-		modulate.a = lerp(modulate.a, 1.0, 0.125)
+		textureRect.modulate.a = lerp(textureRect.modulate.a, 1.0, 0.125)
 	
 	if timerTimer > 0.0:
 		timerTimer -= delta
@@ -22,6 +24,7 @@ func _physics_process(delta: float) -> void:
 		vanish = true
 	
 	if vanish:
-		modulate.a = lerp(modulate.a, 0.0, 0.125)
-		if (modulate.a < 0.01):
+		textureRect.modulate.a = lerp(textureRect.modulate.a, 0.0, 0.125)
+		if (textureRect.modulate.a < 0.01):
+			SaveManager.savingFlag = false
 			queue_free()

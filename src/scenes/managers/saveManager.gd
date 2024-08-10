@@ -9,6 +9,8 @@ var currentConfigData: Dictionary
 var currentMetaData: Dictionary
 var currentSaveSlot: int
 
+var savingFlag: bool = false
+
 const fireSuccessPrint: bool = false
 
 const saveDirPath: String = "user://saves/"
@@ -123,8 +125,8 @@ func load_slot(slot: int) -> Dictionary:
 		filePathInvalid.emit(fullFilePath)
 		return create_default_slot_data_template(slot)
 	
-	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.READ, SAVE_SECURITY_KEY) #decryption
-	#var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.READ) #no decryption
+	#var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.READ, SAVE_SECURITY_KEY) #decryption
+	var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.READ) #no decryption
 	if !file:
 		print("[saveManager] Error opening the file for reading: %s" % fileName)
 		return create_default_slot_data_template(slot)
@@ -145,12 +147,12 @@ func load_slot(slot: int) -> Dictionary:
 			currentSaveSlot = slot
 			return merge_with_default(create_default_slot_data_template(slot), loadedData, fileName)
 
-func save_slot(slot: int, slotData: Dictionary = create_default_slot_data_template(slot)) -> void:
+func save_slot(slot: int, slotData: Dictionary = currentSlotData) -> void: #create_default_slot_data_template(slot)) -> void:
 	var fileName: String = "savedata%s.json" % slot
 	var fullFilePath: String = saveDirPath + fileName
 	
-	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, SAVE_SECURITY_KEY) #encryption
-	#var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.WRITE) #no encryption
+	#var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, SAVE_SECURITY_KEY) #encryption
+	var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.WRITE) #no encryption
 	if !file:
 		print("[saveManager] Error opening the slotData file for writing at: %s" % fullFilePath)
 	else:
@@ -295,21 +297,22 @@ func save_meta_data(slot: int, _metaData: Dictionary) -> void:
 		_file.close()
 		print("[saveManager] Metadata file created/saved at: %s" % fullFilePath)
 
-
 #saving everything
 func save_slot_meta_data(_metaData: Dictionary = currentMetaData) -> void:
 	var slotMetaData: Dictionary = get_all_slot_meta_data(currentSaveSlot) 
-	
 	_metaData["slot_%d" % currentSaveSlot] = slotMetaData
 	SaveManager.save_meta_data(currentSaveSlot, _metaData)
 
-func save_game() -> void:
+func save_game(icon: bool = false) -> void:
+	savingFlag = true
 	save_config_file()
 	save_slot_meta_data()
-	save_slot(currentSaveSlot)
-	UiManager.create_save_icon_notification()
+	save_slot(currentSaveSlot, currentSlotData)
+	if icon:
+		UiManager.create_save_icon_notification()
+	else:
+		savingFlag = false
 	print("[saveManager] Saved game")
-
 
 #deleting
 func delete_save_file(file: String, slot: int) -> void:
@@ -326,11 +329,10 @@ func delete_save_file(file: String, slot: int) -> void:
 		else:
 			print("[saveManager] File sucessfully deleted: %s" % fileName)
 
-func delete_slot_meta_data_info(slot: int, _metaData: Dictionary = currentMetaData) -> void:
+func delete_slot_meta_data(slot: int, _metaData: Dictionary = currentMetaData) -> void:
 	_metaData["slot_%d" % slot] = create_default_meta_data_template(slot)
 	save_slot_meta_data(_metaData)
 	print("[saveManager] Deleted and replaced a section of metadata file, slot replaced: slot_%d" % slot)
-
 
 func delete_config_file(path: String = configFullPath) -> void:
 	if !FileAccess.file_exists(path):
@@ -424,6 +426,7 @@ func set_slot_data(key: String, value: Variant, _slotData: Dictionary = currentS
 		print("[saveManager] No '%s' key found, creating one" % key)
 	
 	_slotData[key] = value
+	print(_slotData)
 	
 	var slot: int = get_slot_for_setting_slot_data()
 	save_slot(slot, _slotData)

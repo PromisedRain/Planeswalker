@@ -95,9 +95,7 @@ func free_ui_component(_name: String) -> void:
 		loaded.erase(_name)
 
 func create_save_icon_notification() -> void:
-	var instance: Sprite2D = savePopupIcon.instantiate()
-	instance.position.x = 300
-	instance.position.y = 160
+	var instance: Control = savePopupIcon.instantiate()
 	add_child(instance)
 
 #getters

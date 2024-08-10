@@ -85,17 +85,20 @@ func _on_slot_selection_return_button_pressed() -> void:
 
 func load_save(slot: int) -> void:
 	var slotExists: bool = SaveManager.ensure_slot_file_exists(slot)
+	
 	match slotExists:
 		true:
+			print("[slotSelection] Loading saved slot data")
 			SaveManager.currentSlotData = SaveManager.load_slot(slot)
 		false:
+			print("[slotSelection] Creating new slot data")
 			SaveManager.save_slot(slot, SaveManager.create_default_slot_data_template(slot))
 			SaveManager.currentSlotData = SaveManager.load_slot(slot)
 
 func _on_slot_erase_button_pressed() -> void:
 	for slot: int in range(1, 4):
 		SaveManager.delete_save_file("savedata", slot)
-		SaveManager.delete_slot_meta_data_info(slot)
+		SaveManager.delete_slot_meta_data(slot)
 		var container = slotContainers.get(slot, null)
 		var containerChildren = container.get_children()
 		for child in containerChildren:

@@ -40,7 +40,7 @@ func load_current_room() -> void:
 			print("[volume] Failed to load default room: %s" % defaultFirstRoom)
 		return
 	
-	print("[volume] Loading saved room")
+	#print("[volume] Loading saved room")
 	if !LevelManager.load_room(roomName, roomsContainer):
 		print("[volume] Failed to load saved room: %s" % roomName)
 
@@ -62,7 +62,7 @@ func update_current_volume() -> void:
 		SaveManager.save_slot_meta_data()
 		
 		SaveManager.set_slot_data("current_volume", volumeID)
-		SaveManager.save_slot(slot)
+		SaveManager.save_slot(slot, SaveManager.currentSlotData)
 	else:
 		print("[volume] Current volume ID is not higher than saved, no update required")
 
