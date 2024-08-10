@@ -56,8 +56,13 @@ func update_current_volume() -> void:
 	
 	if volumeID > latestVolumeID:
 		print("[volume] New volume reached, updating save and metadata")
+		
 		SaveManager.set_specific_slot_meta_data(slot, "current_volume", volumeID)
 		SaveManager.set_specific_slot_meta_data(slot, "latest_volume_name", volumeGivenName)
+		SaveManager.save_slot_meta_data()
+		
+		SaveManager.set_slot_data("current_volume", volumeID)
+		SaveManager.save_slot(slot)
 	else:
 		print("[volume] Current volume ID is not higher than saved, no update required")
 
