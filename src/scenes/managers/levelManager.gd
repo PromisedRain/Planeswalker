@@ -24,8 +24,8 @@ var sceneCache: Dictionary = {}
 var sceneCacheOrder: Array[String] = []
 
 #consts
-const roomsPath: String = "res://src/scenes/levels/rooms"
-const volumePath: String = "res://src/scenes/levels"
+const roomsPath: String = "res://src/scenes/volumes/rooms"
+const volumePath: String = "res://src/scenes/volumes"
 
 const maxSceneCacheSize: int = 10
 

@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://cvbw61cy0um5e"]
+
+[ext_resource type="PackedScene" uid="uid://hkeot3pu0jvn" path="res://src/scenes/volumes/rooms/room1.tscn" id="1_38e1n"]
+[ext_resource type="Script" path="res://src/components/volumeComponent.gd" id="1_ddas4"]
+[ext_resource type="Script" path="res://src/lib/rooms.gd" id="2_7xnfi"]
+[ext_resource type="Script" path="res://src/testing/camera stuff/placeholderCamera.gd" id="6_tju2t"]
+
+[sub_resource type="Environment" id="Environment_77io1"]
+background_mode = 3
+tonemap_mode = 2
+
+[node name="Volume1" type="Node2D"]
+script = ExtResource("1_ddas4")
+volumeGivenName = "The Wastes"
+volumeID = 1
+metadata/_edit_lock_ = true
+
+[node name="Rooms" type="Node2D" parent="."]
+script = ExtResource("2_7xnfi")
+metadata/_edit_lock_ = true
+
+[node name="Room1" parent="Rooms" instance=ExtResource("1_38e1n")]
+
+[node name="Objects" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_77io1")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="." groups=["insideSubViewportCamera"]]
+position_smoothing_enabled = true
+position_smoothing_speed = 4.0
+script = ExtResource("6_tju2t")
+
+[node name="VolumeDefaultSpawn" type="Marker2D" parent="."]
+position = Vector2(94, -50)

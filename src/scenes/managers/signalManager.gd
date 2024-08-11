@@ -16,4 +16,3 @@ signal chosenVolume(volume: Volumes)
 
 func signal_choosing_volume(volume: Volumes):
 	chosenVolume.emit(volume)
-

@@ -49,7 +49,6 @@ script = ExtResource("1_gewu3")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
-snap_2d_transforms_to_pixel = true
 canvas_item_default_texture_filter = 0
 size = Vector2i(320, 180)
 
@@ -68,9 +67,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = SubResource("ViewportTexture_qdbio")
 
-[node name="Camera2D" type="Camera2D" parent="ViewportLayer"]
-visible = false
-position = Vector2(161, -84)
+[node name="Camera2D" type="Camera2D" parent="ViewportLayer" groups=["outsideSubViewportCamera"]]
 enabled = false
 
 [node name="UILayer" type="CanvasLayer" parent="."]
@@ -81,6 +78,7 @@ libraries = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="UILayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -88,6 +86,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
 
 [node name="VersionLabel" type="Label" parent="UILayer"]
 offset_left = 5.0
@@ -101,3 +100,4 @@ theme_override_fonts/font = ExtResource("5_gpm4t")
 theme_override_font_sizes/font_size = 7
 text = "V 0.001a"
 horizontal_alignment = 1
+metadata/_edit_lock_ = true

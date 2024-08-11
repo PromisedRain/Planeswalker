@@ -1,5 +1,5 @@
 class_name HealthComponent
-extends Node2D
+extends Node
 
 @export var maxHealth: int = 1
 
@@ -36,4 +36,3 @@ func damage(amount: int) -> void:
 
 func heal(amount: int) -> void:
 	damage(-amount)
-

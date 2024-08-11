@@ -23,8 +23,6 @@ const metaDataFullPath: String = saveDirPath + metaDataFilename
 
 const SAVE_SECURITY_KEY: String = "A23I5B6925UIB32P572J283I65J" #change location in the future, but who cares rn, doesnt matter
 
-signal finishedLoadingPreGameData
-
 signal filePathInvalid(filePath)
 
 func _ready() -> void:

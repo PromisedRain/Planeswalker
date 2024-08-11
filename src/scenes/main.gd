@@ -1,6 +1,7 @@
 extends Node
 
 @onready var animationPlayer: AnimationPlayer = $UILayer/AnimationPlayer
+@onready var colorRect: ColorRect = $UILayer/ColorRect
 
 @onready var window: Window = get_window() 
 @onready var windowBaseSize: Vector2i = window.content_scale_size
@@ -11,15 +12,20 @@ extends Node
 #TODO remember to turn off on_top before shipping game cause its a problem, on top for debug only i guess guh
 
 func _ready() -> void:
-	SignalManager.initialLoadComplete.connect(initial_data_loaded)
+	ProjectSettings.set_setting("rendering/textures/canvas_textures/default_texture_filter", 0)
+	
+	window.size_changed.connect(window_size_changed)
+	
+	SignalManager.initialLoadComplete.connect(init)
 	SaveManager.load_initial_data()
 
-func initial_data_loaded(dataLoaded: bool) -> void: 
+func init(dataLoaded: bool) -> void: 
 	if !dataLoaded:
 		return
 	
 	LevelManager.mainScene = self
 	LevelManager.volumesParent = world
+	UiManager.init()
 	
 	#match LevelManager.currentVolume:
 	#	"volume1":
@@ -27,8 +33,8 @@ func initial_data_loaded(dataLoaded: bool) -> void:
 	#	_:
 	#		print("volume ???")
 	
-	window.size_changed.connect(window_size_changed)
-	UiManager.init()
+	if !colorRect.visible:
+		colorRect.visible = true
 	animationPlayer.play("black_to_clear")
 
 func _unhandled_input(event) -> void:
@@ -37,8 +43,8 @@ func _unhandled_input(event) -> void:
 	if event.is_action_pressed("pause"):
 		UiManager.open_pause_menu(true)
 
-#int scaling on float
 func window_size_changed() -> void: 
-	print("size changed")
-	var scale: Vector2i = window.size/windowBaseSize 
-	window.content_scale_size = window.size / (scale.y if scale.y <= scale.x else scale.x)
+	pass
+	#print("size changed")
+	#var scale: Vector2i = window.size / windowBaseSize 
+	#window.content_scale_size = window.size / (scale.y if scale.y <= scale.x else scale.x)

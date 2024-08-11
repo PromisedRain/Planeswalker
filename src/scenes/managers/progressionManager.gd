@@ -9,4 +9,3 @@ func _ready() -> void:
 
 func get_initial_values() -> void:
 	pass
-

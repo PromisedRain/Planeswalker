@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dsm0yj56sboed"]
 
-[ext_resource type="Script" path="res://RoomSwitcher.gd" id="1_j10nk"]
+[ext_resource type="Script" path="res://src/scenes/objects/roomSwitcher/roomSwitcher.gd" id="1_j10nk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_thqlb"]
 size = Vector2(4, 18)

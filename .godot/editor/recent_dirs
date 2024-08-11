@@ -1,7 +1,9 @@
+res://src/scenes/managers
+res://src/testing/camera stuff
+res://src/lib
 res://src/resources/shaders
 res://src/gui/saveIconComponents
 res://src/scenes/objects/roomSwitcher
-res://src/scenes/managers
 res://src/gui/volumeSelection
 res://src/gui/slotSelectionComponents
 res://src/resources/themes
@@ -15,6 +17,5 @@ res://src/gui/playerUi
 res://src/gui/mainMenu
 res://src/media/fonts
 C:/Users/filip/Downloads/startup apps/godot-minimal-theme-1.2.1
-res://src/lib
 res://src/components
 res://src/scenes

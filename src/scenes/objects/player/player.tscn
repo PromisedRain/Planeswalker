@@ -281,14 +281,8 @@ _data = {
 "anim_run": SubResource("Animation_epnq1")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ocmmf"]
-size = Vector2(7, 15)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mvywc"]
-size = Vector2(7, 15)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_83qob"]
-size = Vector2(7, 7)
+size = Vector2(6, 12)
 
 [sub_resource type="Gradient" id="Gradient_dsnpq"]
 offsets = PackedFloat32Array(0, 0.641509)
@@ -297,7 +291,14 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_743rw"]
 gradient = SubResource("Gradient_dsnpq")
 fill = 1
-fill_from = Vector2(0.5, 0.491453)
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_83qob"]
+size = Vector2(6, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ocmmf"]
+size = Vector2(6, 10)
 
 [sub_resource type="Curve" id="Curve_cpgqp"]
 _data = [Vector2(0, 1), 0.0, 0.0675827, 0, 0, Vector2(0.949153, 0.268041), -3.24399, -3.24399, 0, 0, Vector2(1, 0), -3.09653, 0.0, 0, 0]
@@ -312,9 +313,81 @@ libraries = {
 }
 
 [node name="PlayerDeathAnimationComponent" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_b752o")]
+metadata/_edit_lock_ = true
+
+[node name="NormalCollisionBox" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_mvywc")
+debug_color = Color(0.8, 0, 0.0509804, 0.701961)
+metadata/_edit_lock_ = true
+
+[node name="ClimbLedgeGrabRaycasts" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="TopRight" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
+position = Vector2(0, -1)
+target_position = Vector2(-5, 0)
+metadata/_edit_lock_ = true
+
+[node name="TopLeft" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
+position = Vector2(0, -1)
+target_position = Vector2(5, 0)
+metadata/_edit_lock_ = true
+
+[node name="MiddleRight" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
+position = Vector2(0, 3)
+target_position = Vector2(5, 0)
+metadata/_edit_lock_ = true
+
+[node name="MiddleLeft" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
+position = Vector2(0, 3)
+target_position = Vector2(-5, 0)
+metadata/_edit_lock_ = true
+
+[node name="ClimbWallRaycasts" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="TopRight" type="RayCast2D" parent="ClimbWallRaycasts"]
+position = Vector2(0, -1)
+target_position = Vector2(-5, 0)
+metadata/_edit_lock_ = true
+
+[node name="TopLeft" type="RayCast2D" parent="ClimbWallRaycasts"]
+position = Vector2(0, -1)
+target_position = Vector2(5, 0)
+metadata/_edit_lock_ = true
+
+[node name="BottomRight" type="RayCast2D" parent="ClimbWallRaycasts"]
+position = Vector2(0, 7)
+target_position = Vector2(5, 0)
+metadata/_edit_lock_ = true
+
+[node name="BottomLeft" type="RayCast2D" parent="ClimbWallRaycasts"]
+position = Vector2(0, 7)
+target_position = Vector2(-5, 0)
+metadata/_edit_lock_ = true
+
+[node name="Light" type="PointLight2D" parent="."]
+color = Color(0.190762, 0.190762, 0.190762, 0.168627)
+texture = SubResource("GradientTexture2D_743rw")
+metadata/_edit_lock_ = true
+
+[node name="Visuals" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Body" type="Sprite2D" parent="Visuals"]
+position = Vector2(0, 0.5)
+texture = ExtResource("2_d5ssh")
+hframes = 8
+metadata/_edit_lock_ = true
+
+[node name="DuckCollisionBox" type="CollisionShape2D" parent="."]
+position = Vector2(0, 7)
+shape = SubResource("RectangleShape2D_83qob")
+disabled = true
+debug_color = Color(0.8, 0, 0.0509804, 0.701961)
 metadata/_edit_lock_ = true
 
 [node name="HurtboxComponent" parent="." node_paths=PackedStringArray("healthComponent", "hurtboxCollision") instance=ExtResource("2_v0tt5")]
@@ -323,89 +396,17 @@ hurtboxCollision = NodePath("CollisionShape2D")
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
-position = Vector2(0, -8)
+position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_ocmmf")
-debug_color = Color(0.721569, 0, 0.164706, 0.439216)
-metadata/_edit_lock_ = true
-
-[node name="NormalCollisionBox" type="CollisionShape2D" parent="."]
-position = Vector2(0, -8)
-shape = SubResource("RectangleShape2D_mvywc")
-metadata/_edit_lock_ = true
-
-[node name="DuckCollisionBox" type="CollisionShape2D" parent="."]
-position = Vector2(0, -4)
-shape = SubResource("RectangleShape2D_83qob")
-disabled = true
-metadata/_edit_lock_ = true
-
-[node name="Visuals" type="Node2D" parent="."]
-metadata/_edit_lock_ = true
-
-[node name="Body" type="Sprite2D" parent="Visuals"]
-position = Vector2(0, -8)
-texture = ExtResource("2_d5ssh")
-hframes = 8
-metadata/_edit_lock_ = true
-
-[node name="ClimbLedgeGrabRaycasts" type="Node2D" parent="."]
-metadata/_edit_lock_ = true
-
-[node name="TopRight" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
-position = Vector2(0, -15)
-target_position = Vector2(-5, 0)
-metadata/_edit_lock_ = true
-
-[node name="TopLeft" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
-position = Vector2(0, -15)
-target_position = Vector2(5, 0)
-metadata/_edit_lock_ = true
-
-[node name="MiddleRight" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
-position = Vector2(0, -7)
-target_position = Vector2(5, 0)
-metadata/_edit_lock_ = true
-
-[node name="MiddleLeft" type="RayCast2D" parent="ClimbLedgeGrabRaycasts"]
-position = Vector2(0, -7)
-target_position = Vector2(-5, 0)
-metadata/_edit_lock_ = true
-
-[node name="ClimbWallRaycasts" type="Node2D" parent="."]
-metadata/_edit_lock_ = true
-
-[node name="TopRight" type="RayCast2D" parent="ClimbWallRaycasts"]
-position = Vector2(0, -15)
-target_position = Vector2(-5, 0)
-metadata/_edit_lock_ = true
-
-[node name="TopLeft" type="RayCast2D" parent="ClimbWallRaycasts"]
-position = Vector2(0, -15)
-target_position = Vector2(5, 0)
-metadata/_edit_lock_ = true
-
-[node name="BottomRight" type="RayCast2D" parent="ClimbWallRaycasts"]
-target_position = Vector2(5, 0)
-metadata/_edit_lock_ = true
-
-[node name="BottomLeft" type="RayCast2D" parent="ClimbWallRaycasts"]
-target_position = Vector2(-5, 0)
-metadata/_edit_lock_ = true
-
-[node name="Light" type="PointLight2D" parent="."]
-position = Vector2(0, -8)
-color = Color(0.190762, 0.190762, 0.190762, 0.168627)
-texture = SubResource("GradientTexture2D_743rw")
+debug_color = Color(0, 0.509804, 0.176471, 0.6)
 metadata/_edit_lock_ = true
 
 [node name="DashTrailLine" type="Line2D" parent="."]
 top_level = true
-position = Vector2(0, -7)
 width = 2.0
 metadata/_edit_lock_ = true
 
 [node name="DashParticles" type="CPUParticles2D" parent="."]
-position = Vector2(0, -7)
 emitting = false
 amount = 120
 emission_shape = 1

@@ -9,8 +9,8 @@ extends CharacterBody2D
 @onready var healthComponent: HealthComponent = $HealthComponent
 
 @onready var climbWallRaycasts: Node2D = $ClimbWallRaycasts
-@onready var climbLedgeGrabTopRaycasts: Array = [$ClimbLedgeGrabRaycasts/TopLeft, $ClimbLedgeGrabRaycasts/TopRight]
-@onready var climbLedgeGrabMiddleRaycasts: Array = [$ClimbLedgeGrabRaycasts/MiddleLeft, $ClimbLedgeGrabRaycasts/MiddleRight]
+@onready var climbLedgeGrabTopRaycasts: Array[RayCast2D] = [$ClimbLedgeGrabRaycasts/TopLeft, $ClimbLedgeGrabRaycasts/TopRight]
+@onready var climbLedgeGrabMiddleRaycasts: Array[RayCast2D] = [$ClimbLedgeGrabRaycasts/MiddleLeft, $ClimbLedgeGrabRaycasts/MiddleRight]
 
 @onready var normalCollisionBox: CollisionShape2D = $NormalCollisionBox
 @onready var duckedCollisionBox: CollisionShape2D = $DuckCollisionBox
@@ -20,7 +20,7 @@ extends CharacterBody2D
 @onready var dashGhost: PackedScene = preload("res://src/components/dashGhostComponent.tscn")
 
 
-#vars
+
 var stateMachine: StateMachine
 var direction: Vector2
 var lastDir: Vector2 = Vector2.RIGHT
@@ -55,8 +55,6 @@ var totalDashesSession: int
 var dashStartedOnGround: bool
 
 var duckInput: bool
-
-#constants
 
 const upwardCornerCorrection: int = 4
 const respawnTime: float = 2.5
@@ -104,8 +102,6 @@ const bodySquashStretchReversion: float = 1.75
 const bodySquashVec: Vector2 = Vector2(1.4, 0.8) #0.6
 const bodyStretchVec: Vector2 = Vector2(0.6, 1.4) 
 const bodyDuckSquashVec: Vector2 = Vector2(1.4, 0.8) #0.6
-
-#others
 
 enum climbStaminaActions {
 	jump,

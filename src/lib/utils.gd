@@ -2,25 +2,40 @@ extends Node
 
 @onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
 @onready var main: Node = get_tree().get_first_node_in_group("main")
-@onready var playerCamera: Camera2D = get_tree().get_first_node_in_group("playerCamera")
+@onready var outsideSubViewportCamera: Camera2D = get_tree().get_first_node_in_group("outsideSubViewportCamera")
+@onready var insideSubViewportCamera: Camera2D = get_tree().get_first_node_in_group("insideSubViewportCamera")
 
 func get_player() -> CharacterBody2D:
+	update_references()
 	return player
 
 func get_main() -> Node:
+	update_references()
 	return main
 
-func get_player_camera() -> Camera2D:
-	return playerCamera
+func get_outside_sub_viewport_camera() -> Camera2D:
+	update_references()
+	if outsideSubViewportCamera == null:
+		return
+	return outsideSubViewportCamera
+
+func get_inside_sub_viewport_camera() -> Camera2D:
+	update_references()
+	if insideSubViewportCamera == null:
+		return
+	return insideSubViewportCamera
 
 func update_references() -> void:
 	player = get_tree().get_first_node_in_group("player")
+	main = get_tree().get_first_node_in_group("main")
+	outsideSubViewportCamera = get_tree().get_first_node_in_group("outsideSubViewportCamera")
+	insideSubViewportCamera = get_tree().get_first_node_in_group("insideSubViewportCamera")
 
 func is_approximately_equal(a: float, b: float, epsilon: float = 0.01) -> bool:
 	return abs(a - b) < epsilon
 
-func int_lerp(start: int, target: int, multiplier: float) -> int:
-	return int(start + (target - start) * multiplier)
+func int_lerp(start: int, end: int, weight: float) -> int:
+	return int(start + (end - start) * weight)
 
 func generate_uuid() -> String:
 	var pattern: String = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"

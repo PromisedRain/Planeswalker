@@ -1,3 +1,6 @@
+Marker2D
+Node
+TileMapLayer
 ColorRect
 Control
 CanvasLayer
@@ -9,6 +12,3 @@ MarginContainer
 Camera2D
 Node2D
 SubViewport
-Player
-Label
-CollisionShape2D
