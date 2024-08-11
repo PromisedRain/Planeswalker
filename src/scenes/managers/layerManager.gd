@@ -5,8 +5,9 @@ enum Layers {
 	PARALLAX_BACKDROP_LAYER = 8, # parallax layer, includes multiple layers
 	STATIC_BACKDROP_LAYER = 9, # stuff that might be close to the background but not far away like the parallax layer, more desaturated
 	
-	TILE_BACKGROUND_LAYER = 12,
-	TILE_BACKGROUND_PROPS_FRONT_LAYER = 13,
+	TILE_BACKGROUND_LAYER = 11,
+	TILE_BACKGROUND_PROPS_FRONT_LAYER = 12,
+	TILE_BACKGROUND_SPIKES_LAYER = 13,
 	
 	ENTITY_LAYER = 14,
 	ENTITY_FRONT_LAYER = 15,
