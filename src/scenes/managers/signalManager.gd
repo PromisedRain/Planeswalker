@@ -1,7 +1,7 @@
 extends Node
 
 # system
-signal initialLoadComplete(finishedProgress: bool)
+signal initLoadComplete(loaded: bool)
 
 signal saving(inProgress: bool)
 

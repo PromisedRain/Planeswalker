@@ -19,7 +19,6 @@ func _ready() -> void:
 	if !titleScreen.visible:
 		titleScreen.visible = true
 	
-	#signals
 	window.size_changed.connect(window_on_size_change)
 	
 	titleScreen.titleScreenPressedEnter.connect(title_screen_pressed_enter)

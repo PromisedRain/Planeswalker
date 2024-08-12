@@ -5,7 +5,7 @@ extends Node2D
 @onready var decorations: Node2D = $Decorations
 @onready var objects: Node2D = $Objects
 @onready var world: Node2D = get_parent().get_parent()
-@onready var tilemapFoundation: TileMapLayer = $TilemapFoundation
+@onready var tileSolidLayer: TileMapLayer = $TileSolidLayer
 
 var usedCheckpoint: Node2D = null
 var objectChildren: Array = []
@@ -35,7 +35,7 @@ func room_entered() -> void:
 	pass
 
 func calculate_room_bounds() -> void:
-	var cells = tilemapFoundation.get_used_cells()
+	var cells = tileSolidLayer.get_used_cells()
 	if cells.size() == 0:
 		return
 	

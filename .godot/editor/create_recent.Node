@@ -1,6 +1,7 @@
+Camera2D
+TileMapLayer
 Marker2D
 Node
-TileMapLayer
 ColorRect
 Control
 CanvasLayer
@@ -9,6 +10,5 @@ TextureRect
 Sprite2D
 HBoxContainer
 MarginContainer
-Camera2D
 Node2D
 SubViewport

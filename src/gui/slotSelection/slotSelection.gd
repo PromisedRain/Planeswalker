@@ -16,7 +16,7 @@ func _ready() -> void:
 	init_slots_data()
 
 func init_slots_data() -> void:
-	var saveFiles: Array = SaveManager.get_dir_json_files()
+	var saveFiles: Array = SaveManager.get_save_dir_json_files()
 	
 	for i in range(1, 4):
 		var expectedFilename: String = "savedata%d.json" % i

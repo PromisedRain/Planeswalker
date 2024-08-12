@@ -29,7 +29,7 @@ func load_current_room() -> void:
 	if roomName == null || roomName == "":
 		print("[volume] No saved room found, loading default")
 		
-		var defaultFirstRoom: String = get_current_volume_first_room_name()
+		var defaultFirstRoom: String = get_first_room()
 		if !LevelManager.load_room(defaultFirstRoom, roomsContainer):
 			print("[volume] Failed to load default room: %s" % defaultFirstRoom)
 		return
@@ -49,11 +49,11 @@ func update_current_volume() -> void:
 	var latestVolumeID: int = int(SaveManager.get_slot_data("current_volume"))
 	
 	if volumeID > latestVolumeID:
-		print("[volume] New volume reached, updating save and metadata")
+		print("[volume] New volume reached")
 		
 		SaveManager.set_specific_slot_meta_data(slot, "current_volume", volumeID)
 		SaveManager.set_specific_slot_meta_data(slot, "latest_volume_name", volumeGivenName)
-		SaveManager.save_slot_meta_data()
+		SaveManager.save_current_meta_data()
 		
 		SaveManager.set_slot_data("current_volume", volumeID)
 		SaveManager.save_slot(slot, SaveManager.currentSlotData)
@@ -68,7 +68,7 @@ func update_current_room(inputRoom: Room) -> void:
 	LevelManager.currentRoomName = currentRoom.roomName
 	LevelManager.currentRoomPosition = currentRoom.global_position
 
-func get_current_volume_first_room_name() -> String:
+func get_first_room() -> String:
 	var volume: String = LevelManager.currentVolumeName.to_lower()
 	
 	var defaultVolume1Room: String = "room1"

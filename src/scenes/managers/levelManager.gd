@@ -53,6 +53,10 @@ func _ready() -> void:
 	if !sceneLoadInProgress && sceneLoadQueue.size() > 0:
 		on_load_next_scene_queue()
 
+func init(_mainScene: Node, _volumesParent: Node2D) -> void:
+	mainScene = _mainScene
+	volumesParent = _volumesParent
+
 func change_volume(volume: Volumes) -> void:
 	change_current_volume(volume)
 

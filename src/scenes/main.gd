@@ -1,8 +1,5 @@
 extends Node
 
-@onready var animationPlayer: AnimationPlayer = $UILayer/AnimationPlayer
-@onready var colorRect: ColorRect = $UILayer/ColorRect
-
 @onready var window: Window = get_window() 
 @onready var windowBaseSize: Vector2i = window.content_scale_size
 @onready var windowScreenSize: Vector2i = get_viewport().get_visible_rect().size
@@ -15,16 +12,23 @@ func _ready() -> void:
 	ProjectSettings.set_setting("rendering/textures/canvas_textures/default_texture_filter", 0)
 	
 	window.size_changed.connect(window_size_changed)
+	SignalManager.initLoadComplete.connect(init)
 	
-	SignalManager.initialLoadComplete.connect(init)
-	SaveManager.load_initial_data()
+	SaveManager.init()
 
-func init(dataLoaded: bool) -> void: 
-	if !dataLoaded:
+func init(loaded: bool) -> void: 
+	if !loaded:
 		return
 	
-	LevelManager.mainScene = self
-	LevelManager.volumesParent = world
+	if SaveManager.get_config_data("settings", "debug_mode") != null:
+		GlobalManager.debugMode = SaveManager.get_config_data("settings", "debug_mode")
+		
+		if GlobalManager.debugMode:
+			print("[main] Debug mode on")
+		else:
+			print("[main] Debug mode off")
+	
+	LevelManager.init(self, world)
 	UiManager.init()
 	
 	#match LevelManager.currentVolume:
@@ -32,10 +36,6 @@ func init(dataLoaded: bool) -> void:
 	#		print("volume 1")
 	#	_:
 	#		print("volume ???")
-	
-	if !colorRect.visible:
-		colorRect.visible = true
-	animationPlayer.play("black_to_clear")
 
 func _unhandled_input(event) -> void:
 	if event.is_action_pressed("debug"):
@@ -44,7 +44,7 @@ func _unhandled_input(event) -> void:
 		UiManager.open_pause_menu(true)
 
 func window_size_changed() -> void: 
-	pass
-	#print("size changed")
-	#var scale: Vector2i = window.size / windowBaseSize 
-	#window.content_scale_size = window.size / (scale.y if scale.y <= scale.x else scale.x)
+	return
+	print("size changed")
+	var scale: Vector2i = window.size / windowBaseSize 
+	window.content_scale_size = window.size / (scale.y if scale.y <= scale.x else scale.x)

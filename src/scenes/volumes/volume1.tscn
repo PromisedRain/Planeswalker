@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cvbw61cy0um5e"]
+[gd_scene load_steps=8 format=3 uid="uid://cvbw61cy0um5e"]
 
 [ext_resource type="PackedScene" uid="uid://hkeot3pu0jvn" path="res://src/scenes/volumes/rooms/room1.tscn" id="1_38e1n"]
 [ext_resource type="Script" path="res://src/components/volumeComponent.gd" id="1_ddas4"]
 [ext_resource type="Script" path="res://src/lib/rooms.gd" id="2_7xnfi"]
+[ext_resource type="PackedScene" uid="uid://bu3f150dlw6qp" path="res://src/scenes/volumes/rooms/room0.tscn" id="4_nryjl"]
+[ext_resource type="PackedScene" uid="uid://8t6kjxiqfujr" path="res://src/scenes/volumes/rooms/room2.tscn" id="5_a2ch5"]
 [ext_resource type="Script" path="res://src/testing/camera stuff/placeholderCamera.gd" id="6_tju2t"]
 
 [sub_resource type="Environment" id="Environment_77io1"]
@@ -19,7 +21,13 @@ metadata/_edit_lock_ = true
 script = ExtResource("2_7xnfi")
 metadata/_edit_lock_ = true
 
+[node name="Room0" parent="Rooms" instance=ExtResource("4_nryjl")]
+
 [node name="Room1" parent="Rooms" instance=ExtResource("1_38e1n")]
+position = Vector2(320, 0)
+
+[node name="Room2" parent="Rooms" instance=ExtResource("5_a2ch5")]
+position = Vector2(712, 0)
 
 [node name="Objects" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
@@ -34,6 +42,8 @@ metadata/_edit_lock_ = true
 position_smoothing_enabled = true
 position_smoothing_speed = 4.0
 script = ExtResource("6_tju2t")
+metadata/_edit_lock_ = true
 
 [node name="VolumeDefaultSpawn" type="Marker2D" parent="."]
-position = Vector2(94, -50)
+position = Vector2(392, -40)
+metadata/_edit_lock_ = true

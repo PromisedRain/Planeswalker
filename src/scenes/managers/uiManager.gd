@@ -20,7 +20,7 @@ var scenesDict: Dictionary = {
 func init() -> void:
 	instance_vignette()
 	instance_main_menu()
-	open_ui_component(scenesDict.debugManager, debugManager, false)
+	instance_debug_menu()
 
 func instance_main_menu() -> void:
 	open_ui_component(scenesDict.mainMenu, mainMenu, true)
@@ -35,6 +35,10 @@ func instance_vignette() -> void:
 		colorRect.material.set_shader_parameter("Vignette Opacity", lerp(0.5, 0.261, 0.50))
 	else:
 		print("[uiManager] Vignette off")
+
+func instance_debug_menu() -> void:
+	if GlobalManager.debugMode:
+		open_ui_component(scenesDict.debugManager, debugManager, false)
 
 func open_debug_mode() -> void:
 	if loaded[scenesDict.debugManager] == null:
@@ -105,7 +109,7 @@ var canPause: bool:
 
 var canDebug: bool:
 	get: 
-		return true #check_if_main_screen()
+		return GlobalManager.debugMode
 
 func check_if_main_screen() -> bool:
 	if main.get_node("Volume").get_children().size() > 0: #checks if a volume is instantiated 

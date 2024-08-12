@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=4 uid="uid://8t6kjxiqfujr"]
+
+[ext_resource type="Script" path="res://src/components/roomComponent.gd" id="1_4h5b3"]
+[ext_resource type="Texture2D" uid="uid://h37voowtdgto" path="res://src/media/sprites/grayboxingTileset8x8.png" id="2_qencq"]
+[ext_resource type="Texture2D" uid="uid://c1lem771graw2" path="res://src/media/sprites/blackBackgroundTile8x8.png" id="3_jbxnn"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sevgq"]
+texture = ExtResource("2_qencq")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+3:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_e0gqs"]
+tile_size = Vector2i(8, 8)
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 2
+sources/1 = SubResource("TileSetAtlasSource_sevgq")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_08qpw"]
+texture = ExtResource("3_jbxnn")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_mujx3"]
+tile_size = Vector2i(8, 8)
+sources/0 = SubResource("TileSetAtlasSource_08qpw")
+
+[node name="Room1" type="Node2D"]
+script = ExtResource("1_4h5b3")
+
+[node name="TileBackgroundLayer" type="TileMapLayer" parent="."]
+
+[node name="TileBackgroundPropsFrontLayer" type="TileMapLayer" parent="TileBackgroundLayer"]
+
+[node name="TileBackgroundSpikesLayer" type="TileMapLayer" parent="TileBackgroundLayer"]
+
+[node name="TileSolidLayer" type="TileMapLayer" parent="."]
+use_parent_material = true
+tile_map_data = PackedByteArray("AAAAAPr/AQAAAAAAAAABAPr/AQAAAAAAAAACAPr/AQAAAAAAAAADAPr/AQAAAAAAAAA=")
+tile_set = SubResource("TileSet_e0gqs")
+
+[node name="TileBlackFillBackgroundLayer" type="TileMapLayer" parent="TileSolidLayer"]
+use_parent_material = true
+tile_map_data = PackedByteArray("AAAAAPv/AAAAAAAAAAAAAPz/AAAAAAAAAAAAAP3/AAAAAAAAAAAAAP7/AAAAAAAAAAAAAP//AAAAAAAAAAABAPv/AAAAAAAAAAABAPz/AAAAAAAAAAABAP3/AAAAAAAAAAABAP7/AAAAAAAAAAABAP//AAAAAAAAAAA=")
+tile_set = SubResource("TileSet_mujx3")
+
+[node name="TileRandomizedInfillLayer" type="TileMapLayer" parent="TileSolidLayer"]
+
+[node name="TileForegroundPropsFrontLayer" type="TileMapLayer" parent="TileSolidLayer"]
+
+[node name="Objects" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Decorations" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Doors" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
