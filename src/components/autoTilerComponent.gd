@@ -1,13 +1,18 @@
 @tool
+class_name AutoTilerComponent
 extends TileMapLayer
 
-@export var lockPattern: bool = false
-@export var randomInt = 0  
-@export var layer: LayerManager.Layers
+@export var useTool: bool = false
+@export var lockRandomPattern: bool = false
+@export var seed: int = 0  
+@export var zIndexLayer: LayerManager.Layers
+
 func _ready() -> void:
-	pass # Replace with function body.
+	z_index = zIndexLayer
 
-
-
-func _process(delta: float) -> void:
-	pass
+func add_border_collision_tiles() -> void:
+	if Engine.is_editor_hint():
+		if useTool:
+			print("using tool")
+		
+		useTool = false

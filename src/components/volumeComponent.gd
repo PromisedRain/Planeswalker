@@ -8,7 +8,7 @@ extends Node2D
 
 @export var volumeGivenName: String
 @export_range(1,3) var volumeID: int
-@export var volumeDefaultSpawn: Marker2D
+@export var volumeSpawn: Marker2D
 @export var spawnOnDefault: bool
 
 var currentRoom: RoomComponent
@@ -28,8 +28,8 @@ func load_current_room() -> void:
 	
 	if roomName == null || roomName == "":
 		print("[volume] No saved room found, loading default")
-		
 		var defaultFirstRoom: String = get_first_room()
+		
 		if !LevelManager.load_room(defaultFirstRoom, roomsContainer):
 			print("[volume] Failed to load default room: %s" % defaultFirstRoom)
 		return
@@ -70,7 +70,6 @@ func update_current_room(inputRoom: RoomComponent) -> void:
 
 func get_first_room() -> String:
 	var volume: String = LevelManager.currentVolumeName.to_lower()
-	
 	var defaultVolume1Room: String = "room1"
 	var defaultVolume2Room: String = "room65"
 	
