@@ -8,12 +8,12 @@ extends Node
 #vars
 var mainScene: Node
 
-var currentVolume: Volume 
+var currentVolume: VolumeComponent 
 var currentVolumePath: String
 var currentVolumeName: String
 
 var currentSpawn
-var currentRoom: Room
+var currentRoom: RoomComponent
 var currentRoomPath: String
 var currentRoomPosition: Vector2
 

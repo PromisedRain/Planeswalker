@@ -1,4 +1,4 @@
-class_name Room
+class_name RoomComponent
 extends Node2D
 
 @onready var doors: Node2D = $Doors
@@ -17,7 +17,7 @@ var maxX: int
 var maxY: int
 
 
-signal enteredRoom(room: Room)
+signal enteredRoom(room: RoomComponent)
 
 
 func _ready() -> void:
@@ -25,7 +25,7 @@ func _ready() -> void:
 	#print(fileName)
 	enteredRoom.emit(self)
 	
-	for door: RoomSwitcher in doors.get_children():
+	for door: RoomSwitcherComponent in doors.get_children():
 		door.playerEntered.connect(room_entered)
 	
 	calculate_room_bounds()
@@ -55,12 +55,12 @@ func calculate_room_bounds() -> void:
 			maxY = cell.y
 
 func set_parent_for_room_switchers() -> void:
-	for door: RoomSwitcher in doors.get_children():
+	for door: RoomSwitcherComponent in doors.get_children():
 		door.parentRoom = self
 
 func get_adjacent_rooms() -> Array:
 	adjacentRooms.append(self)
-	for door: RoomSwitcher in doors.get_children():
+	for door: RoomSwitcherComponent in doors.get_children():
 		if door.get_adjacent_room() != null:
 			adjacentRooms.append(door.get_adjacent_room())
 	return adjacentRooms

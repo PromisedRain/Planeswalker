@@ -1,6 +1,7 @@
 extends Node
 
 enum Layers {
+	PLACEHOLDER_LAYER = 0,
 	
 	PARALLAX_BACKDROP_LAYER = 8, # parallax layer, includes multiple layers
 	STATIC_BACKDROP_LAYER = 9, # stuff that might be close to the background but not far away like the parallax layer, more desaturated

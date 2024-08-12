@@ -21,3 +21,8 @@ res://src/scenes/managers/signalManager.gd
 res://src/gui/slotSelection/slotSelection.gd
 res://src/scenes/managers/uiManager.gd
 res://src/gui/mainMenu/mainMenu.gd
+res://src/scenes/objects/roomSwitcher/roomSwitcher.gd
+res://src/components/autoTilerComponent.tscn
+res://src/components/autoTilerComponent.gd
+res://src/scenes/managers/soundManager.gd
+res://src/scenes/managers/layerManager.gd

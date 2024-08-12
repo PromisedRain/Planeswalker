@@ -1,3 +1,4 @@
+res://src/components
 res://src/scenes/managers
 res://src/testing/camera stuff
 res://src/lib
@@ -17,5 +18,4 @@ res://src/gui/playerUi
 res://src/gui/mainMenu
 res://src/media/fonts
 C:/Users/filip/Downloads/startup apps/godot-minimal-theme-1.2.1
-res://src/components
 res://src/scenes

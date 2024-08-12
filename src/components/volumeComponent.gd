@@ -1,4 +1,4 @@
-class_name Volume
+class_name VolumeComponent
 extends Node2D
 
 @onready var roomsContainer: Node2D = $Rooms
@@ -8,10 +8,10 @@ extends Node2D
 
 @export var volumeGivenName: String
 @export_range(1,3) var volumeID: int
-@export var volumeDefaultSpawn: Vector2i
-@export var volumeSpawn: bool
+@export var volumeDefaultSpawn: Marker2D
+@export var spawnOnDefault: bool
 
-var currentRoom: Room
+var currentRoom: RoomComponent
 var currentCamera: Camera2D
 var currentPlayer: Player
 var rooms
@@ -60,7 +60,7 @@ func update_current_volume() -> void:
 	else:
 		print("[volume] Current volume ID is not higher than saved, no update required")
 
-func update_current_room(inputRoom: Room) -> void:
+func update_current_room(inputRoom: RoomComponent) -> void:
 	print("[volume] Updating current room")
 	
 	currentRoom = inputRoom
@@ -90,13 +90,13 @@ func player_died() -> void:
 	player.global_position = LevelManager.currentSpawn.round() + Vector2.UP
 
 func free_all_rooms() -> void:
-	for room: Room in roomsContainer.get_children():
+	for room: RoomComponent in roomsContainer.get_children():
 		room.queue_free()
 
 func reload_room() -> void:
 	var roomPath: String = str(LevelManager.currentRoomPath)
-	var roomInstance: Room = load(roomPath).instantiate()
-	var oldRoom: Room = currentRoom
+	var roomInstance: RoomComponent = load(roomPath).instantiate()
+	var oldRoom: RoomComponent = currentRoom
 
 func reload_camera() -> void:
 	var camera: Camera2D = currentCamera
