@@ -45,6 +45,6 @@ func _unhandled_input(event) -> void:
 
 func window_size_changed() -> void: 
 	return
-	print("size changed")
+	#print("size changed")
 	var scale: Vector2i = window.size / windowBaseSize 
 	window.content_scale_size = window.size / (scale.y if scale.y <= scale.x else scale.x)

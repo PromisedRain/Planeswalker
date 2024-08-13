@@ -11,22 +11,6 @@ radius = 7.0
 _data = [Vector2(0, 1), 0.0, 0.760309, 0, 0, Vector2(0.90678, 0.443299), -2.95434, -2.95434, 0, 0, Vector2(1, 0.0103092), -3.56839, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="Animation" id="Animation_4w5mh"]
-resource_name = "spintest"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.433333),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 2.37539]
-}
-
 [sub_resource type="Animation" id="Animation_bmx6l"]
 length = 0.001
 tracks/0/type = "value"
@@ -42,23 +26,44 @@ tracks/0/keys = {
 "values": [0.0]
 }
 
+[sub_resource type="Animation" id="Animation_4w5mh"]
+resource_name = "anim_collect"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 4.71239]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_522lj"]
 _data = {
 "RESET": SubResource("Animation_bmx6l"),
-"spintest": SubResource("Animation_4w5mh")
+"anim_collect": SubResource("Animation_4w5mh")
 }
 
 [node name="DashRefillOrb" type="Node2D"]
 script = ExtResource("1_sdw5v")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_mschl")
-
-[node name="CollectableComponent" parent="." instance=ExtResource("3_711e7")]
+[node name="CollectableComponent" parent="." node_paths=PackedStringArray("animationPlayer", "collisionShape") instance=ExtResource("3_711e7")]
+animationPlayer = NodePath("../AnimationPlayer")
+hasCollectAnim = true
+collisionShape = NodePath("CollisionShape2D")
+hasRespawnTimer = true
+respawnTime = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollectableComponent"]
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_f1tup")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_mschl")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 emitting = false

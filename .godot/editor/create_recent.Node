@@ -1,3 +1,5 @@
+CharacterBody2D
+Timer
 CollisionShape2D
 AudioStreamPlayer
 Area2D
@@ -11,4 +13,3 @@ Node
 ColorRect
 Control
 CanvasLayer
-VBoxContainer

@@ -7,6 +7,21 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cwkcl"]
 size = Vector2(12, 18)
 
+[sub_resource type="Animation" id="Animation_xrqb0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="Animation" id="Animation_blpvq"]
 resource_name = "anim_idle"
 length = 0.85
@@ -25,33 +40,19 @@ tracks/0/keys = {
 "values": [0, 1, 2, 3, 0]
 }
 
-[sub_resource type="Animation" id="Animation_xrqb0"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x8byl"]
 _data = {
 "RESET": SubResource("Animation_xrqb0"),
 "anim_idle": SubResource("Animation_blpvq")
 }
 
-[node name="CollectableWitheredRose" type="Node2D" groups=["collectable"]]
+[node name="CollectableWitheredRose" type="Node2D"]
 script = ExtResource("1_v1h0d")
 
-[node name="CollectableComponent" parent="." node_paths=PackedStringArray("collisionShape", "animationPlayer") instance=ExtResource("3_itm3y")]
-collisionShape = NodePath("CollisionShape2D")
+[node name="CollectableComponent" parent="." node_paths=PackedStringArray("animationPlayer", "collisionShape") instance=ExtResource("3_itm3y")]
 animationPlayer = NodePath("../AnimationPlayer")
+hasIdleAnim = true
+collisionShape = NodePath("CollisionShape2D")
 isUniqueCollectable = true
 uniqueCollectible = 1
 

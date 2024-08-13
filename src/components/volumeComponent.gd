@@ -116,7 +116,7 @@ func get_important_objects() -> void:
 		var index: int = 0
 		
 		for object: Variant in room.get_node("Objects").get_children():
-			if object.is_in_group("collectable"):
+			if object.is_in_group("uniqueCollectable"):
 				var collectibleComponent: CollectableComponent = object.get_node("CollectableComponent")
 				
 				if collectibleComponent != null:
