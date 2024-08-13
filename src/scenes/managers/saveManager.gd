@@ -39,12 +39,13 @@ func init() -> void:
 	currentMetaData = load_all_meta_data()
 	
 	var passed: bool = get_runtime_check()
+	var passedStr: String = Utils.get_check_word(passed)
 	
 	if passed:
-		print("[saveManager] Passed runtime load check")
+		print("[saveManager] runtime load check: %s" % passedStr)
 		SignalManager.initLoadComplete.emit(passed)
 	else:
-		print("[saveManager] Failed runtime load check")
+		print("[saveManager] runtime load check: %s" % passedStr)
 		SignalManager.initLoadComplete.emit(passed)
 
 #ensuring existence of stuff needed before choosing slots.

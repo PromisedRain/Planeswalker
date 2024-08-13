@@ -17,9 +17,13 @@ var currentPlayer: Player
 var rooms
 
 func _ready() -> void:
+	
+	
+	
 	update_current_volume()
 	free_all_rooms()
 	load_current_room()
+	get_important_info()
 	
 	SaveManager.save_game()
 
@@ -103,3 +107,30 @@ func reload_camera() -> void:
 	camera = LevelManager.create_camera_instance()
 	add_child(camera)
 	#camera.reset_camera()
+
+func get_important_info() -> void: 
+	get_important_objects()
+
+func get_important_objects() -> void:
+	for room: RoomComponent in roomsContainer.get_children():
+		var index: int = 0
+		
+		for object: Variant in room.get_node("Objects").get_children():
+			if object.is_in_group("collectable"):
+				var collectibleComponent: CollectableComponent = object.get_node("CollectableComponent")
+				
+				if collectibleComponent != null:
+					pass
+				
+				#LevelManager.collectableDict[object] = room
+				LevelManager.collectiblesCount += 1
+			#print("[volume] Object: %s" % object)
+	
+	return
+	#print(LevelManager.collectiblesCount)
+
+
+func save_player_global_pos() -> void:
+	pass
+	#SaveManager.set_slot_data("current_chapter_position_x", player.global_position.x)
+	#SaveManager.set_slot_data("current_chapter_position_y", player.global_position.y)

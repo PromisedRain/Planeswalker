@@ -130,7 +130,7 @@ pause={
 
 2d_physics/layer_1="foundationLayer"
 2d_physics/layer_2="player"
-2d_physics/layer_3="orbs"
+2d_physics/layer_3="collectables"
 
 [rendering]
 

@@ -20,7 +20,7 @@ func _on_main_menu_button_pressed():
 	
 	UiManager.instance_main_menu()
 	UiManager.open_pause_menu(false) #closes it
-
+	
 
 
 func _on_quit_to_desktop_button_pressed():

@@ -1,11 +1,15 @@
 extends Node
 
-@onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
+@onready var player: Player = get_tree().get_first_node_in_group("player")
 @onready var main: Node = get_tree().get_first_node_in_group("main")
 @onready var outsideSubViewportCamera: Camera2D = get_tree().get_first_node_in_group("outsideSubViewportCamera")
 @onready var insideSubViewportCamera: Camera2D = get_tree().get_first_node_in_group("insideSubViewportCamera")
 
-func get_player() -> CharacterBody2D:
+func _ready() -> void:
+	var uuid: String = generate_uuid()
+	print("[utils] Test uuid: %s" % uuid)
+
+func get_player() -> Player:
 	update_references()
 	return player
 
@@ -61,7 +65,8 @@ func to_hex_char(value: int) -> String:
 	var hexChars: Array[String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"]
 	return hexChars[value]
 
-func _ready():
-	var uuid = generate_uuid()
-	print("[utils] Test uuid: %s" % uuid)
-	
+func get_check_word(passed: bool) -> String:
+	if passed:
+		return "passed"
+	else:
+		return "failed"

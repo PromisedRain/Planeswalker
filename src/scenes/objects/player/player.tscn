@@ -1,12 +1,12 @@
 [gd_scene load_steps=20 format=3 uid="uid://cm0lw3nd0kw7d"]
 
 [ext_resource type="Script" path="res://src/scenes/objects/player/player.gd" id="1_ev1iy"]
-[ext_resource type="Texture2D" uid="uid://dus1t4omt66pe" path="res://src/media/sprites/gameObjects/player/lilithIdleSheet19x128.png" id="2_d5ssh"]
+[ext_resource type="Texture2D" uid="uid://dus1t4omt66pe" path="res://src/media/sprites/objects/player/lilithIdleSheet19x128.png" id="2_d5ssh"]
 [ext_resource type="PackedScene" uid="uid://cyc4eax6g4cjv" path="res://src/components/hurtboxComponent.tscn" id="2_v0tt5"]
 [ext_resource type="PackedScene" uid="uid://dhgs7vny0y0xq" path="res://src/components/healthComponent.tscn" id="3_b752o"]
-[ext_resource type="Texture2D" uid="uid://c7qwsubxwkjuf" path="res://src/media/sprites/gameObjects/player/lilithDuckSheet19x16.png" id="3_qatpp"]
-[ext_resource type="Texture2D" uid="uid://bno1ityoac53x" path="res://src/media/sprites/gameObjects/player/lilithJumpSheet19x32.png" id="4_katjx"]
-[ext_resource type="Texture2D" uid="uid://dj4stqasye0ja" path="res://src/media/sprites/gameObjects/player/lilithRunSheet19x128.png" id="5_a6rul"]
+[ext_resource type="Texture2D" uid="uid://c7qwsubxwkjuf" path="res://src/media/sprites/objects/player/lilithDuckSheet19x16.png" id="3_qatpp"]
+[ext_resource type="Texture2D" uid="uid://bno1ityoac53x" path="res://src/media/sprites/objects/player/lilithJumpSheet19x32.png" id="4_katjx"]
+[ext_resource type="Texture2D" uid="uid://dj4stqasye0ja" path="res://src/media/sprites/objects/player/lilithRunSheet19x128.png" id="5_a6rul"]
 
 [sub_resource type="Animation" id="Animation_h43l2"]
 length = 0.001
@@ -305,6 +305,8 @@ _data = [Vector2(0, 1), 0.0, 0.0675827, 0, 0, Vector2(0.949153, 0.268041), -3.24
 point_count = 3
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("1_ev1iy")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -1,11 +1,9 @@
 extends Node
 
-var currentCollectiblesCollected: int = 0
-var currentDeathsTotal: int = 0
+var totalCollectiblesCollected: int = 0
+var totalDeaths: int = 0
 
-func _ready() -> void:
-	get_initial_values()
-
-
-func get_initial_values() -> void:
-	pass
+enum ProgressionCollectibles {
+	placeholder,
+	witheredRose
+}

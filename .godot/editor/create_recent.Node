@@ -1,3 +1,9 @@
+CollisionShape2D
+AudioStreamPlayer
+Area2D
+CollisionPolygon2D
+AnimationPlayer
+Sprite2D
 TileMapLayer
 Camera2D
 Marker2D
@@ -6,9 +12,3 @@ ColorRect
 Control
 CanvasLayer
 VBoxContainer
-TextureRect
-Sprite2D
-HBoxContainer
-MarginContainer
-Node2D
-SubViewport

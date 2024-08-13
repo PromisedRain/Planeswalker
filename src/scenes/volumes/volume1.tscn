@@ -13,7 +13,7 @@ tonemap_mode = 2
 
 [node name="Volume1" type="Node2D" node_paths=PackedStringArray("volumeSpawn")]
 script = ExtResource("1_ddas4")
-volumeGivenName = "The Wastes"
+volumeGivenName = "Prologue"
 volumeID = 1
 volumeSpawn = NodePath("Spawn")
 metadata/_edit_lock_ = true
@@ -28,7 +28,7 @@ metadata/_edit_lock_ = true
 position = Vector2(320, 0)
 
 [node name="Room2" parent="Rooms" instance=ExtResource("5_a2ch5")]
-position = Vector2(712, 0)
+position = Vector2(720, 0)
 
 [node name="Objects" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
