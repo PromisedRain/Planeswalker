@@ -23,3 +23,5 @@ res://src/scenes/main.gd
 res://src/scenes/objects/collectableWitheredRose/collectableWitheredRose.gd
 res://src/scenes/objects/player/player.gd
 res://src/scenes/objects/dashRefillOrb/dashRefillOrb.gd
+res://src/lib/stateMachine.gd
+res://src/scenes/managers/signalManager.gd

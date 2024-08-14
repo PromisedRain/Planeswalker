@@ -9,6 +9,7 @@ var previousState: Callable
 func update(delta: float) -> void: 
 	if currentState: 
 		var nextState = currentState.call(delta) 
+		
 		if nextState and nextState != currentState:
 			change_state(nextState, delta)
 
@@ -25,6 +26,7 @@ func set_state(state: StateFlows, delta: float = 0) -> void:
 	if currentState:
 		if states.has(currentState):
 			var currentStateFlow = states[currentState] 
+			
 			if currentStateFlow.leaveState:
 				currentStateFlow.leaveState.call(delta) 
 			previousState = currentState 
@@ -44,7 +46,6 @@ func get_current_state_name() -> String:
 		return stateNames[currentState]
 	else:
 		return "unknown state"
-
 
 class StateFlows:
 	var normal: Callable 
