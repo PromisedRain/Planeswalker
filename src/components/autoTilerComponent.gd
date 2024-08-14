@@ -8,7 +8,7 @@ extends TileMapLayer
 @export var zIndexLayer: LayerManager.Layers
 
 func _ready() -> void:
-	z_index = zIndexLayer
+	LayerManager.set_z_index(self, zIndexLayer)
 
 func add_border_collision_tiles() -> void:
 	if Engine.is_editor_hint():

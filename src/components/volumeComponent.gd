@@ -122,8 +122,9 @@ func get_important_objects() -> void:
 				if collectibleComponent != null:
 					pass
 				
-				#LevelManager.collectableDict[object] = room
+				LevelManager.collectableDict[object] = room
 				LevelManager.collectiblesCount += 1
+				print(LevelManager.collectableDict)
 			#print("[volume] Object: %s" % object)
 	
 	return

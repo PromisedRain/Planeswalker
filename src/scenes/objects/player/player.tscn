@@ -308,6 +308,7 @@ point_count = 3
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_ev1iy")
+zIndexLayer = 14
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

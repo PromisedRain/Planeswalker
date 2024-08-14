@@ -1,5 +1,6 @@
 class_name Player
 extends CharacterBody2D
+
 #lilith
 
 @onready var sprite: Sprite2D = $Visuals/Body
@@ -19,7 +20,7 @@ extends CharacterBody2D
 @onready var dashParticles: CPUParticles2D = $DashParticles
 @onready var dashGhost: PackedScene = preload("res://src/components/dashGhostComponent.tscn")
 
-
+@export var zIndexLayer: LayerManager.Layers
 
 var stateMachine: StateMachine
 var direction: Vector2
@@ -123,13 +124,13 @@ func _ready() -> void:
 	stateMachine.add_states("dead", Callable(self, "st_dead_update"), Callable(self, "st_enter_dead"), Callable(self, "st_leave_dead"))
 	stateMachine.set_initial_state(Callable(self, "st_idle_update"))
 	
-	#signals
 	healthComponent.connect("died", Callable(self, "st_dead"))
 	
-	#initial emits
 	start_jump_buffer_timer()
 	refill_stamina()
 	refill_dashes()
+	
+	LayerManager.set_z_index(self, zIndexLayer)
 
 # physics
 func _physics_process(delta: float) -> void:

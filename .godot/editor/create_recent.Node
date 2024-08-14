@@ -1,3 +1,5 @@
+Control
+CanvasLayer
 CharacterBody2D
 Timer
 CollisionShape2D
@@ -11,5 +13,3 @@ Camera2D
 Marker2D
 Node
 ColorRect
-Control
-CanvasLayer

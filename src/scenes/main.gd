@@ -18,6 +18,7 @@ func _ready() -> void:
 
 func init(loaded: bool) -> void: 
 	if !loaded:
+		print("[main] Init failed to load")
 		return
 	
 	if SaveManager.get_config_data("settings", "debug_mode") != null:

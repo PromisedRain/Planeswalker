@@ -13,7 +13,6 @@ var slotCollectibles: int = 0
 var slotPlaytime: String = "00:00:00"
 var slotDeaths: int = 0
 
-
 func _ready() -> void:
 	#slotCurrentVolumeLabel.text = "Volume %s" % str(slotCurrentVolume)
 	slotCurrentVolumeLabel.text = str(slotCurrentVolumeName)

@@ -23,7 +23,7 @@ var sceneLoadQueue: Array[Dictionary] = []
 var sceneCache: Dictionary = {}
 var sceneCacheOrder: Array[String] = []
 
-var collectableDict: Array = []
+var collectableDict: Dictionary = {}
 var collectiblesCount: int = 0
 
 #consts

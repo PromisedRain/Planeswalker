@@ -3,14 +3,11 @@ extends Area2D
 
 @onready var player: Player = Utils.get_player()
 
-@export_category("animation")
 @export var animationPlayer: AnimationPlayer
 @export var hasCollectAnim: bool
 @export var hasCollectedAnim: bool
 @export var hasIdleAnim: bool
 
-
-@export_category("misc")
 @export var collisionShape: CollisionShape2D
 
 @export var isUniqueCollectable: bool
@@ -60,7 +57,7 @@ func _on_body_entered(body: Node2D) -> void:
 	
 	for condition: Callable in collectConditions:
 		if !condition.call():
-			print("added condition not met, started polling for condition")
+			#print("added condition not met, started polling for condition")
 			start_polling_check()
 			return
 	
@@ -82,19 +79,21 @@ func start_polling_check() -> void:
 
 func on_poll_timer_finished() -> void:
 	if !playerInside:
+		pollTimer.stop()
 		pollTimer.queue_free()
 	else:
 		for condition: Callable in collectConditions:
 			if condition.call():
+				pollTimer.stop()
 				pollTimer.queue_free()
 				handle_collecting()
 
 func handle_collecting() -> void:
-	print("entered collectable %s" % parent.get_name())
+	#print("entered collectable %s" % parent.get_name())
 	collectableEntered.emit() #connects to parent method to do whatever the parent needs to do when player enters
 	
 	if animationPlayer == null:
-		print("[collectableComponent] Animationplayer is null")
+		print("[collectableComponent] Animationplayer is: %s" %  animationPlayer)
 		if finishedRunning:
 			parent.queue_free()
 	

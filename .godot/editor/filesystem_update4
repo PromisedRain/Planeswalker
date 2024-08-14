@@ -1,4 +1,4 @@
-res://src/scenes/objects/dashRefillOrb/dashRefillOrb.tscn
+res://src/scenes/volumes/rooms/room2.tscn
 res://src/resources/themes/mainMenuButtonLabelTheme.tres
 res://src/resources/shaders/vignette.gdshader
 res://src/resources/tilesets/allTilesets.tres
@@ -10,18 +10,10 @@ res://src/scenes/objects/roomSwitcher/roomSwitcher.tscn
 res://src/scenes/volumes/volume1.tscn
 res://src/scenes/volumes/rooms/room0.tscn
 res://src/scenes/volumes/rooms/room1.tscn
-res://src/scenes/volumes/rooms/room2.tscn
 res://src/scenes/managers/uiManager.tscn
+res://src/gui/mainMenu/mainMenu.tscn
 res://src/components/autoTilerComponent.tscn
 res://src/scenes/objects/collectableWitheredRose/collectableWitheredRose.tscn
+res://src/scenes/objects/dashRefillOrb/dashRefillOrb.tscn
 res://src/components/collectableComponent.tscn
-res://src/components/volumeComponent.gd
-res://src/components/collectableComponent.gd
-res://testtest.gd
-res://src/testing/legit2MINtest.tscn
-res://src/scenes/main.gd
-res://src/scenes/objects/collectableWitheredRose/collectableWitheredRose.gd
-res://src/scenes/objects/player/player.gd
-res://src/scenes/objects/dashRefillOrb/dashRefillOrb.gd
-res://src/lib/stateMachine.gd
-res://src/scenes/managers/signalManager.gd
+res://src/gui/vignette/vignette.tscn

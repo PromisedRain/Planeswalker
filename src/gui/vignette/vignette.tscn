@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://ckceh1hxaxh4x"]
+[gd_scene load_steps=4 format=3 uid="uid://ckceh1hxaxh4x"]
 
 [ext_resource type="Shader" path="res://src/resources/shaders/vignette.gdshader" id="1_3masv"]
+[ext_resource type="Script" path="res://src/gui/vignette/vignette.gd" id="1_uevvm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lc34m"]
 shader = ExtResource("1_3masv")
@@ -9,6 +10,8 @@ shader_parameter/vignette_opacity = 0.5
 shader_parameter/vignette_rgb = Color(0, 0, 0, 1)
 
 [node name="Vignette" type="CanvasLayer"]
+script = ExtResource("1_uevvm")
+zIndexLayer = 25
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_lc34m")
