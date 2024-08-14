@@ -21,9 +21,16 @@ extends Area2D
 
 
 var respawnTimer: Timer
-var parent: Node = null
+var pollTimer: Timer
+
 var finishedRunning: bool = false
-var parentEnterCondition: Variant = null
+var playerInside: bool = false
+
+var parent: Node = null
+
+var collectConditions: Array[Callable] = []
+
+var pollCheckInterval: float = 0.1
 
 signal collectableEntered
 signal animInvalid(animName: String)
@@ -35,7 +42,7 @@ func _ready() -> void:
 		animationPlayer.animation_finished.connect(on_anim_finished)
 	
 	if hasIdleAnim:
-		var animNameIdle = get_anim_name("anim_idle")
+		var animNameIdle: String = get_anim_name("anim_idle")
 		
 		if animNameIdle != "":
 			animationPlayer.play(animNameIdle)
@@ -47,12 +54,42 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if !body == player || !body is Player:
-		if parentEnterCondition != null:
-			if parentEnterCondition:
-				return
-		else:
+		return
+	
+	playerInside = true
+	
+	for condition: Callable in collectConditions:
+		if !condition.call():
+			print("added condition not met, started polling for condition")
+			start_polling_check()
 			return
 	
+	handle_collecting()
+
+func _on_body_exited(body: Node2D) -> void:
+	if !body == player || !body is Player:
+		return
+	
+	playerInside = false
+
+func start_polling_check() -> void:
+	pollTimer = Timer.new()
+	pollTimer.wait_time = pollCheckInterval
+	pollTimer.one_shot = false
+	pollTimer.timeout.connect(on_poll_timer_finished)
+	parent.add_child(pollTimer)
+	pollTimer.start()
+
+func on_poll_timer_finished() -> void:
+	if !playerInside:
+		pollTimer.queue_free()
+	else:
+		for condition: Callable in collectConditions:
+			if condition.call():
+				pollTimer.queue_free()
+				handle_collecting()
+
+func handle_collecting() -> void:
 	print("entered collectable %s" % parent.get_name())
 	collectableEntered.emit() #connects to parent method to do whatever the parent needs to do when player enters
 	
@@ -80,7 +117,6 @@ func _on_body_entered(body: Node2D) -> void:
 		else:
 			animInvalid.emit("anim_collect")
 
-
 func change_collision(disable: bool) -> void:
 	collisionShape.disabled = disable
 
@@ -89,12 +125,12 @@ func on_anim_finished(animName: String) -> void:
 		if !hasRespawnTimer && !respawnTime > 0 && finishedRunning:
 			parent.queue_free()
 		else:
-			var animNameCollectableOutline: String = get_anim_name("anim_collectable_outline")
+			var animNameCollectableOutline: String = get_anim_name("anim_collected")
 			
 			if animNameCollectableOutline != "":
 				animationPlayer.play(animNameCollectableOutline)
 			else:
-				animInvalid.emit("anim_collectable_outline")
+				animInvalid.emit("anim_collected")
 		create_respawn_timer()
 
 func create_respawn_timer() -> void:
@@ -128,6 +164,9 @@ func has_unique_collectable() -> void:
 				print("collected withered rose")
 			_:
 				print("collected ???")
+
+func add_collect_condition(condition: Callable) -> void:
+	collectConditions.append(condition)
 
 func on_anim_invalid(_animName) -> void:
 	print("[collectableComponent] Animation '%s' not found/invalid" % _animName)

@@ -702,6 +702,9 @@ func refill_dashes() -> bool:
 		return true
 	return false
 
+func get_total_dashes() -> int:
+	return totalDashes
+
 func refill_stamina() -> bool:
 	if climbStamina < climbMaxStamina:
 		climbStamina = climbMaxStamina
