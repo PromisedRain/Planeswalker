@@ -9,7 +9,7 @@ extends Node2D
 @export var volumeGivenName: String
 @export_range(1,3) var volumeID: int
 @export var volumeSpawn: Marker2D
-@export var spawnOnDefault: bool
+@export var spawnDefault: bool
 
 var currentRoom: Room
 var currentCamera: Camera2D
@@ -113,7 +113,7 @@ func get_important_info() -> void:
 
 func get_important_objects() -> void:
 	for room in rooms.get_children():
-		var index: int = 0
+		#var index: int = 0
 		
 		for object: Variant in room.get_node("Objects").get_children():
 			if object.is_in_group("uniqueCollectable"):

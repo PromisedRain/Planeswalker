@@ -41,3 +41,13 @@ func set_dynamic_z_index(node: Node2D) -> void:
 
 func set_canvas_layer(node: CanvasLayer, index: Layers) -> void:
 	node.layer = index
+
+func set_layer_index(node: Variant, index: Layers) -> void:
+	if node is Node2D:
+		node.z_index = index
+	elif node is CanvasLayer:
+		node.layer = index
+	elif node is CanvasItem:
+		node.z_index = index
+	elif node is Control:
+		node.z_index = index

@@ -5,6 +5,7 @@
 
 [node name="SlotTimer" type="CanvasLayer"]
 script = ExtResource("1_ck5db")
+layerIndex = 26
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -22,6 +23,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
@@ -29,14 +31,16 @@ theme_override_constants/margin_bottom = 5
 
 [node name="Control" type="Control" parent="Control/MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="SlotTimerLabel" type="Label" parent="Control/MarginContainer/Control"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 23.0
+offset_left = -71.0
+offset_bottom = 13.0
 grow_horizontal = 0
 theme = ExtResource("1_xvib6")
 text = "00:00:00"
+horizontal_alignment = 2

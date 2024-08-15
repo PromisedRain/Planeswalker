@@ -20,7 +20,7 @@ extends CharacterBody2D
 @onready var dashParticles: CPUParticles2D = $DashParticles
 @onready var dashGhost: PackedScene = preload("res://src/components/dashGhostComponent.tscn")
 
-@export var zIndexLayer: LayerManager.Layers
+@export var layerIndex: LayerManager.Layers
 
 var stateMachine: StateMachine
 var direction: Vector2
@@ -109,7 +109,7 @@ enum climbStaminaActions {
 	climbUp
 }
 
-signal climbStaminaChanged(climbStaminaValue: float)
+signal climbStaminaChanged(value: float)
 
 func _ready() -> void:
 	stateMachine = StateMachine.new()
@@ -130,7 +130,8 @@ func _ready() -> void:
 	refill_stamina()
 	refill_dashes()
 	
-	LayerManager.set_z_index(self, zIndexLayer)
+	if layerIndex != LayerManager.Layers.PLACEHOLDER_LAYER:
+		LayerManager.set_layer_index(self, layerIndex)
 
 # physics
 func _physics_process(delta: float) -> void:

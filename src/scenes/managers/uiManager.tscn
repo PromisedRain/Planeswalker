@@ -19,12 +19,11 @@ savePopupIcon = ExtResource("5_otoeg")
 
 [node name="Vignette" parent="." instance=ExtResource("5_lnm1i")]
 visible = false
+layerIndex = 25
 
 [node name="PauseMenu" parent="." instance=ExtResource("6_rphhq")]
 process_mode = 2
 layer = 2
 visible = false
-ZIndexLayer = 30
 
 [node name="SlotTimer" parent="." instance=ExtResource("8_wtweu")]
-ZIndexLayer = 26

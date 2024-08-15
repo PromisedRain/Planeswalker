@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://cg6g17qc8awr2"]
+[gd_scene load_steps=9 format=3 uid="uid://cg6g17qc8awr2"]
 
 [ext_resource type="Script" path="res://src/gui/mainMenu/mainMenu.gd" id="1_t4hh1"]
 [ext_resource type="PackedScene" uid="uid://c4r2alp7dkopp" path="res://src/gui/titleScreen/titleScreen.tscn" id="2_0vxri"]
 [ext_resource type="PackedScene" uid="uid://bpded4k5kx45m" path="res://src/gui/slotSelection/slotSelection.tscn" id="3_h3vy1"]
 [ext_resource type="PackedScene" uid="uid://cod3fh2b66bae" path="res://src/gui/mainMenuSettings/mainMenuSettings.tscn" id="4_ukfld"]
 [ext_resource type="PackedScene" uid="uid://ju8hbn5ionoq" path="res://src/gui/volumeSelection/volumeSelection.tscn" id="5_u125w"]
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="6_ef08x"]
+[ext_resource type="FontFile" uid="uid://dxl5qo013sh3d" path="res://src/media/fonts/MinimalPixel v2.ttf" id="7_6eqfp"]
 
 [sub_resource type="Curve" id="Curve_ikyvp"]
 _data = [Vector2(0, 1), 0.0, -0.0665132, 0, 0, Vector2(1, 0), -3.2967, 0.0, 0, 0]
@@ -12,6 +14,7 @@ point_count = 2
 
 [node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1_t4hh1")
+layerIndex = 31
 metadata/_edit_lock_ = true
 
 [node name="Background" type="ColorRect" parent="."]
@@ -52,4 +55,18 @@ visible = false
 
 [node name="VolumeSelection" parent="." instance=ExtResource("5_u125w")]
 visible = false
+metadata/_edit_lock_ = true
+
+[node name="VersionLabel" type="Label" parent="."]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 34.0
+offset_bottom = 12.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("6_ef08x")
+theme_override_fonts/font = ExtResource("7_6eqfp")
+theme_override_font_sizes/font_size = 7
+text = "V 0.064a"
+horizontal_alignment = 1
 metadata/_edit_lock_ = true

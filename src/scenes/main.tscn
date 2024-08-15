@@ -1,8 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://4sk5yusr5vvs"]
+[gd_scene load_steps=3 format=3 uid="uid://4sk5yusr5vvs"]
 
 [ext_resource type="Script" path="res://src/scenes/main.gd" id="1_gewu3"]
-[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="4_w0p6m"]
-[ext_resource type="FontFile" uid="uid://dxl5qo013sh3d" path="res://src/media/fonts/MinimalPixel v2.ttf" id="5_gpm4t"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_qdbio"]
 viewport_path = NodePath("SubViewport")
@@ -34,18 +32,4 @@ metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="ViewportLayer" groups=["outsideSubViewportCamera"]]
 enabled = false
-metadata/_edit_lock_ = true
-
-[node name="VersionLabel" type="Label" parent="ViewportLayer"]
-offset_left = 5.0
-offset_top = 5.0
-offset_right = 34.0
-offset_bottom = 12.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme = ExtResource("4_w0p6m")
-theme_override_fonts/font = ExtResource("5_gpm4t")
-theme_override_font_sizes/font_size = 7
-text = "V 0.001a"
-horizontal_alignment = 1
 metadata/_edit_lock_ = true

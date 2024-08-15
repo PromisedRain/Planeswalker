@@ -9,6 +9,8 @@ extends CanvasLayer
 @onready var slotSelectionScreen: Control = $SlotSelection
 @onready var volumeSelectionScreen: Control = $VolumeSelection
 
+@export var layerIndex: LayerManager.Layers
+
 signal chosenVolumeFromMainMenu(volume: int)
 
 func _ready() -> void:
@@ -18,6 +20,9 @@ func _ready() -> void:
 	
 	if !titleScreen.visible:
 		titleScreen.visible = true
+	
+	if layerIndex != LayerManager.Layers.PLACEHOLDER_LAYER:
+		LayerManager.set_layer_index(self, layerIndex)
 	
 	window.size_changed.connect(window_on_size_change)
 	

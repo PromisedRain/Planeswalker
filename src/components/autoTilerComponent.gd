@@ -4,11 +4,12 @@ extends TileMapLayer
 
 @export var useTool: bool = false
 @export var lockRandomPattern: bool = false
-@export var seed: int = 0  
-@export var zIndexLayer: LayerManager.Layers
+@export var seedInput: int = 0  
+@export var layerIndex: LayerManager.Layers
 
 func _ready() -> void:
-	LayerManager.set_z_index(self, zIndexLayer)
+	if layerIndex != LayerManager.Layers.PLACEHOLDER_LAYER:
+		LayerManager.set_layer_index(self, layerIndex)
 
 func add_border_collision_tiles() -> void:
 	if Engine.is_editor_hint():

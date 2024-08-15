@@ -1,9 +1,10 @@
 extends CanvasLayer
 
-@export var ZIndexLayer: LayerManager.Layers
+@export var layerIndex: LayerManager.Layers
 
 func _ready() -> void:
-	LayerManager.set_canvas_layer(self, ZIndexLayer)
+	if layerIndex != LayerManager.Layers.PLACEHOLDER_LAYER:
+		LayerManager.set_layer_index(self, layerIndex)
 
 
 

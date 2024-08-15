@@ -363,7 +363,6 @@ hasRespawnTimer = true
 respawnTime = 8.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollectableComponent"]
-position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_f1tup")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]

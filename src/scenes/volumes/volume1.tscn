@@ -15,7 +15,28 @@ tonemap_mode = 2
 script = ExtResource("1_15x16")
 volumeGivenName = "Prologue"
 volumeID = 1
-volumeSpawn = NodePath("Spawn")
+volumeSpawn = NodePath("DefaultSpawn")
+metadata/_edit_lock_ = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_77io1")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="DefaultSpawn" type="Marker2D" parent="."]
+position = Vector2(392, -40)
+metadata/_edit_lock_ = true
+
+[node name="DebugSpawn" type="Marker2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="." groups=["insideSubViewportCamera"]]
+position_smoothing_enabled = true
+position_smoothing_speed = 4.0
+script = ExtResource("6_tju2t")
+metadata/_edit_lock_ = true
+
+[node name="Objects" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
 
 [node name="Rooms" type="Node2D" parent="."]
@@ -32,22 +53,3 @@ script = null
 [node name="Room2" parent="Rooms" instance=ExtResource("5_a2ch5")]
 position = Vector2(720, 0)
 script = null
-
-[node name="Objects" type="Node2D" parent="."]
-metadata/_edit_lock_ = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_77io1")
-
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-metadata/_edit_lock_ = true
-
-[node name="Camera2D" type="Camera2D" parent="." groups=["insideSubViewportCamera"]]
-position_smoothing_enabled = true
-position_smoothing_speed = 4.0
-script = ExtResource("6_tju2t")
-metadata/_edit_lock_ = true
-
-[node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(392, -40)
-metadata/_edit_lock_ = true

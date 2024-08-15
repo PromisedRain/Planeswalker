@@ -6,4 +6,5 @@
 [node name="AutoTilerComponent" type="TileMapLayer" groups=["autoTiler"]]
 tile_set = ExtResource("1_c3ncq")
 script = ExtResource("1_gdxl2")
+seedInput = null
 metadata/_edit_lock_ = true

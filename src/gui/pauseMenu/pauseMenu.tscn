@@ -5,6 +5,7 @@
 
 [node name="PauseMenu" type="CanvasLayer"]
 script = ExtResource("1_cay6y")
+layerIndex = 30
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
