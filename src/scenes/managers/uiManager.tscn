@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dimjcq438a4r4"]
+[gd_scene load_steps=9 format=3 uid="uid://dimjcq438a4r4"]
 
 [ext_resource type="Script" path="res://src/scenes/managers/uiManager.gd" id="1_jlpka"]
 [ext_resource type="PackedScene" uid="uid://cevaoxwk4veu4" path="res://src/gui/playerUI/playerUI.tscn" id="2_v6avp"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://ckceh1hxaxh4x" path="res://src/gui/vignette/vignette.tscn" id="5_lnm1i"]
 [ext_resource type="PackedScene" uid="uid://b7tb75csliu12" path="res://src/gui/saveIconComponents/saveIcon1.tscn" id="5_otoeg"]
 [ext_resource type="PackedScene" uid="uid://ba7tc2g1wlo02" path="res://src/gui/pauseMenu/pauseMenu.tscn" id="6_rphhq"]
+[ext_resource type="PackedScene" uid="uid://b2gocl85mps0y" path="res://src/gui/slotTimer/slotTimer.tscn" id="8_wtweu"]
 
 [node name="UIManager" type="CanvasLayer"]
 layer = 2
@@ -23,13 +24,7 @@ visible = false
 process_mode = 2
 layer = 2
 visible = false
+ZIndexLayer = 30
 
-[node name="SpeedrunTimer" type="CanvasLayer" parent="."]
-
-[node name="Control" type="Control" parent="SpeedrunTimer"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="SlotTimer" parent="." instance=ExtResource("8_wtweu")]
+ZIndexLayer = 26

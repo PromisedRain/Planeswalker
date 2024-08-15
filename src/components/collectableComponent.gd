@@ -104,8 +104,8 @@ func handle_collecting() -> void:
 		if finishedRunning:
 			parent.queue_free()
 		else:
-			await finishedRunning == true
-			parent.queue_free()
+			pass
+			#parent.queue_free()
 	else:
 		var animNameCollect: String = get_anim_name("anim_collect")
 		

@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=4 uid="uid://bu3f150dlw6qp"]
 
-[ext_resource type="Script" path="res://src/components/roomComponent.gd" id="1_2u1wq"]
+[ext_resource type="Script" path="res://src/lib/room.gd" id="1_shw4c"]
 [ext_resource type="PackedScene" uid="uid://c0rxy4tyuojl1" path="res://src/components/autoTilerComponent.tscn" id="2_g1wrd"]
 
 [node name="Room0" type="Node2D"]
-script = ExtResource("1_2u1wq")
+script = ExtResource("1_shw4c")
 
 [node name="TileSolidLayer" parent="." instance=ExtResource("2_g1wrd")]
 z_index = 17

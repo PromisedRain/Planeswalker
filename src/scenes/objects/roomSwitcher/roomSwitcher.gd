@@ -16,9 +16,9 @@ signal playerEntered(door: RoomSwitcherComponent)
 var roomSwitcherType: String = "ROOMSWITCHER"
 
 var adjacentRoomSwitcher: RoomSwitcherComponent = null
-var parentRoom: RoomComponent = null
+var parentRoom: Room = null
 
-func get_adjacent_room() -> RoomComponent:
+func get_adjacent_room() -> Room:
 	if adjacentRoomSwitcher != null:
 		return
 	

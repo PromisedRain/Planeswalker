@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c0rxy4tyuojl1"]
 
-[ext_resource type="TileSet" uid="uid://bbcmpk4khaahx" path="res://src/resources/tilesets/allTilesets.tres" id="1_c3ncq"]
+[ext_resource type="TileSet" uid="uid://bbcmpk4khaahx" path="res://src/resources/tilesets/tileSolids.tres" id="1_c3ncq"]
 [ext_resource type="Script" path="res://src/components/autoTilerComponent.gd" id="1_gdxl2"]
 
 [node name="AutoTilerComponent" type="TileMapLayer" groups=["autoTiler"]]

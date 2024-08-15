@@ -1,8 +1,9 @@
 extends CanvasLayer
 
+@export var ZIndexLayer: LayerManager.Layers
 
 func _ready() -> void:
-	pass 
+	LayerManager.set_canvas_layer(self, ZIndexLayer)
 
 
 

@@ -1,4 +1,6 @@
+Label
 Control
+MarginContainer
 CanvasLayer
 CharacterBody2D
 Timer
@@ -11,5 +13,3 @@ Sprite2D
 TileMapLayer
 Camera2D
 Marker2D
-Node
-ColorRect

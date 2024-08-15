@@ -2,7 +2,7 @@ extends Node
 
 # system
 @warning_ignore("unused_signal")
-signal initLoadComplete(loaded: bool)
+signal initialLoadComplete(loaded: bool)
 
 @warning_ignore("unused_signal")
 signal saving(inProgress: bool)

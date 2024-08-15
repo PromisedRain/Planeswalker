@@ -307,7 +307,7 @@ func player_movement(delta) -> void:
 				decelerate(delta)
 
 #idle
-func st_idle_update(delta: float) -> Callable:
+func st_idle_update(delta: float) -> Callable: #this gets called every frame
 	_gravity_process(delta)
 	player_movement(delta)
 	canJump = true
@@ -330,7 +330,7 @@ func st_idle_update(delta: float) -> Callable:
 	
 	return Callable()
 
-func st_enter_idle(delta: float = 0) -> void:
+func st_enter_idle(delta: float = 0) -> void: #this gets called once you change a state to idle, aka it gets called once
 	#print("IDLE")
 	canJump = true
 	
@@ -339,7 +339,7 @@ func st_enter_idle(delta: float = 0) -> void:
 	
 	refill_dashes()
 
-func st_leave_idle(delta: float = 0) -> void:
+func st_leave_idle(delta: float = 0) -> void: #this gets called before you change state, it gets called once
 	pass
 
 #move

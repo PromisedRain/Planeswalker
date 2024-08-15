@@ -1,4 +1,4 @@
-class_name RoomComponent
+class_name Room
 extends Node2D
 
 @onready var doors: Node2D = $Doors
@@ -25,8 +25,7 @@ var roomWidth: int
 var roomHeight: int
 var roomCenter: int
 
-signal enteredRoom(room: RoomComponent)
-
+signal enteredRoom(room: Room)
 
 func _ready() -> void:
 	#var fileName = get_name()
@@ -40,7 +39,7 @@ func _ready() -> void:
 	print(roomWidth)
 	print(roomHeight)
 	print("room CENTERRR: %s" % roomCenter)
-	#print("[roomComponent] Room bounds: (%d, %d, %d, %d)" % [minXFull, minYFull, maxXFull, maxYFull])
+	#print("[Room] Room bounds: (%d, %d, %d, %d)" % [minXFull, minYFull, maxXFull, maxYFull])
 
 func room_entered() -> void:
 	pass

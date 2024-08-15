@@ -1,7 +1,7 @@
-class_name VolumeComponent
+class_name Volume
 extends Node2D
 
-@onready var roomsContainer: Node2D = $Rooms
+@onready var rooms: Node2D = $Rooms
 @onready var objects: Node2D = $Objects
 @onready var worldEnvironment: WorldEnvironment = $WorldEnvironment
 @onready var canvasModulate: CanvasModulate = $CanvasModulate
@@ -11,10 +11,10 @@ extends Node2D
 @export var volumeSpawn: Marker2D
 @export var spawnOnDefault: bool
 
-var currentRoom: RoomComponent
+var currentRoom: Room
 var currentCamera: Camera2D
 var currentPlayer: Player
-var rooms
+#var rooms
 
 func _ready() -> void:
 	
@@ -34,12 +34,12 @@ func load_current_room() -> void:
 		print("[volume] No saved room found, loading default")
 		var defaultFirstRoom: String = get_first_room()
 		
-		if !LevelManager.load_room(defaultFirstRoom, roomsContainer):
+		if !LevelManager.load_room(defaultFirstRoom, rooms):
 			print("[volume] Failed to load default room: %s" % defaultFirstRoom)
 		return
 	
 	#print("[volume] Loading saved room")
-	if !LevelManager.load_room(roomName, roomsContainer):
+	if !LevelManager.load_room(roomName, rooms):
 		print("[volume] Failed to load saved room: %s" % roomName)
 
 func update_current_volume() -> void:
@@ -64,7 +64,7 @@ func update_current_volume() -> void:
 	else:
 		print("[volume] Current volume ID is not higher than saved, no update required")
 
-func update_current_room(inputRoom: RoomComponent) -> void:
+func update_current_room(inputRoom: Room) -> void:
 	print("[volume] Updating current room")
 	
 	currentRoom = inputRoom
@@ -93,13 +93,13 @@ func player_died() -> void:
 	player.global_position = LevelManager.currentSpawn.round() + Vector2.UP
 
 func free_all_rooms() -> void:
-	for room: RoomComponent in roomsContainer.get_children():
+	for room in rooms.get_children():
 		room.queue_free()
 
 func reload_room() -> void:
 	var roomPath: String = str(LevelManager.currentRoomPath)
-	var roomInstance: RoomComponent = load(roomPath).instantiate()
-	var oldRoom: RoomComponent = currentRoom
+	var roomInstance: Room = load(roomPath).instantiate()
+	var oldRoom: Room = currentRoom
 
 func reload_camera() -> void:
 	var camera: Camera2D = currentCamera
@@ -112,7 +112,7 @@ func get_important_info() -> void:
 	get_important_objects()
 
 func get_important_objects() -> void:
-	for room: RoomComponent in roomsContainer.get_children():
+	for room in rooms.get_children():
 		var index: int = 0
 		
 		for object: Variant in room.get_node("Objects").get_children():

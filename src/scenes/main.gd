@@ -1,5 +1,9 @@
 extends Node
 
+####################################################################
+###                          main loop                           ###
+####################################################################
+
 @onready var window: Window = get_window() 
 @onready var windowBaseSize: Vector2i = window.content_scale_size
 @onready var windowScreenSize: Vector2i = get_viewport().get_visible_rect().size
@@ -12,7 +16,7 @@ func _ready() -> void:
 	ProjectSettings.set_setting("rendering/textures/canvas_textures/default_texture_filter", 0)
 	
 	window.size_changed.connect(window_size_changed)
-	SignalManager.initLoadComplete.connect(init)
+	SignalManager.initialLoadComplete.connect(init)
 	
 	SaveManager.init()
 
@@ -45,7 +49,7 @@ func _unhandled_input(event) -> void:
 		UiManager.open_pause_menu(true)
 
 func window_size_changed() -> void: 
-	return
+	pass
 	#print("size changed")
-	var scale: Vector2i = window.size / windowBaseSize 
-	window.content_scale_size = window.size / (scale.y if scale.y <= scale.x else scale.x)
+	#var scale: Vector2i = window.size / windowBaseSize 
+	#window.content_scale_size = window.size / (scale.y if scale.y <= scale.x else scale.x)

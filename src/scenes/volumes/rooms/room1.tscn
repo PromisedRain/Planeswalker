@@ -1,13 +1,13 @@
 [gd_scene load_steps=6 format=4 uid="uid://hkeot3pu0jvn"]
 
-[ext_resource type="Script" path="res://src/components/roomComponent.gd" id="1_emgvt"]
+[ext_resource type="Script" path="res://src/lib/room.gd" id="1_c8bqg"]
 [ext_resource type="PackedScene" uid="uid://c0rxy4tyuojl1" path="res://src/components/autoTilerComponent.tscn" id="2_r3pxv"]
 [ext_resource type="PackedScene" uid="uid://cm0lw3nd0kw7d" path="res://src/scenes/objects/player/player.tscn" id="4_1sg1i"]
 [ext_resource type="PackedScene" uid="uid://c5evwfnm23qi3" path="res://src/scenes/objects/dashRefillOrb/dashRefillOrb.tscn" id="4_dl1vn"]
 [ext_resource type="PackedScene" uid="uid://bai5l82psdgk1" path="res://src/scenes/objects/collectableWitheredRose/collectableWitheredRose.tscn" id="4_vbrfx"]
 
 [node name="Room1" type="Node2D"]
-script = ExtResource("1_emgvt")
+script = ExtResource("1_c8bqg")
 
 [node name="TileSolidLayer" parent="." instance=ExtResource("2_r3pxv")]
 z_index = 17

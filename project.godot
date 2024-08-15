@@ -44,7 +44,6 @@ window/stretch/mode="canvas_items"
 folder_colors={
 "res://src/addons/": "gray",
 "res://src/builds/": "gray",
-"res://src/common/": "gray",
 "res://src/components/": "red",
 "res://src/gui/": "green",
 "res://src/lib/": "pink",

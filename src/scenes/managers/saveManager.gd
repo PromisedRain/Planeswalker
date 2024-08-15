@@ -43,10 +43,10 @@ func init() -> void:
 	
 	if passed:
 		print("[saveManager] runtime load check: %s" % passedStr)
-		SignalManager.initLoadComplete.emit(passed)
+		SignalManager.initialLoadComplete.emit(passed)
 	else:
 		print("[saveManager] runtime load check: %s" % passedStr)
-		SignalManager.initLoadComplete.emit(passed)
+		SignalManager.initialLoadComplete.emit(passed)
 
 #ensuring existence of stuff needed before choosing slots.
 func ensure_save_dir_exists() -> void:
