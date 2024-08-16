@@ -36,9 +36,8 @@ func _ready() -> void:
 		door.playerEntered.connect(room_entered)
 	
 	calculate_room_bounds()
-	print(roomWidth)
-	print(roomHeight)
-	print("room CENTERRR: %s" % roomCenter)
+	#print(roomWidth)
+	#print(roomHeight)
 	#print("[Room] Room bounds: (%d, %d, %d, %d)" % [minXFull, minYFull, maxXFull, maxYFull])
 
 func room_entered() -> void:

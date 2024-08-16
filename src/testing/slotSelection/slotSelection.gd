@@ -14,19 +14,19 @@ func _process(delta: float) -> void:
 
 
 func _on_slot_1_select_pressed() -> void:
-	print("[mainMenu] Slot 1 selected")
+	Utils.debug_print(self, "slot 1 selected")
 	var slot: int = 1
 	open_or_create_slot(slot)
 	selectedSlot.emit(slot)
 
 func _on_slot_2_select_pressed() -> void:
-	print("[mainMenu] Slot 2 selected")
+	Utils.debug_print(self, "slot 2 selected")
 	var slot: int = 2
 	open_or_create_slot(slot)
 	selectedSlot.emit(slot)
 
 func _on_slot_3_select_pressed() -> void:
-	print("[mainMenu] Slot 3 selected")
+	Utils.debug_print(self, "slot 3 selected")
 	var slot: int = 3
 	open_or_create_slot(slot)
 	selectedSlot.emit(slot)

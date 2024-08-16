@@ -22,16 +22,16 @@ func _ready() -> void:
 
 func init(loaded: bool) -> void: 
 	if !loaded:
-		print("[main] Init failed to load")
+		Utils.debug_print(self, "init failed to load")
 		return
 	
 	if SaveManager.get_config_data("settings", "debug_mode") != null:
 		GlobalManager.debugMode = SaveManager.get_config_data("settings", "debug_mode")
 		
 		if GlobalManager.debugMode:
-			print("[main] Debug mode on")
+			Utils.debug_print(self, "debug mode is on")
 		else:
-			print("[main] Debug mode off")
+			Utils.debug_print(self, "debug mode is off")
 	
 	LevelManager.init(self, world)
 	UiManager.init()

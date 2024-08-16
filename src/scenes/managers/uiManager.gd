@@ -34,7 +34,7 @@ func instance_vignette() -> void:
 		var colorRect: ColorRect = vignette.get_node("ColorRect")
 		colorRect.material.set_shader_parameter("Vignette Opacity", lerp(0.5, 0.261, 0.50))
 	else:
-		print("[uiManager] Vignette off")
+		Utils.debug_print(self, "vignette off")
 
 func instance_debug_menu() -> void:
 	if GlobalManager.debugMode:
@@ -45,11 +45,11 @@ func open_debug_mode() -> void:
 		return
 	
 	if !loaded[scenesDict.debugManager].visible:
-		print("[uiManager] Debug on")
+		Utils.debug_print(self, "debug on")
 		loaded[scenesDict.debugManager].visible = true
 	
 	elif loaded[scenesDict.debugManager].visible:
-		print("[uiManager] Debug off")
+		Utils.debug_print(self, "debug off")
 		loaded[scenesDict.debugManager].visible = false
 
 func open_pause_menu(hideMouse: bool) -> void:
@@ -58,14 +58,14 @@ func open_pause_menu(hideMouse: bool) -> void:
 	
 	#open menu
 	if !pauseMenu.visible && canPause:
-		print("[uiManager] Paused")
+		Utils.debug_print(self, "paused")
 		#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		pauseMenu.visible = true
 		get_tree().paused = true
 	
 	#close menu
 	elif pauseMenu.visible:
-		print("[uiManager] Not paused")
+		Utils.debug_print(self, "not paused")
 		#Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 		if hideMouse:
 			pass
@@ -113,8 +113,8 @@ var canDebug: bool:
 
 func check_if_main_screen() -> bool:
 	if main.get_node("Volume").get_children().size() > 0: #checks if a volume is instantiated 
-		print("[uiManager] Can pause")
+		Utils.debug_print(self, "can pause")
 		return true
 	else:
-		print("[uiManager] Cannot pause")
+		Utils.debug_print(self, "cant pause")
 		return false

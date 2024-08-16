@@ -24,8 +24,8 @@ config/icon="res://icon.svg"
 Utils="*res://src/lib/utils.gd"
 SignalManager="*res://src/scenes/managers/signalManager.gd"
 SaveManager="*res://src/scenes/managers/saveManager.gd"
-LevelManager="*res://src/scenes/managers/levelManager.tscn"
 GlobalManager="*res://src/scenes/managers/globalManager.gd"
+LevelManager="*res://src/scenes/managers/levelManager.tscn"
 LayerManager="*res://src/scenes/managers/layerManager.gd"
 SceneTransitionManager="*res://src/scenes/managers/sceneTransitionManager.tscn"
 UiManager="*res://src/scenes/managers/uiManager.tscn"
@@ -57,9 +57,7 @@ folder_colors={
 [global_group]
 
 main=""
-outsideSubViewportCamera=""
 player=""
-insideSubViewportCamera=""
 
 [input]
 

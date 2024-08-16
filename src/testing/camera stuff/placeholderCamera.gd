@@ -2,11 +2,19 @@ extends Camera2D
 
 @onready var player: Player = Utils.get_player()
 
-func _ready() -> void:
-	#Utils.update_references()
-	print(player)
+var manualCommand: bool = true
 
-func _process(_delta: float) -> void:
+func _ready() -> void:
+	pass
+	#Utils.update_references()
+	#print(player)
+
+func _process(delta: float) -> void:
+	if manualCommand:
+		var inputdir: Vector2 = get_input()
+		position += inputdir * 200 * delta
+	
+	
 	if player == null:
 		player = Utils.get_player()
 		
@@ -20,6 +28,13 @@ func _process(_delta: float) -> void:
 	#targetPosX = Utils.int_lerp(global_position.x, target.x, 0.2)
 	#targetPosY = Utils.int_lerp(global_position.y, target.y, 0.2)
 	
-	position = Vector2(round(position.x), round(position.y))
+	
 	#position = Vector2(round(targetPosX), round(targetPosY))
-	global_position = player.global_position
+	
+	#uncomment this for placerholder code
+	#position = Vector2(round(position.x), round(position.y))
+	#global_position = player.global_position
+
+func get_input() -> Vector2:
+	var dir = Input.get_vector("left", "right", "up", "down")
+	return dir

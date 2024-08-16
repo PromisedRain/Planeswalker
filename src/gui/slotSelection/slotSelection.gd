@@ -24,7 +24,7 @@ func init_slots_data() -> void:
 		
 		for file: String in saveFiles:
 			if file == expectedFilename:
-				print("[slotSelection] Savedata found: %d" % i)
+				Utils.debug_print(self, "savedata found: %s", [i])
 				instantiate_used_slot(i)
 				saveFound = true
 				break
@@ -55,12 +55,12 @@ func instantiate_used_slot(slot: int) -> void:
 	if container: #&& container.get_child_count() <= 0:
 		container.add_child(instance)
 	else:
-		print("[slotSelection] Container%s already used" % slot)
+		Utils.debug_print(self, "container '%d' already used", [slot])
 
 func on_used_slot_pressed(slot: int) -> void:
 	load_save(slot)
 	selectedSlot.emit(slot)
-	print("[slotSelection] Selected slot%d" % slot)
+	Utils.debug_print(self, "selected slot %d", [slot])
 
 func instantiate_empty_slot(slot: int) -> void:
 	var instance: EmptySlot = emptySlot.instantiate()
@@ -71,14 +71,13 @@ func instantiate_empty_slot(slot: int) -> void:
 	if container: #&& container.get_children().size() <= 0:
 		container.add_child(instance)
 	else:
-		print("[slotSelection] Error 'containerSlot%d' not found" % slot)
+		Utils.debug_print(self, "error 'containerSlot%d' not found / invalid", [slot])
 
 func on_empty_slot_pressed(slot: int) -> void:
 	instantiate_used_slot(slot)
 	load_save(slot)
 	SaveManager.currentSlotData = {}
 	#selectedSlot.emit(slot)
-	#print("[slotSelection] Selected slot%d" % slot)
 
 func _on_slot_selection_return_button_pressed() -> void:
 	slotSelectionPressedReturn.emit()
@@ -88,10 +87,10 @@ func load_save(slot: int) -> void:
 	
 	match slotExists:
 		true:
-			print("[slotSelection] Loading saved slot data")
+			Utils.debug_print(self, "loading saved slot data")
 			SaveManager.currentSlotData = SaveManager.load_slot(slot)
 		false:
-			print("[slotSelection] Creating new slot data")
+			Utils.debug_print(self, "creating new slot data")
 			SaveManager.save_slot(slot, SaveManager.create_default_slot_data_template(slot))
 			SaveManager.currentSlotData = SaveManager.load_slot(slot)
 

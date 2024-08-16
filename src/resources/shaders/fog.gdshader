@@ -12,4 +12,3 @@ void fragment() {
 	COLOR.rgb = fog_color * base_color.rgb;
 	//COLOR.rgb *= location_fade;
 }
-

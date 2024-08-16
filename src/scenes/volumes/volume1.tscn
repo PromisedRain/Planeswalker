@@ -11,11 +11,12 @@
 background_mode = 3
 tonemap_mode = 2
 
-[node name="Volume1" type="Node2D" node_paths=PackedStringArray("volumeSpawn")]
+[node name="Volume1" type="Node2D" node_paths=PackedStringArray("volumeSpawn", "volumeDebugSpawn")]
 script = ExtResource("1_15x16")
 volumeGivenName = "Prologue"
 volumeID = 1
 volumeSpawn = NodePath("DefaultSpawn")
+volumeDebugSpawn = NodePath("DebugSpawn")
 metadata/_edit_lock_ = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -29,12 +30,12 @@ position = Vector2(392, -40)
 metadata/_edit_lock_ = true
 
 [node name="DebugSpawn" type="Marker2D" parent="."]
+position = Vector2(424, -40)
 
-[node name="Camera2D" type="Camera2D" parent="." groups=["insideSubViewportCamera"]]
+[node name="DebugCamera" type="Camera2D" parent="."]
 position_smoothing_enabled = true
 position_smoothing_speed = 4.0
 script = ExtResource("6_tju2t")
-metadata/_edit_lock_ = true
 
 [node name="Objects" type="Node2D" parent="."]
 metadata/_edit_lock_ = true

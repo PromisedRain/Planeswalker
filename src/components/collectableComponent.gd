@@ -57,7 +57,6 @@ func _on_body_entered(body: Node2D) -> void:
 	
 	for condition: Callable in collectConditions:
 		if !condition.call():
-			#print("added condition not met, started polling for condition")
 			start_polling_check()
 			return
 	
@@ -89,16 +88,15 @@ func on_poll_timer_finished() -> void:
 				handle_collecting()
 
 func handle_collecting() -> void:
-	#print("entered collectable %s" % parent.get_name())
 	collectableEntered.emit() #connects to parent method to do whatever the parent needs to do when player enters
 	
 	if animationPlayer == null:
-		print("[collectableComponent] Animationplayer is: %s" %  animationPlayer)
+		Utils.debug_print(self, "animationPlayer is: %s", [animationPlayer])
 		if finishedRunning:
 			parent.queue_free()
 	
 	if isUniqueCollectable && uniqueCollectible != ProgressionManager.ProgressionCollectibles.placeholder:
-		print("[collectableComponent] Is unique collectable")
+		Utils.debug_print(self, "is a unique collectable")
 	
 	if !hasCollectAnim:
 		if finishedRunning:
@@ -168,4 +166,4 @@ func add_collect_condition(condition: Callable) -> void:
 	collectConditions.append(condition)
 
 func on_anim_invalid(_animName) -> void:
-	print("[collectableComponent] Animation '%s' not found/invalid" % _animName)
+	Utils.debug_print(self, "animation '%s' not found / invalid", [_animName])

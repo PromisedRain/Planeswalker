@@ -5,9 +5,15 @@ extends Node
 @onready var outsideSubViewportCamera: Camera2D = get_tree().get_first_node_in_group("outsideSubViewportCamera")
 @onready var insideSubViewportCamera: Camera2D = get_tree().get_first_node_in_group("insideSubViewportCamera")
 
+var fireDebugs: bool = false
+
+
 func _ready() -> void:
+	if !fireDebugs:
+		print("[utils] Debug prints are off")
+	
 	var uuid: String = generate_uuid()
-	print("[utils] Test uuid: %s" % uuid)
+	debug_print(self, "test uuid: %s", [uuid])
 
 func get_player() -> Player:
 	update_references()
@@ -32,8 +38,8 @@ func get_inside_sub_viewport_camera() -> Camera2D:
 func update_references() -> void:
 	player = get_tree().get_first_node_in_group("player")
 	main = get_tree().get_first_node_in_group("main")
-	outsideSubViewportCamera = get_tree().get_first_node_in_group("outsideSubViewportCamera")
-	insideSubViewportCamera = get_tree().get_first_node_in_group("insideSubViewportCamera")
+	#outsideSubViewportCamera = get_tree().get_first_node_in_group("outsideSubViewportCamera")
+	#insideSubViewportCamera = get_tree().get_first_node_in_group("insideSubViewportCamera")
 
 func is_approximately_equal(a: float, b: float, epsilon: float = 0.01) -> bool:
 	return abs(a - b) < epsilon
@@ -70,3 +76,22 @@ func get_check_word(passed: bool) -> String:
 		return "passed"
 	else:
 		return "failed"
+
+func debug_print(_self: Variant, comment: String, args: Array = []) -> void:
+	if !fireDebugs:
+		return
+	
+	#comment = letter_to_upper(comment[0] + comment.substr(1))
+	
+	if comment[0] != letter_to_upper(comment[0]):
+		comment[0] = letter_to_upper(comment[0])
+	
+	var formattedComment: String = comment
+	
+	if args.size() > 0:
+		formattedComment = comment % args
+	
+	print("[%s] %s" % [str(_self.get_name().to_lower()), formattedComment])
+
+func letter_to_upper(letter: String) -> String:
+	return letter.capitalize()
