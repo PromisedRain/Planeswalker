@@ -9,13 +9,13 @@ extends Node
 var mainScene: Node
 
 var currentVolume: Volume 
-var currentVolumePath: String
 var currentVolumeName: String
+var currentVolumePath: String
 
-var currentSpawn
+var currentSpawn: Vector2
 var currentRoom: Room
 var currentRoomPath: String
-var currentRoomPosition: Vector2
+var currentRoomGlobalPosition: Vector2
 
 var sceneLoadTimer: Timer
 var sceneLoadInProgress: bool = false
@@ -28,7 +28,6 @@ var useSubThreads: bool = true
 var collectableDict: Dictionary = {}
 var collectiblesCount: int = 0
 
-#consts
 const roomsPath: String = "res://src/scenes/volumes/rooms"
 const volumePath: String = "res://src/scenes/volumes"
 
@@ -47,7 +46,6 @@ enum SceneLoadProgress{
 signal filePathFailedLoad(filePath: String)
 signal filePathInvalid(filePath: String)
 signal fileStartedLoading(fileName: String)
-signal fileFinishedLoading(file: Node, parent: Node, path: String)
 
 signal loadNextSceneQueue
 
@@ -57,7 +55,6 @@ func _ready() -> void:
 	filePathFailedLoad.connect(on_file_path_failed_load)
 	filePathInvalid.connect(on_file_path_invalid)
 	fileStartedLoading.connect(on_file_started_loading)
-	fileFinishedLoading.connect(on_file_finished_loading)
 	loadNextSceneQueue.connect(on_load_next_scene_queue)
 	
 	if !sceneLoadInProgress && sceneLoadQueue.size() > 0:
@@ -87,7 +84,7 @@ func change_current_volume(volume: Volumes) -> void:
 			SceneLoadProgress.ADDED_TO_LOAD_QUEUE:
 				Utils.debug_print(self, "added '%s' to scene load queue", [volumeName])
 
-func on_volume_load(loadedScene: PackedScene) -> void:
+func on_volume_load(loadedScene: PackedScene, _sceneName: String) -> void:
 	if !loadedScene is PackedScene:
 		print("failed to load scene?")
 		return
@@ -134,7 +131,6 @@ func on_load_next_scene_queue() -> void:
 	var fileName: String = sceneInfo["file_name"]
 	var filePath: String = sceneInfo["file_path"]
 	var fileCallback: Callable = sceneInfo["file_callback"]
-	
 	load_scene_async(fileName, filePath, fileCallback)
 
 func cache_scene(filePath: String, scene: PackedScene) -> void:
@@ -186,7 +182,7 @@ func load_scene_async(fileName: String, filePath: String, callback: Callable) ->
 	if cachedScene != null:
 		Utils.debug_print(self, "loaded '%s' from cache", [fullFilePath])
 		if callback && callback.is_valid():
-			callback.call(cachedScene)
+			callback.call(cachedScene, fileName)
 		#fileParent.add_child(cachedScene.instantiate())
 		sceneLoadInProgress = false
 		loadNextSceneQueue.emit()
@@ -201,50 +197,40 @@ func load_scene_async(fileName: String, filePath: String, callback: Callable) ->
 	sceneLoadTimer = Timer.new()
 	sceneLoadTimer.wait_time = 0.1
 	#sceneLoadTimer.timeout.connect(monitor_scene_load_progress.bind(fullFilePath, fileParent, callback))
-	sceneLoadTimer.timeout.connect(monitor_scene_load_progress.bind(fullFilePath, callback))
+	sceneLoadTimer.timeout.connect(monitor_scene_load_progress.bind(fileName, fullFilePath, callback))
 	get_tree().root.add_child(sceneLoadTimer)
 	sceneLoadTimer.start()
 
-func monitor_scene_load_progress(filePath: String, callback: Callable) -> void: #fileParent: Node, callback: Callable) -> void:
+func monitor_scene_load_progress(fileName: String, fullFilePath: String, callback: Callable) -> void: #fileParent: Node, callback: Callable) -> void:
 	var progress: Array = []
-	var loadStatus = ResourceLoader.load_threaded_get_status(filePath, progress)
+	var loadStatus = ResourceLoader.load_threaded_get_status(fullFilePath, progress)
 	
 	match loadStatus:
 		ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
-			filePathInvalid.emit(filePath)
+			filePathInvalid.emit(fullFilePath)
 			sceneLoadTimer.stop()
 			return
 		ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 			Utils.debug_print(self, "thread in progress: %s%%", [str(progress)]) #TODO make it instantiate loadbar and shit in UiManager
 		ResourceLoader.THREAD_LOAD_FAILED:
-			filePathFailedLoad.emit(filePath)
+			filePathFailedLoad.emit(fullFilePath)
 			sceneLoadTimer.stop()
 			return
 		ResourceLoader.THREAD_LOAD_LOADED:
 			sceneLoadTimer.stop()
 			sceneLoadTimer.queue_free()
-			
-			var loadedScene = ResourceLoader.load_threaded_get(filePath)
+			var loadedScene = ResourceLoader.load_threaded_get(fullFilePath)
 			
 			if loadedScene is PackedScene:
-				cache_scene(filePath, loadedScene)
+				cache_scene(fullFilePath, loadedScene)
 				if callback && callback.is_valid():
-					callback.call(loadedScene)
+					callback.call(loadedScene, fileName)
 			else:
-				filePathFailedLoad.emit(filePath)
+				filePathFailedLoad.emit(fullFilePath)
 			
-			#fileFinishedLoading.emit(ResourceLoader.load_threaded_get(filePath), fileParent, filePath)
 			sceneLoadInProgress = false
 			loadNextSceneQueue.emit()
 			return
-
-func on_file_finished_loading(incomingFile: PackedScene, fileParent: Node, filePath: String) -> void:
-	Utils.debug_print(self, "finished loading: %s", [filePath])
-	cache_scene(filePath, incomingFile)
-	
-	fileParent.add_child(incomingFile.instantiate())
-	sceneLoadInProgress = false
-	loadNextSceneQueue.emit()
 
 func on_file_started_loading(fileName) -> void:
 	Utils.debug_print(self, "started loading '%s'", [fileName])

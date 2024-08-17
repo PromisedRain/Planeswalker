@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://e1t2fk8kfub8"]
+
+[ext_resource type="Script" path="res://src/gui/objects/remapButton/remapButton.gd" id="1_del0u"]
+
+[node name="RemapButton" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("1_del0u")

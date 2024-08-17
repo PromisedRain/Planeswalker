@@ -13,7 +13,6 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tvimn"]
 
 [resource]
-default_font = ExtResource("1_5s7gm")
 Button/fonts/font = ExtResource("1_5s7gm")
 Button/styles/disabled = SubResource("StyleBoxEmpty_uietj")
 Button/styles/focus = SubResource("StyleBoxEmpty_xd4p5")

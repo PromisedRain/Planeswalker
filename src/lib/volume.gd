@@ -53,7 +53,7 @@ func handle_room_load_progress(progress: LevelManager.SceneLoadProgress) -> void
 		LevelManager.SceneLoadProgress.ADDED_TO_LOAD_QUEUE:
 			pass
 
-func on_room_load(loadedScene: PackedScene) -> void:
+func on_room_load(loadedScene: PackedScene, sceneName: String) -> void:
 	if !loadedScene is PackedScene:
 		Utils.debug_print(self, "failed to load scene '%s'", [loadedScene])
 		return
@@ -65,8 +65,8 @@ func update_current_volume() -> void:
 	Utils.debug_print(self, "updating current volume")
 	
 	LevelManager.currentVolume = self
-	LevelManager.currentVolumePath = str(LevelManager.volumePath + "/" + LevelManager.currentVolumeName.to_lower())
 	LevelManager.currentVolumeName = get_name()
+	LevelManager.currentVolumePath = str(LevelManager.volumePath + "/" + LevelManager.currentVolumeName.to_lower())
 	
 	var slot: int = SaveManager.currentSaveSlot
 	var latestVolumeID: int = int(SaveManager.get_slot_data("current_volume"))
@@ -89,7 +89,7 @@ func update_current_room(inputRoom: Room) -> void:
 	currentRoom = inputRoom
 	LevelManager.currentRoom = currentRoom
 	LevelManager.currentRoomName = currentRoom.roomName
-	LevelManager.currentRoomPosition = currentRoom.global_position
+	LevelManager.currentRoomGlobalPosition = currentRoom.global_position
 
 func get_first_room() -> String:
 	var volume: String = LevelManager.currentVolumeName.to_lower()
@@ -109,8 +109,7 @@ func player_died() -> void:
 	reload_room()
 	reload_camera()
 	
-	var _player = LevelManager.get_player_instance()
-	_player.global_position = LevelManager.currentSpawn.round() + Vector2.UP
+	player.global_position = LevelManager.currentSpawn.round() + Vector2.UP
 
 func free_all_rooms() -> void:
 	save_global_room_positions()

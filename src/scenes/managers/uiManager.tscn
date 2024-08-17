@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://c6s0hvw0hsy5t" path="res://src/scenes/managers/debugManager.tscn" id="3_7fswh"]
 [ext_resource type="PackedScene" uid="uid://cg6g17qc8awr2" path="res://src/gui/mainMenu/mainMenu.tscn" id="4_ks5rj"]
 [ext_resource type="PackedScene" uid="uid://ckceh1hxaxh4x" path="res://src/gui/vignette/vignette.tscn" id="5_lnm1i"]
-[ext_resource type="PackedScene" uid="uid://b7tb75csliu12" path="res://src/gui/saveIconComponents/saveIcon1.tscn" id="5_otoeg"]
+[ext_resource type="PackedScene" uid="uid://b7tb75csliu12" path="res://src/gui/objects/saveIcon1/saveIcon1.tscn" id="5_otoeg"]
 [ext_resource type="PackedScene" uid="uid://ba7tc2g1wlo02" path="res://src/gui/pauseMenu/pauseMenu.tscn" id="6_rphhq"]
 [ext_resource type="PackedScene" uid="uid://b2gocl85mps0y" path="res://src/gui/slotTimer/slotTimer.tscn" id="8_wtweu"]
 

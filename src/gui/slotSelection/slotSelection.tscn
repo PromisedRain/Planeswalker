@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bpded4k5kx45m"]
+[gd_scene load_steps=6 format=3 uid="uid://bpded4k5kx45m"]
 
 [ext_resource type="Script" path="res://src/gui/slotSelection/slotSelection.gd" id="1_g6te1"]
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_qw8gh"]
+[ext_resource type="PackedScene" uid="uid://bnso1trspauhu" path="res://src/gui/objects/usedSlot/usedSlot.tscn" id="2_38uy8"]
+[ext_resource type="PackedScene" uid="uid://cupp0v4ej5krd" path="res://src/gui/objects/emptySlot/emptySlot.tscn" id="3_ujnop"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_we6tr"]
 bg_color = Color(1, 1, 1, 1)
@@ -16,6 +18,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_g6te1")
+usedSlot = ExtResource("2_38uy8")
+emptySlot = ExtResource("3_ujnop")
 metadata/_edit_lock_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

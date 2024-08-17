@@ -6,8 +6,8 @@ extends Control
 	3: $MarginContainer/Control2/MarginContainer/VBoxContainer/SlotContainer3
 }
 
-@onready var usedSlot: PackedScene = preload("res://src/gui/slotSelectionComponents/usedSlot.tscn")
-@onready var emptySlot: PackedScene = preload("res://src/gui/slotSelectionComponents/emptySlot.tscn")
+@export var usedSlot: PackedScene #= preload("res://src/gui/slotSelectionComponents/usedSlot.tscn")
+@export var emptySlot: PackedScene #= preload("res://src/gui/slotSelectionComponents/emptySlot.tscn")
 
 signal selectedSlot(slot: int)
 signal slotSelectionPressedReturn

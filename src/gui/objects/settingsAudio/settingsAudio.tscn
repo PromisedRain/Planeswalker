@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://4th77xhys0aq"]
+
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_xut4o"]
+
+[node name="SettingsAudio" type="VBoxContainer"]
+theme = ExtResource("1_xut4o")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Audio"

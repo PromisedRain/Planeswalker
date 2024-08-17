@@ -11,7 +11,7 @@ extends CanvasLayer
 
 @export var layerIndex: LayerManager.Layers
 
-signal chosenVolumeFromMainMenu(volume: int)
+#signal chosenVolumeFromMainMenu(volume: int)
 
 func _ready() -> void:
 	starParticles.emission_rect_extents = windowScreenSize

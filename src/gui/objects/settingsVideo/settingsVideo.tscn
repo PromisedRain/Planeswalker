@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnntgis2xd1sn"]
+
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_rnqj1"]
+
+[node name="SettingsVideo" type="VBoxContainer"]
+theme = ExtResource("1_rnqj1")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Video"

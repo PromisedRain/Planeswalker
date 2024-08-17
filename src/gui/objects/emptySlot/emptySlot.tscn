@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cupp0v4ej5krd"]
 
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_jl0pg"]
-[ext_resource type="Script" path="res://src/gui/slotSelectionComponents/emptySlot.gd" id="1_xvba1"]
+[ext_resource type="Script" path="res://src/gui/objects/emptySlot/emptySlot.gd" id="1_xvba1"]
 
 [node name="EmptySlot" type="Control"]
 layout_mode = 3

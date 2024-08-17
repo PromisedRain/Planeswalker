@@ -1,3 +1,9 @@
+res://src/gui/uiObjects/settingsSpecial
+res://src/gui/uiObjects/settingsAudio
+res://src/gui/uiObjects/settingsVideo
+res://src/gui/uiObjects/settingsControls
+res://src/media/audio
+res://src/gui/uiObjects/remapButton
 res://src/scenes/managers
 res://src/gui/slotTimer
 res://src/testing
@@ -6,17 +12,11 @@ res://src/components
 res://src/testing/camera stuff
 res://src/lib
 res://src/resources/shaders
-res://src/gui/saveIconComponents
 res://src/scenes/objects/roomSwitcher
 res://src/gui/volumeSelection
-res://src/gui/slotSelectionComponents
 res://src/resources/themes
 res://src/gui/slotSelection
 res://src/gui/mainMenuSettings
 res://src/gui/titleScreen
 res://src/gui/pauseMenu
 res://src/gui
-res://src/gui/vignette
-res://src/gui/playerUi
-res://src/gui/mainMenu
-res://src/media/fonts
