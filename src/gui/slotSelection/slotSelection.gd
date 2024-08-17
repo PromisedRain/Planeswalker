@@ -43,7 +43,8 @@ func instantiate_used_slot(slot: int) -> void:
 	var metaData: Dictionary = SaveManager.get_all_slot_meta_data(slot)
 	var instance: UsedSlot = usedSlot.instantiate()
 	instance.slot = slot
-	instance.slotCurrentVolumeName = metaData["latest_volume_name"]
+	if metaData["latest_volume_name"] != null:
+		instance.slotCurrentVolumeName = metaData["latest_volume_name"]
 	instance.slotCurrentVolume = metaData["current_volume"]
 	instance.slotCollectibles = metaData["total_collectibles_collected"]
 	instance.slotPlaytime = metaData["total_slot_playtime"]

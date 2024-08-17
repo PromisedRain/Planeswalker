@@ -23,6 +23,8 @@ var sceneLoadQueue: Array[Dictionary] = []
 var sceneCache: Dictionary = {}
 var sceneCacheOrder: Array[String] = []
 
+var useSubThreads: bool = true
+
 var collectableDict: Dictionary = {}
 var collectiblesCount: int = 0
 
@@ -190,7 +192,7 @@ func load_scene_async(fileName: String, filePath: String, callback: Callable) ->
 		loadNextSceneQueue.emit()
 		return
 	
-	var loader = ResourceLoader.load_threaded_request(fullFilePath)
+	var loader = ResourceLoader.load_threaded_request(fullFilePath, "", useSubThreads)
 	
 	if !ResourceLoader.exists(fullFilePath) || loader == null:
 		filePathInvalid.emit(fullFilePath)
