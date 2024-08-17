@@ -1,10 +1,74 @@
-[gd_scene load_steps=2 format=3 uid="uid://cnntgis2xd1sn"]
+[gd_scene load_steps=3 format=3 uid="uid://cnntgis2xd1sn"]
 
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_rnqj1"]
+[ext_resource type="Script" path="res://src/gui/objects/settingsVideo/settingsVideo.gd" id="2_btho6"]
 
 [node name="SettingsVideo" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("1_rnqj1")
+script = ExtResource("2_btho6")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
 text = "Video"
+
+[node name="FullScreenButton" type="Button" parent="."]
+layout_mode = 2
+text = "<off>"
+
+[node name="FullScreenLabel" type="Label" parent="FullScreenButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 13.0
+text = "Fullscreen"
+
+[node name="BorderlessButton" type="Button" parent="."]
+layout_mode = 2
+text = "<off>"
+
+[node name="BorderlessLabel" type="Label" parent="BorderlessButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 13.0
+text = "Borderless"
+
+[node name="ExclusiveFullScreenButton" type="Button" parent="."]
+layout_mode = 2
+text = "<off>"
+
+[node name="ExclusiveFullScreenLabel" type="Label" parent="ExclusiveFullScreenButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 13.0
+text = "Exclusive"
+
+[node name="VSyncButton" type="Button" parent="."]
+layout_mode = 2
+text = "<off>"
+
+[node name="VSyncLabel" type="Label" parent="VSyncButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 13.0
+text = "V Sync"
+
+[node name="ScreenShakeButton" type="Button" parent="."]
+layout_mode = 2
+text = "<off>"
+
+[node name="ScreenShakeLabel" type="Label" parent="ScreenShakeButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 13.0
+text = "Screen Shake"
+
+[connection signal="pressed" from="FullScreenButton" to="." method="_on_full_screen_button_pressed"]
+[connection signal="pressed" from="BorderlessButton" to="." method="_on_borderless_button_pressed"]
+[connection signal="pressed" from="ExclusiveFullScreenButton" to="." method="_on_exclusive_full_screen_pressed"]
+[connection signal="pressed" from="VSyncButton" to="." method="_on_v_sync_button_pressed"]
+[connection signal="pressed" from="ScreenShakeButton" to="." method="_on_screen_shake_button_pressed"]

@@ -1,9 +1,10 @@
 Label
-Control
+Button
+HBoxContainer
 VBoxContainer
+Control
 MarginContainer
 ScrollContainer
-Button
 VScrollBar
 Marker2D
 Camera2D
@@ -11,4 +12,3 @@ Node
 CanvasLayer
 CharacterBody2D
 Timer
-CollisionShape2D

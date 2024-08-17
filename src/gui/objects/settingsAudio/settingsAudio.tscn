@@ -3,8 +3,13 @@
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_xut4o"]
 
 [node name="SettingsAudio" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_xut4o")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
-text = "Audio"
+text = "Audio (placeholder)"

@@ -1,10 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://tg60owt0gbll"]
+[gd_scene load_steps=3 format=3 uid="uid://tg60owt0gbll"]
 
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_5hroe"]
+[ext_resource type="Script" path="res://src/gui/objects/settingsControls/settingsControls.gd" id="1_ls71n"]
 
 [node name="SettingsControls" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ls71n")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
 theme = ExtResource("1_5hroe")
 text = "Controls"
+
+[node name="KeyboardInputsButton" type="Button" parent="."]
+layout_mode = 2
+theme = ExtResource("1_5hroe")
+text = "Keyboard Inputs"
+alignment = 0
+
+[connection signal="pressed" from="KeyboardInputsButton" to="." method="_on_keyboard_inputs_button_pressed"]

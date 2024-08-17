@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cod3fh2b66bae"]
+[gd_scene load_steps=9 format=3 uid="uid://cod3fh2b66bae"]
 
 [ext_resource type="Script" path="res://src/gui/mainMenuSettings/mainMenuSettings.gd" id="1_i7fjh"]
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="2_bquv3"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://cnntgis2xd1sn" path="res://src/gui/objects/settingsVideo/settingsVideo.tscn" id="4_crqwa"]
 [ext_resource type="PackedScene" uid="uid://4th77xhys0aq" path="res://src/gui/objects/settingsAudio/settingsAudio.tscn" id="5_dwakv"]
 [ext_resource type="PackedScene" uid="uid://hlvjcki0njjd" path="res://src/gui/objects/settingsSpecial/settingsSpecial.tscn" id="6_ok5iv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tm254"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtb0m"]
 bg_color = Color(1, 1, 1, 1)
@@ -51,6 +53,8 @@ theme_override_constants/margin_bottom = 26
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Control/MarginContainer"]
 layout_mode = 2
+theme = ExtResource("2_bquv3")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_tm254")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control/MarginContainer/ScrollContainer"]
 layout_mode = 2

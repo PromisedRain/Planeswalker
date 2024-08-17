@@ -1,11 +1,43 @@
-[gd_scene load_steps=2 format=3 uid="uid://hlvjcki0njjd"]
+[gd_scene load_steps=3 format=3 uid="uid://hlvjcki0njjd"]
 
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_mimga"]
+[ext_resource type="Script" path="res://src/gui/objects/settingsSpecial/settingsSpecial.gd" id="2_bs684"]
 
 [node name="SettingsSpecial" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_mimga")
+script = ExtResource("2_bs684")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
 text = "Special
 "
+
+[node name="VignetteButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "<off>"
+
+[node name="VignetteLabel" type="Label" parent="VignetteButton"]
+layout_mode = 2
+offset_right = 50.0
+offset_bottom = 13.0
+text = "Vignette"
+
+[node name="DebugModeButton" type="Button" parent="."]
+layout_mode = 2
+text = "<off>"
+
+[node name="DebugModeLabel" type="Label" parent="DebugModeButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 13.0
+text = "Debug"
+
+[connection signal="pressed" from="VignetteButton" to="." method="_on_vignette_button_pressed"]
+[connection signal="pressed" from="DebugModeButton" to="." method="_on_debug_mode_button_pressed"]

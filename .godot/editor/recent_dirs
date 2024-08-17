@@ -1,9 +1,4 @@
-res://src/gui/uiObjects/settingsSpecial
-res://src/gui/uiObjects/settingsAudio
-res://src/gui/uiObjects/settingsVideo
-res://src/gui/uiObjects/settingsControls
 res://src/media/audio
-res://src/gui/uiObjects/remapButton
 res://src/scenes/managers
 res://src/gui/slotTimer
 res://src/testing

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bbvixcv2opc1q"]
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://bbvixcv2opc1q"]
 
 [ext_resource type="FontFile" uid="uid://c53lfl05xshk2" path="res://src/media/fonts/mago3.ttf" id="1_5s7gm"]
 
@@ -12,6 +12,16 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tvimn"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wuw3a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bjo6o"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vo82e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_58h6m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_77t1g"]
+
 [resource]
 Button/fonts/font = ExtResource("1_5s7gm")
 Button/styles/disabled = SubResource("StyleBoxEmpty_uietj")
@@ -20,3 +30,8 @@ Button/styles/hover = SubResource("StyleBoxEmpty_gs027")
 Button/styles/normal = SubResource("StyleBoxEmpty_xuh3j")
 Button/styles/pressed = SubResource("StyleBoxEmpty_tvimn")
 Label/fonts/font = ExtResource("1_5s7gm")
+VScrollBar/styles/grabber = SubResource("StyleBoxEmpty_wuw3a")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxEmpty_bjo6o")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxEmpty_vo82e")
+VScrollBar/styles/scroll = SubResource("StyleBoxEmpty_58h6m")
+VScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_77t1g")
