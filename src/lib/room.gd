@@ -28,17 +28,15 @@ var roomCenter: int
 signal enteredRoom(room: Room)
 
 func _ready() -> void:
-	#var fileName = get_name()
-	#print(fileName)
 	enteredRoom.emit(self)
 	
 	for door: RoomSwitcherComponent in doors.get_children():
 		door.playerEntered.connect(room_entered)
 	
 	calculate_room_bounds()
-	#print(roomWidth)
-	#print(roomHeight)
-	#print("[Room] Room bounds: (%d, %d, %d, %d)" % [minXFull, minYFull, maxXFull, maxYFull])
+	print(roomWidth)
+	print(roomHeight)
+	print("[Room] Room bounds: (%d, %d, %d, %d)" % [minXFull, minYFull, maxXFull, maxYFull])
 
 func room_entered() -> void:
 	pass

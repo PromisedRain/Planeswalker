@@ -14,7 +14,6 @@ extends Node
 
 func _ready() -> void:
 	ProjectSettings.set_setting("rendering/textures/canvas_textures/default_texture_filter", 0)
-	
 	window.size_changed.connect(window_size_changed)
 	SignalManager.initialLoadComplete.connect(init)
 	

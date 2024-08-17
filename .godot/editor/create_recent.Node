@@ -1,8 +1,9 @@
+Control
+VScrollBar
 Marker2D
 Camera2D
 Node
 Label
-Control
 MarginContainer
 CanvasLayer
 CharacterBody2D
@@ -11,5 +12,3 @@ CollisionShape2D
 AudioStreamPlayer
 Area2D
 CollisionPolygon2D
-AnimationPlayer
-Sprite2D
