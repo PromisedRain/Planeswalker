@@ -5,7 +5,7 @@ extends Node
 @onready var outsideSubViewportCamera: Camera2D = get_tree().get_first_node_in_group("outsideSubViewportCamera")
 @onready var insideSubViewportCamera: Camera2D = get_tree().get_first_node_in_group("insideSubViewportCamera")
 
-var fireDebugs: bool = false
+var fireDebugs: bool = true
 
 
 func _ready() -> void:

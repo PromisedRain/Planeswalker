@@ -28,3 +28,4 @@ res://src/gui/slotSelection/slotSelection.gd
 res://src/gui/slotSelectionComponents/emptySlot.gd
 res://src/scenes/managers/uiManager.gd
 res://src/testing/slotSelection/slotSelection.gd
+res://src/gui/mainMenuSettings/mainMenuSettings.gd

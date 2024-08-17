@@ -28,8 +28,10 @@ func init(loaded: bool) -> void:
 	if SaveManager.get_config_data("settings", "debug_mode") != null:
 		GlobalManager.debugMode = SaveManager.get_config_data("settings", "debug_mode")
 		
+		
 		if GlobalManager.debugMode:
 			Utils.debug_print(self, "debug mode is on")
+			add_debug_mode_only_input_keys()
 		else:
 			Utils.debug_print(self, "debug mode is off")
 	
@@ -47,6 +49,16 @@ func _unhandled_input(event) -> void:
 		UiManager.open_debug_mode()
 	if event.is_action_pressed("pause"):
 		UiManager.open_pause_menu(true)
+
+func add_debug_mode_only_input_keys() -> void:
+	if !InputMap.has_action("debug_reload_room"):
+		InputMap.add_action("debug_reload_room")
+		
+		var keyEvent: InputEventKey = InputEventKey.new()
+		keyEvent.scancode = KEY_R
+		InputMap.action_add_event("debug_reload_room", keyEvent)
+		
+		print("[main] Debug mode input added: %s", keyEvent)
 
 func window_size_changed() -> void: 
 	pass

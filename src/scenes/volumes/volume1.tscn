@@ -33,8 +33,14 @@ metadata/_edit_lock_ = true
 position = Vector2(424, -40)
 
 [node name="DebugCamera" type="Camera2D" parent="."]
+position = Vector2(328, -96)
+limit_left = 0
+limit_top = -190
+limit_right = 790
+limit_bottom = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 4.0
+editor_draw_limits = true
 script = ExtResource("6_tju2t")
 
 [node name="Objects" type="Node2D" parent="."]
@@ -46,6 +52,7 @@ metadata/_edit_lock_ = true
 
 [node name="Room0" parent="Rooms" instance=ExtResource("4_nryjl")]
 script = null
+metadata/_edit_lock_ = true
 
 [node name="Room1" parent="Rooms" instance=ExtResource("1_38e1n")]
 position = Vector2(320, 0)

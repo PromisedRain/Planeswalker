@@ -12,6 +12,8 @@ extends Node2D
 @export var volumeDebugSpawn: Marker2D
 @export var spawnDefault: bool
 
+var roomPositions: Dictionary = {}
+
 var currentRoom: Room
 var currentCamera: Camera2D
 
@@ -30,21 +32,37 @@ func _ready() -> void:
 
 func load_current_room() -> void:
 	var roomName: String = SaveManager.get_slot_data("current_room")
+	var progress: LevelManager.SceneLoadProgress
 	
 	if roomName == null || roomName == "":
 		Utils.debug_print(self, "no saved room found, loading default")
 		var defaultFirstRoom: String = get_first_room()
 		
-		LevelManager.load_room(defaultFirstRoom, rooms)
-		#TODO implement failcase here
+		progress = LevelManager.load_room(defaultFirstRoom, Callable(self, "on_room_load"))
+		handle_room_load_progress(progress)
 		return
 	
-	#print("[volume] Loading saved room")
-	LevelManager.load_room(roomName, rooms)
-	#print("[volume] Failed to load saved room: %s" % roomName)
+	progress = LevelManager.load_room(roomName, Callable(self, "on_room_load"))
+	handle_room_load_progress(progress)
+
+func handle_room_load_progress(progress: LevelManager.SceneLoadProgress) -> void:
+	match progress:
+		LevelManager.SceneLoadProgress.LOADING:
+			pass
+			#Utils.debug_print(self, "loading ")
+		LevelManager.SceneLoadProgress.ADDED_TO_LOAD_QUEUE:
+			pass
+
+func on_room_load(loadedScene: PackedScene) -> void:
+	if !loadedScene is PackedScene:
+		Utils.debug_print(self, "failed to load scene '%s'", [loadedScene])
+		return
+	
+	var instance: Room = loadedScene.instantiate()
+	rooms.add_child(instance)
 
 func update_current_volume() -> void:
-	Utils.debug_print(self, "updating current volume %s")
+	Utils.debug_print(self, "updating current volume")
 	
 	LevelManager.currentVolume = self
 	LevelManager.currentVolumePath = str(LevelManager.volumePath + "/" + LevelManager.currentVolumeName.to_lower())
@@ -95,8 +113,21 @@ func player_died() -> void:
 	_player.global_position = LevelManager.currentSpawn.round() + Vector2.UP
 
 func free_all_rooms() -> void:
+	save_global_room_positions()
 	for room in rooms.get_children():
 		room.queue_free()
+
+func save_global_room_positions() -> void:
+	for room in rooms.get_children():
+		roomPositions[room.name] = room.global_position
+	
+	print(roomPositions)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if InputMap.has_action("debug_reload_room"):
+		if event.is_action_pressed("debug_reload_room"):
+			reload_room()
+			reload_camera()
 
 func reload_room() -> void:
 	var roomPath: String = str(LevelManager.currentRoomPath)

@@ -363,7 +363,7 @@ func delete_config_file(path: String = configFullPath) -> void:
 				Utils.debug_print(self, "file successfully deleted at: %s", [path])
 
 #helpers
-func merge_with_default(defaultData: Dictionary, modifiedData: Dictionary, from: String, fireSucess: bool = fireSuccessPrint) -> Dictionary:
+func merge_with_default(defaultData: Dictionary, modifiedData: Dictionary, from: String, _fireSucess: bool = fireSuccessPrint) -> Dictionary:
 	for key in defaultData.keys():
 		if !modifiedData.has(key):
 			modifiedData[key] = defaultData[key]
@@ -371,7 +371,7 @@ func merge_with_default(defaultData: Dictionary, modifiedData: Dictionary, from:
 	Utils.debug_print(self, "finished merging modified data with default data at: %s", [from])
 	return modifiedData
 
-func verify_and_open_dir(dirPath: String, fireSucess: bool = fireSuccessPrint) -> DirAccess:
+func verify_and_open_dir(dirPath: String, _fireSucess: bool = fireSuccessPrint) -> DirAccess:
 	var dir: DirAccess = DirAccess.open(dirPath)
 	
 	if dir == null:

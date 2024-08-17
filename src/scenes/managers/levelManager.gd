@@ -33,8 +33,13 @@ const volumePath: String = "res://src/scenes/volumes"
 const maxSceneCacheSize: int = 10
 
 enum Volumes {
-	volume1,
-	volume2,
+	VOLUME_1,
+	VOLUME_2,
+}
+
+enum SceneLoadProgress{
+	LOADING,
+	ADDED_TO_LOAD_QUEUE
 }
 
 signal filePathFailedLoad(filePath: String)
@@ -64,42 +69,58 @@ func change_volume(volume: Volumes) -> void:
 	change_current_volume(volume)
 
 func change_current_volume(volume: Volumes) -> void:
-	var volumesPath: String = volumePath
 	var volumeName: String = get_volume_name(volume)
-	var volumeParent: Node2D = volumesParent
 	
-	if volumesPath == "":
-		Utils.debug_print(self, "invalid volume path at: %s", [volumesPath])
+	if volumePath == "":
+		Utils.debug_print(self, "invalid volume path at: %s", [volumePath])
+	elif volumeName == "":
+		Utils.debug_print(self, "invalid volume name at: %s", [volumeName])
 	else:
 		free_volume_instance()
-		#var main = Utils.get_main()
-		#main.get_node("UiLayer/VersionLabel") #TODO make it hide the versionlabel when you arent in main menu
-		load_volume(volumeName, volumesPath, volumeParent)
+		var progress: SceneLoadProgress = load_volume(volumeName, Callable(self, "on_volume_load"))
+		
+		match progress:
+			SceneLoadProgress.LOADING:
+				Utils.debug_print(self, "loading")
+			SceneLoadProgress.ADDED_TO_LOAD_QUEUE:
+				Utils.debug_print(self, "added '%s' to scene load queue", [volumeName])
+
+func on_volume_load(loadedScene: PackedScene) -> void:
+	if !loadedScene is PackedScene:
+		print("failed to load scene?")
+		return
+	
+	var instance = loadedScene.instantiate()
+	volumesParent.add_child(instance)
+	Utils.debug_print(self, "successfully added volume '%s'", [instance.get_name()])
 
 func free_volume_instance() -> void:
 	if currentVolume != null:
 		currentVolume.queue_free()
 		currentVolume = null
 
-func load_room(_roomName: String, _roomParent: Node) -> void:
-	#if sceneLoadInProgress:
-	#	load_scene(_roomName, roomsPath, _roomParent)
-	#	return false
-	load_scene(_roomName, roomsPath, _roomParent)
-	return
+func load_room(_roomName: String, callback: Callable) -> SceneLoadProgress:
+	if sceneLoadInProgress:
+		load_scene(_roomName, roomsPath, callback)
+		return SceneLoadProgress.ADDED_TO_LOAD_QUEUE
+	
+	load_scene(_roomName, roomsPath, callback)
+	return SceneLoadProgress.LOADING
 
-func load_volume(_volumeName: String, _volumePath: String, _volumeParent: Node) -> void:
-	#if sceneLoadInProgress:
-	#	load_scene(_volumeName, _volumePath, _volumeParent)
-	#	return false
-	load_scene(_volumeName, _volumePath, _volumeParent)
-	return 
+func load_volume(volumeName: String, callback: Callable) -> SceneLoadProgress:
+	if sceneLoadInProgress:
+		load_scene(volumeName, volumePath, callback)
+		return SceneLoadProgress.ADDED_TO_LOAD_QUEUE
+	
+	load_scene(volumeName, volumePath, callback)
+	return SceneLoadProgress.LOADING
 
-func add_to_scene_load_queue(fileName: String, filePath: String, fileParent: Node) -> void:
+func add_to_scene_load_queue(fileName: String, filePath: String, callback: Callable = Callable()) -> void: #fileParent: Node, callback: Callable = Callable()) -> void:
 	var sceneInfo: Dictionary = {
 		"file_name": fileName,
 		"file_path": filePath,
-		"file_parent": fileParent
+		#"file_parent": fileParent,
+		"file_callback": callback
 	}
 	sceneLoadQueue.append(sceneInfo)
 
@@ -107,11 +128,12 @@ func on_load_next_scene_queue() -> void:
 	if sceneLoadQueue.size() == 0:
 		return
 	
-	var nextSceneInfo: Dictionary = sceneLoadQueue.pop_front()
-	var fileName: String = nextSceneInfo["file_name"]
-	var filePath: String = nextSceneInfo["file_path"]
-	var fileParent: Node = nextSceneInfo["file_parent"]
-	load_scene(fileName, filePath, fileParent)
+	var sceneInfo: Dictionary = sceneLoadQueue.pop_front()
+	var fileName: String = sceneInfo["file_name"]
+	var filePath: String = sceneInfo["file_path"]
+	var fileCallback: Callable = sceneInfo["file_callback"]
+	
+	load_scene(fileName, filePath, fileCallback)
 
 func cache_scene(filePath: String, scene: PackedScene) -> void:
 	if sceneCache.size() >= maxSceneCacheSize:
@@ -139,14 +161,12 @@ func reset_scene_loading_state() -> void:
 		sceneLoadQueue.clear()
 	Utils.debug_print(self, "reset scene loading state")
 
-func load_scene(fileName: String, filePath: String, fileParent: Node) -> void:
+func load_scene(fileName: String, filePath: String, callback: Callable) -> void: #fileParent: Node, callback: Callable) -> void:
 	if sceneLoadInProgress:
 		Utils.debug_print(self, "load currently in progress, adding '%s' to the queue, queue size: %s", [fileName, sceneLoadQueue.size()])
-		add_to_scene_load_queue(fileName, filePath, fileParent)
-		#sceneLoadInProgress = false
+		add_to_scene_load_queue(fileName, filePath, callback)
 		return 
 	
-	#print("fileParent Type: ", typeof(fileParent))
 	fileStartedLoading.emit(fileName)
 	var dir: DirAccess = SaveManager.verify_and_open_dir(filePath)
 	
@@ -163,8 +183,11 @@ func load_scene(fileName: String, filePath: String, fileParent: Node) -> void:
 	
 	if cachedScene != null:
 		Utils.debug_print(self, "loaded '%s' from cache", [fullFilePath])
-		fileParent.add_child(cachedScene.instantiate())
+		if callback && callback.is_valid():
+			callback.call(cachedScene)
+		#fileParent.add_child(cachedScene.instantiate())
 		sceneLoadInProgress = false
+		loadNextSceneQueue.emit()
 		return
 	
 	var loader = ResourceLoader.load_threaded_request(fullFilePath)
@@ -175,12 +198,12 @@ func load_scene(fileName: String, filePath: String, fileParent: Node) -> void:
 	
 	sceneLoadTimer = Timer.new()
 	sceneLoadTimer.wait_time = 0.1
-	sceneLoadTimer.timeout.connect(monitor_scene_load_progress.bind(fullFilePath, fileParent))
-	
+	#sceneLoadTimer.timeout.connect(monitor_scene_load_progress.bind(fullFilePath, fileParent, callback))
+	sceneLoadTimer.timeout.connect(monitor_scene_load_progress.bind(fullFilePath, callback))
 	get_tree().root.add_child(sceneLoadTimer)
 	sceneLoadTimer.start()
 
-func monitor_scene_load_progress(filePath: String, fileParent: Node) -> void:
+func monitor_scene_load_progress(filePath: String, callback: Callable) -> void: #fileParent: Node, callback: Callable) -> void:
 	var progress: Array = []
 	var loadStatus = ResourceLoader.load_threaded_get_status(filePath, progress)
 	
@@ -198,7 +221,19 @@ func monitor_scene_load_progress(filePath: String, fileParent: Node) -> void:
 		ResourceLoader.THREAD_LOAD_LOADED:
 			sceneLoadTimer.stop()
 			sceneLoadTimer.queue_free()
-			fileFinishedLoading.emit(ResourceLoader.load_threaded_get(filePath), fileParent, filePath)
+			
+			var loadedScene = ResourceLoader.load_threaded_get(filePath)
+			
+			if loadedScene is PackedScene:
+				cache_scene(filePath, loadedScene)
+				if callback && callback.is_valid():
+					callback.call(loadedScene)
+			else:
+				filePathFailedLoad.emit(filePath)
+			
+			#fileFinishedLoading.emit(ResourceLoader.load_threaded_get(filePath), fileParent, filePath)
+			sceneLoadInProgress = false
+			loadNextSceneQueue.emit()
 			return
 
 func on_file_finished_loading(incomingFile: PackedScene, fileParent: Node, filePath: String) -> void:
@@ -232,9 +267,9 @@ func get_player_camera_instance() -> Camera2D:
 
 func get_volume_name(volume: Volumes) -> String:
 	match volume:
-		Volumes.volume1:
+		Volumes.VOLUME_1:
 			return "volume1"
-		Volumes.volume2:
+		Volumes.VOLUME_2:
 			return "volume2"
 		_:
 			return "volume1"

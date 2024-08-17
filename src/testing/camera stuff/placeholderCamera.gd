@@ -6,7 +6,6 @@ var manualCommand: bool = true
 
 func _ready() -> void:
 	pass
-	#Utils.update_references()
 	#print(player)
 
 func _process(delta: float) -> void:
@@ -17,9 +16,10 @@ func _process(delta: float) -> void:
 	
 	if player == null:
 		player = Utils.get_player()
-		
 		if player == null:
 			return
+		else:
+			global_position = player.global_position
 	
 	#var target: Vector2 = player.global_position
 	#var targetPosX: int
