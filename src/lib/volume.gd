@@ -13,6 +13,9 @@ extends Node2D
 @export var spawnDefault: bool
 
 var roomPositions: Dictionary = {}
+var roomBoundaries: Dictionary = {}
+
+const roomAdjacencyThreshold: float = 100.0
 
 var currentRoom: Room
 var currentCamera: Camera2D
@@ -23,8 +26,10 @@ func _ready() -> void:
 	#TODO change the worldenvironments and canvasmodulate based on volume in levelmanager or something?
 	
 	update_current_volume()
-	free_all_rooms()
-	load_current_room()
+	save_room_global_positions()
+	save_room_global_bounds()
+	#free_all_rooms()
+	#load_current_room()
 	get_important_info()
 	
 	SaveManager.save_game()
@@ -58,6 +63,8 @@ func on_room_load(loadedScene: PackedScene, sceneName: String) -> void:
 		return
 	
 	var instance: Room = loadedScene.instantiate()
+	var roomPosition: Vector2 = roomPositions[sceneName]
+	instance.global_position = roomPosition
 	rooms.add_child(instance)
 
 func update_current_volume() -> void:
@@ -82,10 +89,10 @@ func update_current_volume() -> void:
 	else:
 		Utils.debug_print(self, "current volume ID not higher than saved, no update required")
 
-func update_current_room(inputRoom: Room) -> void:
+func update_current_room(room: Room) -> void:
 	print("[volume] Updating current room")
 	
-	currentRoom = inputRoom
+	currentRoom = room
 	LevelManager.currentRoom = currentRoom
 	LevelManager.currentRoomName = currentRoom.roomName
 	LevelManager.currentRoomGlobalPosition = currentRoom.global_position
@@ -111,24 +118,37 @@ func player_died() -> void:
 	player.global_position = LevelManager.currentSpawn.round() + Vector2.UP
 
 func free_all_rooms() -> void:
-	save_global_room_positions()
-	for room in rooms.get_children():
+	for room: Room in rooms.get_children():
 		room.queue_free()
 
-func save_global_room_positions() -> void:
-	for room in rooms.get_children():
-		roomPositions[room.name] = room.global_position
+func save_room_global_positions() -> void:
+	roomPositions.clear()
 	
+	for room: Room in rooms.get_children():
+		roomPositions[room.name.to_lower()] = room.global_position
 	print(roomPositions)
 
+func save_room_global_bounds() -> void:
+	roomBoundaries.clear()
+	
+	for room: Room in rooms.get_children():
+		var roomBounds = room.get_room_bounds()
+		roomBoundaries[room.name.to_lower()] = roomBounds
+	print(roomBoundaries)
+
+func process_room() -> void:
+	pass
+
 func _unhandled_input(event: InputEvent) -> void:
-	if InputMap.has_action("debug_reload_room"):
-		if event.is_action_pressed("debug_reload_room"):
-			reload_room()
-			reload_camera()
+	if event.is_action_pressed("debug_reload_room"):
+		#if GlobalManager.debugMode:
+		#reload_camera()
+		reload_room()
 
 func reload_room() -> void:
-	var roomPath: String = str(LevelManager.currentRoomPath)
+	print("reloading room")
+	
+	var _roomPath: String = str(LevelManager.currentRoomPath)
 	#var roomInstance: Room = load(roomPath).instantiate()
 	#var oldRoom: Room = currentRoom
 

@@ -2,7 +2,7 @@ extends Camera2D
 
 @onready var player: Player = Utils.get_player()
 
-var manualCommand: bool = true
+@export var manualCommand: bool = true
 
 func _ready() -> void:
 	pass
@@ -32,8 +32,9 @@ func _process(delta: float) -> void:
 	#position = Vector2(round(targetPosX), round(targetPosY))
 	
 	#uncomment this for placerholder code
-	#position = Vector2(round(position.x), round(position.y))
-	#global_position = player.global_position
+	if player != null && !manualCommand:
+		position = Vector2(round(position.x), round(position.y))
+		global_position = player.global_position
 
 func get_input() -> Vector2:
 	var dir = Input.get_vector("left", "right", "up", "down")

@@ -8,13 +8,9 @@ signal initialLoadComplete(loaded: bool)
 signal saving(inProgress: bool)
 
 
-enum Volumes {
-	volume1,
-	volume2,
-	volume3
-}
 
-signal chosenVolume(volume: Volumes)
 
-func signal_choosing_volume(volume: Volumes):
+signal chosenVolume(volume: LevelManager.Volumes)
+
+func signal_choosing_volume(volume: LevelManager.Volumes):
 	chosenVolume.emit(volume)

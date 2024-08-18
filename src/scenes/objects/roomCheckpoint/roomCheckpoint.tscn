@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ce2g03ooxrt54"]
+
+[ext_resource type="Script" path="res://src/scenes/objects/roomCheckpoint/roomCheckpoint.gd" id="1_a7yos"]
+
+[node name="RoomCheckpoint" type="Node2D"]
+script = ExtResource("1_a7yos")

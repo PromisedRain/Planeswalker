@@ -33,7 +33,7 @@ func init() -> void:
 	
 	ensure_config_file_exists()
 	currentConfigData = load_config_file()
-	save_config_file() #remove this when settings is implemented
+	#save_config_file(currentConfigData) #remove this when settings is implemented
 	
 	ensure_meta_data_file_exists()
 	currentMetaData = load_all_meta_data()
@@ -324,7 +324,7 @@ func save_current_slot_data(slot: int = currentSaveSlot, _slotData: Dictionary =
 
 func save_game(icon: bool = false) -> void:
 	savingFlag = true
-	save_config_file()
+	save_config_file(currentConfigData)
 	save_current_meta_data()
 	save_current_slot_data()
 	

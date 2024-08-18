@@ -31,7 +31,7 @@ func init(loaded: bool) -> void:
 		match data:
 			true:
 				GlobalManager.debugMode = true
-				add_debug_mode_only_input_keys()
+				#add_debug_mode_only_input_keys()
 			false:
 				GlobalManager.debugMode = false
 		Utils.debug_print(self, "debug mode: %s", [data])
@@ -56,7 +56,7 @@ func add_debug_mode_only_input_keys() -> void:
 		InputMap.add_action("debug_reload_room")
 		
 		var keyEvent: InputEventKey = InputEventKey.new()
-		keyEvent.scancode = KEY_R
+		#keyEvent.scancode = KEY_R
 		InputMap.action_add_event("debug_reload_room", keyEvent)
 		
 		print("[main] Debug mode input added: %s", keyEvent)

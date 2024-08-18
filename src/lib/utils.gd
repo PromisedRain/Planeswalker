@@ -5,7 +5,7 @@ extends Node
 @onready var outsideSubViewportCamera: Camera2D = get_tree().get_first_node_in_group("outsideSubViewportCamera")
 @onready var insideSubViewportCamera: Camera2D = get_tree().get_first_node_in_group("insideSubViewportCamera")
 
-var fireDebugs: bool = true
+var fireDebugs: bool = false
 
 
 func _ready() -> void:
@@ -77,6 +77,17 @@ func get_check_word(passed: bool) -> String:
 	else:
 		return "failed"
 
+func get_first_non_repeat_char(s: String) -> String:
+	var count: Dictionary = {}
+	
+	for c in s:
+		count[c] = 1 + count.get(c, 0)
+	
+	for c in count:
+		if count[c] == 1:
+			return c
+	return "_"
+
 func debug_print(_self: Variant, comment: String, args: Array = []) -> void:
 	if !fireDebugs:
 		return
@@ -91,7 +102,9 @@ func debug_print(_self: Variant, comment: String, args: Array = []) -> void:
 	if args.size() > 0:
 		formattedComment = comment % args
 	
-	print("[%s] %s" % [str(_self.get_name().to_lower()), formattedComment])
+	_self = _self.get_name().to_lower()
+	
+	print("[%s] %s" % [str(_self), formattedComment])
 
 func letter_to_upper(letter: String) -> String:
 	return letter.capitalize()

@@ -196,7 +196,6 @@ func load_scene_async(fileName: String, filePath: String, callback: Callable) ->
 	
 	sceneLoadTimer = Timer.new()
 	sceneLoadTimer.wait_time = 0.1
-	#sceneLoadTimer.timeout.connect(monitor_scene_load_progress.bind(fullFilePath, fileParent, callback))
 	sceneLoadTimer.timeout.connect(monitor_scene_load_progress.bind(fileName, fullFilePath, callback))
 	get_tree().root.add_child(sceneLoadTimer)
 	sceneLoadTimer.start()

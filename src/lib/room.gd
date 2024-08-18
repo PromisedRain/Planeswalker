@@ -23,23 +23,27 @@ var maxYFull: int
 
 var roomWidth: int
 var roomHeight: int
-var roomCenter: int
+var roomCenter: Vector2
+
+var globalMinX: int
+var globalMinY: int
+var globalMaxX: int
+var globalMaxY: int
 
 signal enteredRoom(room: Room)
 
 func _ready() -> void:
-	enteredRoom.emit(self)
-	
-	for door: RoomSwitcherComponent in doors.get_children():
-		door.playerEntered.connect(room_entered)
-	
-	calculate_room_bounds()
-	print(roomWidth)
-	print(roomHeight)
-	print("[Room] Room bounds: (%d, %d, %d, %d)" % [minXFull, minYFull, maxXFull, maxYFull])
-
-func room_entered() -> void:
 	pass
+	#enteredRoom.emit(self)
+	
+	#for door: RoomSwitcherComponent in doors.get_children():
+		#door.playerEntered.connect(room_entered)
+	
+	#calculate_room_bounds()
+	#print(roomWidth)
+	#print(roomHeight)
+	#print("[Room] Room bounds: (%d, %d, %d, %d)" % [minXFull, minYFull, maxXFull, maxYFull])
+
 
 func calculate_room_bounds() -> void:
 	var cells = tileSolidLayer.get_used_cells()
@@ -67,9 +71,23 @@ func calculate_room_bounds() -> void:
 	maxXFull = maxX * tileSize.x
 	maxYFull = maxY * tileSize.y
 	
+	var globalPos = global_position
+	
+	globalMinX = globalPos.x + minX * tileSize.x
+	globalMinY = globalPos.y + minY * tileSize.y
+	globalMaxX = globalPos.x + maxX * tileSize.x
+	globalMaxY = globalPos.y + maxY * tileSize.y
+	
 	roomWidth = minXFull + maxXFull
 	roomHeight = minYFull + maxYFull
-	roomCenter = (minXFull - maxYFull)
+	roomCenter = Vector2((minXFull + maxXFull) / 2, (minYFull + maxYFull) / 2)
+
+func get_room_bounds() -> Rect2:
+	calculate_room_bounds()
+	
+	var pos: Vector2 = Vector2(globalMinX, globalMinY)
+	var size: Vector2 = Vector2(globalMaxX - globalMinX, globalMaxY - globalMinY) 
+	return Rect2(pos, size)
 
 func set_parent_for_room_switchers() -> void:
 	for door: RoomSwitcherComponent in doors.get_children():
