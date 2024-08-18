@@ -112,9 +112,19 @@ func create_meta_data_template() -> Dictionary:
 
 func create_default_config_data_template() -> Dictionary:
 	return {
-		"settings": {
-			"vignette_visible": true,
-			"player_ui_visible": true,
+		"settings_control": {
+			
+		},
+		"settings_video": {
+			"fullscreen": false,
+			"borderless": false,
+			"exclusive": false,
+			"v_sync": false,
+			"screen_shake": false,
+		},
+		"settings_special": {
+			"vignette": true,
+			"game_timer": true,
 			"debug_mode": false,
 		}
 	}

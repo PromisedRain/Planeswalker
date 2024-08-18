@@ -1,0 +1,44 @@
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://bbvixcv2opc1q"]
+
+[ext_resource type="FontFile" uid="uid://c53lfl05xshk2" path="res://src/media/fonts/mago3.ttf" id="1_ksagi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uietj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xd4p5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gs027"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xuh3j"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tvimn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nys25"]
+bg_color = Color(1, 1, 1, 1)
+expand_margin_top = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jwow1"]
+bg_color = Color(1, 1, 1, 1)
+expand_margin_left = 1.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lba1u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gxe52"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2exdo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_77t1g"]
+
+[resource]
+Button/fonts/font = ExtResource("1_ksagi")
+Button/styles/disabled = SubResource("StyleBoxEmpty_uietj")
+Button/styles/focus = SubResource("StyleBoxEmpty_xd4p5")
+Button/styles/hover = SubResource("StyleBoxEmpty_gs027")
+Button/styles/normal = SubResource("StyleBoxEmpty_xuh3j")
+Button/styles/pressed = SubResource("StyleBoxEmpty_tvimn")
+HSeparator/styles/separator = SubResource("StyleBoxFlat_nys25")
+Label/fonts/font = ExtResource("1_ksagi")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_jwow1")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxEmpty_lba1u")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxEmpty_gxe52")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_2exdo")
+VScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_77t1g")

@@ -5,6 +5,8 @@ extends Node
 var activeCamera: Camera2D
 var previousCamera: Camera2D
 
+var screenShakeEnabled: bool = false
+
 func _ready() -> void:
 	pass 
 

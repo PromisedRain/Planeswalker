@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://hlvjcki0njjd"]
 
-[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_mimga"]
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/gameTheme.tres" id="1_mimga"]
 [ext_resource type="Script" path="res://src/gui/objects/settingsSpecial/settingsSpecial.gd" id="2_bs684"]
 
 [node name="SettingsSpecial" type="VBoxContainer"]
@@ -10,12 +10,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_mimga")
+theme_override_constants/separation = 2
 script = ExtResource("2_bs684")
 
-[node name="Label" type="Label" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 text = "Special
 "
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="VignetteButton" type="Button" parent="."]
 layout_mode = 2
@@ -29,6 +39,16 @@ offset_right = 50.0
 offset_bottom = 13.0
 text = "Vignette"
 
+[node name="GameTimerButton" type="Button" parent="."]
+layout_mode = 2
+text = "<off>"
+
+[node name="GameTimerLabel" type="Label" parent="GameTimerButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 13.0
+text = "Game Timer"
+
 [node name="DebugModeButton" type="Button" parent="."]
 layout_mode = 2
 text = "<off>"
@@ -38,6 +58,32 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 13.0
 text = "Debug"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="DebugModeOnlyLabel" type="Label" parent="VBoxContainer2"]
+layout_mode = 2
+text = "Debug Mode Only
+"
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="DebugFpsButton" type="Button" parent="."]
+visible = false
+layout_mode = 2
+text = "<off>"
+
+[node name="Label" type="Label" parent="DebugFpsButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 13.0
+text = "Debug Fps"
 
 [connection signal="pressed" from="VignetteButton" to="." method="_on_vignette_button_pressed"]
 [connection signal="pressed" from="DebugModeButton" to="." method="_on_debug_mode_button_pressed"]

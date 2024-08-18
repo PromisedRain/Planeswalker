@@ -21,7 +21,6 @@ var player: Player
 
 func _ready() -> void:
 	#TODO change the worldenvironments and canvasmodulate based on volume in levelmanager or something?
-	print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW parent")
 	
 	update_current_volume()
 	free_all_rooms()

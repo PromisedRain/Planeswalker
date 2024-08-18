@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://4th77xhys0aq"]
 
-[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_xut4o"]
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/gameTheme.tres" id="1_xut4o"]
 
 [node name="SettingsAudio" type="VBoxContainer"]
 anchors_preset = 15
@@ -9,6 +9,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_xut4o")
+theme_override_constants/separation = 2
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2

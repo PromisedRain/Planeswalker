@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ba7tc2g1wlo02"]
 
 [ext_resource type="Script" path="res://src/gui/pauseMenu/pauseMenu.gd" id="1_cay6y"]
-[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="2_cr1mw"]
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/gameTheme.tres" id="2_cr1mw"]
 
 [node name="PauseMenu" type="CanvasLayer"]
 script = ExtResource("1_cay6y")

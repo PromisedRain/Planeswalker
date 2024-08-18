@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://tg60owt0gbll"]
 
-[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_5hroe"]
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/gameTheme.tres" id="1_5hroe"]
 [ext_resource type="Script" path="res://src/gui/objects/settingsControls/settingsControls.gd" id="1_ls71n"]
 
 [node name="SettingsControls" type="VBoxContainer"]
@@ -10,12 +10,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/separation = 2
 script = ExtResource("1_ls71n")
 
-[node name="Label" type="Label" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_5hroe")
 text = "Controls"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme = ExtResource("1_5hroe")
 
 [node name="KeyboardInputsButton" type="Button" parent="."]
 layout_mode = 2

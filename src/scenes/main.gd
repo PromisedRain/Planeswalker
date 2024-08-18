@@ -14,6 +14,7 @@ extends Node
 
 func _ready() -> void:
 	ProjectSettings.set_setting("rendering/textures/canvas_textures/default_texture_filter", 0)
+	
 	window.size_changed.connect(window_size_changed)
 	SignalManager.initialLoadComplete.connect(init)
 	
@@ -24,15 +25,16 @@ func init(loaded: bool) -> void:
 		Utils.debug_print(self, "init failed to load")
 		return
 	
-	if SaveManager.get_config_data("settings", "debug_mode") != null:
-		GlobalManager.debugMode = SaveManager.get_config_data("settings", "debug_mode")
+	if SaveManager.get_config_data("settings_special", "debug_mode") != null:
+		var data: bool = SaveManager.get_config_data("settings_special", "debug_mode")
 		
-		
-		if GlobalManager.debugMode:
-			Utils.debug_print(self, "debug mode is on")
-			add_debug_mode_only_input_keys()
-		else:
-			Utils.debug_print(self, "debug mode is off")
+		match data:
+			true:
+				GlobalManager.debugMode = true
+				add_debug_mode_only_input_keys()
+			false:
+				GlobalManager.debugMode = false
+		Utils.debug_print(self, "debug mode: %s", [data])
 	
 	LevelManager.init(self, world)
 	UiManager.init()

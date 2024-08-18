@@ -28,13 +28,15 @@ GlobalManager="*res://src/scenes/managers/globalManager.gd"
 LevelManager="*res://src/scenes/managers/levelManager.tscn"
 LayerManager="*res://src/scenes/managers/layerManager.gd"
 SceneTransitionManager="*res://src/scenes/managers/sceneTransitionManager.tscn"
-UiManager="*res://src/scenes/managers/uiManager.tscn"
+CameraManager="*res://src/scenes/managers/cameraManager.tscn"
 ProgressionManager="*res://src/scenes/managers/progressionManager.gd"
+UiManager="*res://src/scenes/managers/uiManager.tscn"
 
 [display]
 
 window/size/viewport_width=320
 window/size/viewport_height=180
+window/size/resizable=false
 window/size/window_width_override=960
 window/size/window_height_override=540
 window/stretch/mode="canvas_items"

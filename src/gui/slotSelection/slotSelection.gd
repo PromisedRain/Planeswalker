@@ -36,6 +36,7 @@ func init_slots_data() -> void:
 				if file.begins_with("metadata"):
 					noMetadata = true
 					break
+			
 			if noMetadata:
 				instantiate_empty_slot(i)
 
@@ -43,8 +44,8 @@ func instantiate_used_slot(slot: int) -> void:
 	var metaData: Dictionary = SaveManager.get_all_slot_meta_data(slot)
 	var instance: UsedSlot = usedSlot.instantiate()
 	instance.slot = slot
-	if metaData["latest_volume_name"] != null:
-		instance.slotCurrentVolumeName = metaData["latest_volume_name"]
+	#if metaData["latest_volume_name"] != null:
+	instance.slotCurrentVolumeName = metaData["latest_volume_name"]
 	instance.slotCurrentVolume = metaData["current_volume"]
 	instance.slotCollectibles = metaData["total_collectibles_collected"]
 	instance.slotPlaytime = metaData["total_slot_playtime"]

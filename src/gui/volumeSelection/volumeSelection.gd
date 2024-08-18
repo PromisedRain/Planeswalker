@@ -3,12 +3,10 @@ extends Control
 signal volumeSelectionPressedReturn
 
 func _ready() -> void:
-	pass 
+	init_selectable_volumes()
 
 func init_selectable_volumes() -> void:
 	pass
-
-
 
 func _on_volume_selection_return_button_pressed() -> void:
 	volumeSelectionPressedReturn.emit()

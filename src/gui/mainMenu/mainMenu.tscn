@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bpded4k5kx45m" path="res://src/gui/slotSelection/slotSelection.tscn" id="3_h3vy1"]
 [ext_resource type="PackedScene" uid="uid://cod3fh2b66bae" path="res://src/gui/mainMenuSettings/mainMenuSettings.tscn" id="4_ukfld"]
 [ext_resource type="PackedScene" uid="uid://ju8hbn5ionoq" path="res://src/gui/volumeSelection/volumeSelection.tscn" id="5_u125w"]
-[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="6_ef08x"]
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/gameTheme.tres" id="6_ef08x"]
 [ext_resource type="FontFile" uid="uid://dxl5qo013sh3d" path="res://src/media/fonts/MinimalPixel v2.ttf" id="7_6eqfp"]
 
 [sub_resource type="Curve" id="Curve_ikyvp"]

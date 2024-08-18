@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cnntgis2xd1sn"]
 
-[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/mainMenuButtonLabelTheme.tres" id="1_rnqj1"]
+[ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/gameTheme.tres" id="1_rnqj1"]
 [ext_resource type="Script" path="res://src/gui/objects/settingsVideo/settingsVideo.gd" id="2_btho6"]
 
 [node name="SettingsVideo" type="VBoxContainer"]
@@ -11,11 +11,21 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("1_rnqj1")
+theme_override_constants/separation = 2
 script = ExtResource("2_btho6")
 
-[node name="Label" type="Label" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 text = "Video"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="FullScreenButton" type="Button" parent="."]
 layout_mode = 2
@@ -36,16 +46,6 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 13.0
 text = "Borderless"
-
-[node name="ExclusiveFullScreenButton" type="Button" parent="."]
-layout_mode = 2
-text = "<off>"
-
-[node name="ExclusiveFullScreenLabel" type="Label" parent="ExclusiveFullScreenButton"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 13.0
-text = "Exclusive"
 
 [node name="VSyncButton" type="Button" parent="."]
 layout_mode = 2
@@ -69,6 +69,5 @@ text = "Screen Shake"
 
 [connection signal="pressed" from="FullScreenButton" to="." method="_on_full_screen_button_pressed"]
 [connection signal="pressed" from="BorderlessButton" to="." method="_on_borderless_button_pressed"]
-[connection signal="pressed" from="ExclusiveFullScreenButton" to="." method="_on_exclusive_full_screen_pressed"]
 [connection signal="pressed" from="VSyncButton" to="." method="_on_v_sync_button_pressed"]
 [connection signal="pressed" from="ScreenShakeButton" to="." method="_on_screen_shake_button_pressed"]
