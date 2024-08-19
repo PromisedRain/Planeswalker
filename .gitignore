@@ -12,3 +12,6 @@ data_*/
 
 #Aseprite-specific ignores
 .aseprite
+
+#.env 
+.env

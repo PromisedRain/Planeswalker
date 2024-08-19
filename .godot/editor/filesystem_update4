@@ -6,14 +6,9 @@ res://src/resources/shaders/fog.gdshader
 res://src/resources/shaders/rain1.gdshader
 res://src/scenes/objects/player/player.tscn
 res://src/scenes/objects/roomSwitcher/roomSwitcher.tscn
-res://src/scenes/volumes/volume1.tscn
-res://src/scenes/volumes/volume2.tscn
 res://src/scenes/objects/roomCheckpoint/roomCheckpoint.tscn
+res://src/scenes/volumes/volume1.tscn
 res://src/scenes/volumes/rooms/room0.tscn
-res://src/lib/volume.gd
-res://src/scenes/objects/roomCheckpoint/roomCheckpoint.gd
-res://src/scenes/objects/dashRefillOrb/dashRefillOrb.tscn
-res://src/scenes/objects/collectableWitheredRose/collectableWitheredRose.tscn
-res://src/lib/room.gd
 res://src/scenes/volumes/rooms/room1.tscn
-res://src/scenes/managers/debugManager.gd
+res://src/lib/volume.gd
+res://src/scenes/managers/levelManager.gd
