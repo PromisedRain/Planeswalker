@@ -15,7 +15,7 @@ extends Node2D
 var roomPositions: Dictionary = {}
 var roomBoundaries: Dictionary = {}
 
-const roomAdjacencyThreshold: float = 100.0
+const roomAdjacencyThreshold: float = 20.0
 
 var currentRoom: Room
 var currentCamera: Camera2D
@@ -28,9 +28,10 @@ func _ready() -> void:
 	update_current_volume()
 	save_room_global_positions()
 	save_room_global_bounds()
-	#free_all_rooms()
-	#load_current_room()
+	free_all_rooms()
+	load_current_room()
 	get_important_info()
+	#calculate_adjacency()
 	
 	SaveManager.save_game()
 
@@ -40,9 +41,9 @@ func load_current_room() -> void:
 	
 	if roomName == null || roomName == "":
 		Utils.debug_print(self, "no saved room found, loading default")
-		var defaultFirstRoom: String = get_first_room()
+		var defaultFirstRoomName: String = get_first_room()
 		
-		progress = LevelManager.load_room(defaultFirstRoom, Callable(self, "on_room_load"))
+		progress = LevelManager.load_room(defaultFirstRoomName, Callable(self, "on_room_load"))
 		handle_room_load_progress(progress)
 		return
 	
@@ -132,12 +133,37 @@ func save_room_global_bounds() -> void:
 	roomBoundaries.clear()
 	
 	for room: Room in rooms.get_children():
-		var roomBounds = room.get_room_bounds()
+		var roomBounds: Rect2 = room.get_global_room_bounds()
 		roomBoundaries[room.name.to_lower()] = roomBounds
 	print(roomBoundaries)
 
 func process_room() -> void:
-	pass
+	calculate_adjacency()
+
+func calculate_adjacency() -> void:
+	var adjacentRoomNames: Array[String] = get_adjacent_rooms()
+	print(adjacentRoomNames)
+
+func get_adjacent_rooms() -> Array[String]:
+	var adjacentRooms: Array[String] = []
+	var nonAdjacentRooms: Array[String] = []
+	var currentBounds: Rect2 = currentRoom.get_global_room_bounds()
+	
+	for roomName in roomBoundaries.keys():
+		if roomName == currentRoom.name.to_lower():
+			continue
+		
+		var bounds: Rect2 = roomBoundaries[roomName]
+		if are_rooms_adjacent(currentBounds, bounds):
+			adjacentRooms.append(roomName)
+		else:
+			nonAdjacentRooms.append(roomName)
+	return adjacentRooms
+
+func are_rooms_adjacent(bounds1: Rect2, bounds2: Rect2) -> bool:
+	var expandedBounds1: Rect2 = Rect2(bounds1.position - Vector2(roomAdjacencyThreshold, roomAdjacencyThreshold),
+	bounds1.size + Vector2(roomAdjacencyThreshold * 2, roomAdjacencyThreshold * 2))
+	return expandedBounds1.intersects(bounds2)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("debug_reload_room"):

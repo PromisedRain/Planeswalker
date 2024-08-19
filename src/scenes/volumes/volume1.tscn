@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cvbw61cy0um5e"]
+[gd_scene load_steps=9 format=3 uid="uid://cvbw61cy0um5e"]
 
 [ext_resource type="Script" path="res://src/lib/volume.gd" id="1_15x16"]
 [ext_resource type="PackedScene" uid="uid://hkeot3pu0jvn" path="res://src/scenes/volumes/rooms/room1.tscn" id="1_38e1n"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bu3f150dlw6qp" path="res://src/scenes/volumes/rooms/room0.tscn" id="4_nryjl"]
 [ext_resource type="PackedScene" uid="uid://8t6kjxiqfujr" path="res://src/scenes/volumes/rooms/room2.tscn" id="5_a2ch5"]
 [ext_resource type="Script" path="res://src/testing/camera stuff/placeholderCamera.gd" id="6_tju2t"]
+[ext_resource type="PackedScene" uid="uid://cm0lw3nd0kw7d" path="res://src/scenes/objects/player/player.tscn" id="7_i3oy2"]
 
 [sub_resource type="Environment" id="Environment_77io1"]
 background_mode = 3
@@ -43,6 +44,7 @@ position_smoothing_enabled = true
 position_smoothing_speed = 4.0
 editor_draw_limits = true
 script = ExtResource("6_tju2t")
+manualCommand = false
 
 [node name="Objects" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
@@ -58,3 +60,6 @@ position = Vector2(320, 0)
 
 [node name="Room2" parent="Rooms" instance=ExtResource("5_a2ch5")]
 position = Vector2(720, 0)
+
+[node name="Player" parent="." instance=ExtResource("7_i3oy2")]
+position = Vector2(391, -41)

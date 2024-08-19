@@ -20,7 +20,7 @@ var seconds: float = 0.0
 var mSec: float = 0.0
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if player == null:
 		player = Utils.get_player()
 		if player == null:
