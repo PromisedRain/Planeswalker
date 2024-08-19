@@ -12,3 +12,10 @@ res://src/scenes/volumes/rooms/room0.tscn
 res://src/scenes/volumes/rooms/room1.tscn
 res://src/lib/volume.gd
 res://src/scenes/managers/levelManager.gd
+res://src/scenes/main.gd
+res://src/scenes/managers/saveManager.gd
+res://src/lib/utils.gd
+res://src/scenes/managers/signalManager.gd
+res://src/scenes/managers/soundManager.gd
+res://src/scenes/managers/uiManager.gd
+res://src/scenes/managers/uiManager.tscn

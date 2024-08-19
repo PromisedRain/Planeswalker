@@ -21,22 +21,23 @@ const metaDataFullPath: String = saveDirPath + metaDataFilename
 #const saveDataFilename: String = "savedata%s.json"
 #const saveDataFullPath: String = saveDirPath + saveDataFilename
 
-const SAVE_SECURITY_KEY: String = "A23I5B6925UIB32P572J283I65J" #change location in the future, but who cares rn, doesnt matter
+var SAVE_SECURITY_KEY: String #= "A23I5B6925UIB32P572J283I65J" #change location in the future, but who cares rn, doesnt matter
 
 signal filePathInvalid(filePath)
 
 func _ready() -> void:
 	filePathInvalid.connect(on_file_path_invalid)
 
-func init() -> void:
+func init(saveSecurityKey: String) -> void:
 	ensure_save_dir_exists()
 	
 	ensure_config_file_exists()
 	currentConfigData = load_config_file()
-	#save_config_file(currentConfigData) #remove this when settings is implemented
 	
 	ensure_meta_data_file_exists()
 	currentMetaData = load_all_meta_data()
+	
+	SAVE_SECURITY_KEY = saveSecurityKey
 	
 	var passed: bool = get_runtime_check()
 	var passedStr: String = Utils.get_check_word(passed)
@@ -90,7 +91,9 @@ func create_default_slot_data_template(slot: int) -> Dictionary:
 		"unlocked_volume_2": false,
 		"unlocked_volume_3": false,
 		"current_volume": 0,
-		"current_room": ""
+		"current_room": "",
+		"current_spawn_global_position_x": 0,
+		"current_spawn_global_position_y": 0,
 	}
 
 func create_default_meta_data_template(slot: int) -> Dictionary:
@@ -100,7 +103,7 @@ func create_default_meta_data_template(slot: int) -> Dictionary:
 		"total_collectibles_collected": 0,
 		"total_slot_deaths": 0,
 		"current_volume": 0,
-		"latest_volume_name": "Volume"
+		"latest_volume_name": "Prologue",
 	}
 
 func create_meta_data_template() -> Dictionary:

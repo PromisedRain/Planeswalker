@@ -10,7 +10,7 @@ extends Node2D
 @export_range(1,3) var volumeID: int
 @export var volumeSpawn: Marker2D
 @export var volumeDebugSpawn: Marker2D
-@export var spawnDefault: bool
+@export var spawnDebug: bool
 
 var roomPositions: Dictionary = {}
 var roomBoundaries: Dictionary = {}
@@ -30,16 +30,19 @@ func _ready() -> void:
 	save_room_global_bounds()
 	free_all_rooms()
 	load_current_room()
+	
+	load_current_spawn()
+	
 	get_important_info()
 	#calculate_adjacency()
 	
 	SaveManager.save_game()
 
 func load_current_room() -> void:
-	var roomName: String = SaveManager.get_slot_data("current_room")
+	var saveRoomName: String = SaveManager.get_slot_data("current_room")
 	var progress: LevelManager.SceneLoadProgress
 	
-	if roomName == null || roomName == "":
+	if saveRoomName == null || saveRoomName == "":
 		Utils.debug_print(self, "no saved room found, loading default")
 		var defaultFirstRoomName: String = get_first_room()
 		
@@ -47,8 +50,34 @@ func load_current_room() -> void:
 		handle_room_load_progress(progress)
 		return
 	
-	progress = LevelManager.load_room(roomName, Callable(self, "on_room_load"))
+	progress = LevelManager.load_room(saveRoomName, Callable(self, "on_room_load"))
 	handle_room_load_progress(progress)
+
+func load_current_spawn() -> void:
+	var saveSpawnGlobalPosition: Vector2 = Vector2(
+		SaveManager.get_slot_data("current_spawn_global_position_x"),
+		SaveManager.get_slot_data("current_spawn_global_position_y")
+	)
+	var playerInstance: Player = LevelManager.get_player_instance()
+	
+	if spawnDebug:
+		Utils.debug_print(self, "spawn: debug spawn")
+		var debugSpawnGlobalPosition: Vector2 = volumeDebugSpawn.global_position
+		add_player_instance_and_set_pos(playerInstance, debugSpawnGlobalPosition)
+		return
+	
+	if saveSpawnGlobalPosition == Vector2.ZERO:
+		Utils.debug_print(self, "spawn: default spawn")
+		var defaultSpawnGlobalPosition: Vector2 = volumeSpawn.global_position
+		add_player_instance_and_set_pos(playerInstance, defaultSpawnGlobalPosition)
+		return
+	
+	Utils.debug_print(self, "spawn: save spawn")
+	add_player_instance_and_set_pos(playerInstance, saveSpawnGlobalPosition)
+
+func add_player_instance_and_set_pos(player: Player, pos: Vector2) -> void:
+	player.global_position = pos
+	objects.add_child(player)
 
 func handle_room_load_progress(progress: LevelManager.SceneLoadProgress) -> void:
 	match progress:
@@ -63,10 +92,10 @@ func on_room_load(loadedScene: PackedScene, sceneName: String) -> void:
 		Utils.debug_print(self, "failed to load scene '%s'", [loadedScene])
 		return
 	
-	var instance: Room = loadedScene.instantiate()
-	var roomPosition: Vector2 = roomPositions[sceneName]
-	instance.global_position = roomPosition
-	rooms.add_child(instance)
+	var roomInstance: Room = loadedScene.instantiate()
+	var roomGlobalPosition: Vector2 = roomPositions[sceneName]
+	roomInstance.global_position = roomGlobalPosition
+	rooms.add_child(roomInstance)
 
 func update_current_volume() -> void:
 	Utils.debug_print(self, "updating current volume")
@@ -209,6 +238,5 @@ func get_important_objects() -> void:
 
 
 func save_player_global_pos() -> void:
-	pass
-	#SaveManager.set_slot_data("current_chapter_position_x", player.global_position.x)
-	#SaveManager.set_slot_data("current_chapter_position_y", player.global_position.y)
+	SaveManager.set_slot_data("current_spawn_global_position_x", player.global_position.x)
+	SaveManager.set_slot_data("current_spawn_global_position_y", player.global_position.y)
