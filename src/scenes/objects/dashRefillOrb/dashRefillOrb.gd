@@ -5,8 +5,6 @@ extends Node2D
 @onready var cpuParticles: CPUParticles2D = $CPUParticles2D
 @onready var collectableComponent: CollectableComponent = $CollectableComponent
 
-var rotSpeed: float = 0.05
-
 func _ready() -> void:
 	turn_on_cpu_particles()
 	collectableComponent.collectableEntered.connect(on_entered)

@@ -10,11 +10,11 @@ var mainScene: Node
 
 var currentVolume: Volume 
 var currentVolumeName: String
-var currentVolumePath: String
 
 var currentSpawn: Vector2
+
 var currentRoom: Room
-var currentRoomPath: String
+var currentRoomName: String
 var currentRoomGlobalPosition: Vector2
 
 var sceneLoadTimer: Timer

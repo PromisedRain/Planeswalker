@@ -18,7 +18,7 @@ var roomBoundaries: Dictionary = {}
 const roomAdjacencyThreshold: float = 20.0
 
 var currentRoom: Room
-var currentCamera: Camera2D
+var currentCamera: Camera2D #change this type to the camera class i will make through cameraManager
 
 var player: Player
 
@@ -28,9 +28,9 @@ func _ready() -> void:
 	update_current_volume()
 	save_room_global_positions()
 	save_room_global_bounds()
+	
 	free_all_rooms()
 	load_current_room()
-	
 	load_current_spawn()
 	
 	get_important_info()
@@ -75,9 +75,9 @@ func load_current_spawn() -> void:
 	Utils.debug_print(self, "spawn: save spawn")
 	add_player_instance_and_set_pos(playerInstance, saveSpawnGlobalPosition)
 
-func add_player_instance_and_set_pos(player: Player, pos: Vector2) -> void:
-	player.global_position = pos
-	objects.add_child(player)
+func add_player_instance_and_set_pos(_player: Player, _pos: Vector2) -> void:
+	_player.global_position = _pos
+	objects.add_child(_player)
 
 func handle_room_load_progress(progress: LevelManager.SceneLoadProgress) -> void:
 	match progress:
@@ -94,6 +94,7 @@ func on_room_load(loadedScene: PackedScene, sceneName: String) -> void:
 	
 	var roomInstance: Room = loadedScene.instantiate()
 	var roomGlobalPosition: Vector2 = roomPositions[sceneName]
+	
 	roomInstance.global_position = roomGlobalPosition
 	rooms.add_child(roomInstance)
 
@@ -102,7 +103,7 @@ func update_current_volume() -> void:
 	
 	LevelManager.currentVolume = self
 	LevelManager.currentVolumeName = get_name()
-	LevelManager.currentVolumePath = str(LevelManager.volumePath + "/" + LevelManager.currentVolumeName.to_lower())
+	#LevelManager.currentVolumePath = str(LevelManager.volumePath + "/" + LevelManager.currentVolumeName.to_lower())
 	
 	var slot: int = SaveManager.currentSaveSlot
 	var latestVolumeID: int = int(SaveManager.get_slot_data("current_volume"))
@@ -119,13 +120,13 @@ func update_current_volume() -> void:
 	else:
 		Utils.debug_print(self, "current volume ID not higher than saved, no update required")
 
-func update_current_room(room: Room) -> void:
+func update_current_room(_room: Room) -> void:
 	print("[volume] Updating current room")
 	
-	currentRoom = room
-	LevelManager.currentRoom = currentRoom
-	LevelManager.currentRoomName = currentRoom.roomName
-	LevelManager.currentRoomGlobalPosition = currentRoom.global_position
+	
+	currentRoom = _room
+	LevelManager.currentRoom = _room
+	LevelManager.currentRoomName = _room.roomName
 
 func get_first_room() -> String:
 	var volume: String = LevelManager.currentVolumeName.to_lower()
@@ -203,7 +204,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func reload_room() -> void:
 	print("reloading room")
 	
-	var _roomPath: String = str(LevelManager.currentRoomPath)
+	var roomName: String = str(LevelManager.currentRoomName)
 	#var roomInstance: Room = load(roomPath).instantiate()
 	#var oldRoom: Room = currentRoom
 
@@ -218,7 +219,7 @@ func get_important_info() -> void:
 	get_important_objects()
 
 func get_important_objects() -> void:
-	for room in rooms.get_children():
+	for room: Room in rooms.get_children():
 		#var index: int = 0
 		
 		for object: Variant in room.get_node("Objects").get_children():

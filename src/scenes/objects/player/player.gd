@@ -397,7 +397,7 @@ func st_jump_update(delta: float) -> Callable: # every frame
 	return Callable()
 
 func st_enter_jump(delta: float = 0) -> void: #once
-	print("JUMP")
+	#print("JUMP")
 	sprite.scale = bodyStretchVec
 	canJump = false
 	
@@ -533,7 +533,7 @@ func st_climb_update(delta: float) -> Callable:
 	return Callable()
 
 func st_enter_climb(delta: float = 0) -> void:
-	print("CLIMB")
+	#print("CLIMB")
 	pass
 
 func st_leave_climb(delta: float = 0) -> void:
