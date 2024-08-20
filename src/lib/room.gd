@@ -28,9 +28,14 @@ func _ready() -> void:
 	roomName = self.name.to_lower()
 	
 	initalize_checkpoints()
+	disable_children_processes()
 
-func on_checkpoint_entered(checkpoint: RoomCheckpoint) -> void:
-	room_entered.emit(self)
+func on_checkpoint_entered(_checkpoint: RoomCheckpoint, _midLevel: bool) -> void:
+	#room_entered.emit(self)
+	
+	if currentCheckpoint != _checkpoint:
+		currentCheckpoint = _checkpoint
+		print("set current checkpoint to: %s" % _checkpoint)
 
 func initalize_checkpoints() -> void:
 	for checkpoint: RoomCheckpoint in doors.get_children():
@@ -72,13 +77,31 @@ func get_global_room_bounds() -> Rect2:
 	
 	var globalPos: Vector2 = global_position + localRoomBounds.position
 	var globalSize: Vector2 = localRoomBounds.size
-	
 	var globalRoomBounds: Rect2 = Rect2(globalPos, globalSize)
 	return globalRoomBounds
 
 func get_local_room_bounds() -> Rect2:
 	calculate_room_bounds()
 	
-	var pos: Vector2 = Vector2(minXFull, minYFull)
-	var size: Vector2 = Vector2(maxXFull - minXFull, maxYFull - minYFull)
-	return Rect2(pos, size)
+	var localPos: Vector2 = Vector2(minXFull, minYFull)
+	var localSize: Vector2 = Vector2(maxXFull - minXFull, maxYFull - minYFull)
+	return Rect2(localPos, localSize)
+
+
+func disable_children_processes() -> void:
+	for object in objects.get_children():
+		if object is Node:
+			object.set_process(false)
+			object.set_physics_process(false)
+			
+			if object is Node2D:
+				object.visible = false
+
+func enable_children_processes() -> void:
+	for object in objects.get_children():
+		if object is Node:
+			object.set_process(true)
+			object.set_physics_process(true)
+			
+			if object is Node2D:
+				object.visible = true

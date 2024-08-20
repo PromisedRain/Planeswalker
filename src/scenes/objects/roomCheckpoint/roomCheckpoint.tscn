@@ -7,6 +7,7 @@
 size = Vector2(6, 16)
 
 [node name="RoomCheckpoint" type="Node2D"]
+process_mode = 1
 script = ExtResource("1_a7yos")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

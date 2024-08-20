@@ -13,3 +13,7 @@ res://src/scenes/objects/roomCheckpoint/roomCheckpoint.tscn
 res://src/scenes/main.gd
 res://src/lib/utils.gd
 res://src/scenes/managers/saveManager.gd
+res://src/lib/room.gd
+res://src/scenes/objects/collectableWitheredRose/collectableWitheredRose.tscn
+res://src/scenes/objects/dashRefillOrb/dashRefillOrb.tscn
+res://src/lib/volume.gd

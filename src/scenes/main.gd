@@ -60,8 +60,6 @@ func init(loaded: bool) -> void:
 	#		print("volume ???")
 
 func load_env_file(_path: String) -> bool:
-	var dir: DirAccess = SaveManager.verify_and_open_dir(_path)
-	
 	if !FileAccess.file_exists(_path):
 		filePathInvalid.emit(_path)
 		return false
@@ -92,7 +90,7 @@ func load_env_data(envData: String) -> bool:
 func ensure_env_file_exists(_path: String) -> bool:
 	if !FileAccess.file_exists(_path):
 		Utils.debug_print(self, ".env file not created, creating at: %s", [_path])
-		generate_env_file(".env")
+		generate_env_file(_path)
 		return false
 	return true
 

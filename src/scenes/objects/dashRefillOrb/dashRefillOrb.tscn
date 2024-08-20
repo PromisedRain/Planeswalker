@@ -347,6 +347,7 @@ _data = {
 }
 
 [node name="DashRefillOrb" type="Node2D"]
+process_mode = 1
 script = ExtResource("1_sdw5v")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

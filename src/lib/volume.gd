@@ -22,6 +22,8 @@ var currentCamera: Camera2D #change this type to the camera class i will make th
 
 var player: Player
 
+#TODO update current room when volume loads based on current room. make a process_room function to handle entering a new room
+
 func _ready() -> void:
 	#TODO change the worldenvironments and canvasmodulate based on volume in levelmanager or something?
 	

@@ -47,6 +47,7 @@ _data = {
 }
 
 [node name="CollectableWitheredRose" type="Node2D"]
+process_mode = 1
 script = ExtResource("1_v1h0d")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
