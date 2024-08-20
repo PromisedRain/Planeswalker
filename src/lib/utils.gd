@@ -13,7 +13,8 @@ func _ready() -> void:
 		print("[utils] Debug prints are off")
 	
 	var uuid: String = generate_uuid()
-	debug_print(self, "test uuid: %s", [uuid])
+	print("[utils] Test uuid: %s" % uuid)
+	#debug_print(self, "test uuid: %s", [uuid])
 
 func get_player() -> Player:
 	update_references()

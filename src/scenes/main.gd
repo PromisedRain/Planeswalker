@@ -23,11 +23,14 @@ func _ready() -> void:
 	
 	var saveSecurityKey: String
 	
+	ensure_env_file_exists(".env")
+	
 	if load_env_file(".env"):
 		saveSecurityKey = env.get("SAVE_SECURITY_KEY")
 	else:
 		saveSecurityKey = "ERROR_GETTING_SAVE_SECURITY_KEY"
 		Utils.debug_print(self, "failed to load SAVE_SECURITY_KEY from .env, using fallback.")
+		print("[main] Failed to load SAVE_SECURITY_KEY from .env, using fallback.")
 	
 	SaveManager.init(saveSecurityKey)
 
@@ -85,6 +88,26 @@ func load_env_data(envData: String) -> bool:
 				var value: String = keyValue[1].strip_edges()
 				env[key] = value
 	return true
+
+func ensure_env_file_exists(_path: String) -> bool:
+	if !FileAccess.file_exists(_path):
+		Utils.debug_print(self, ".env file not created, creating at: %s", [_path])
+		generate_env_file(".env")
+		return false
+	return true
+
+func generate_env_file(_path: String) -> bool:
+	var file: FileAccess = FileAccess.open(_path, FileAccess.WRITE)
+	
+	if !file:
+		filePathInvalid.emit(_path)
+		return false
+	else:
+		file.store_line("# default .env configuration")
+		file.store_line("")
+		file.store_line("SAVE_SECURITY_KEY=%s" % Utils.generate_uuid().to_upper())
+		file.close()
+		return true
 
 func _unhandled_input(event) -> void:
 	if event.is_action_pressed("debug") && GlobalManager.debugMode:

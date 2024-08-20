@@ -141,10 +141,13 @@ func load_slot(slot: int) -> Dictionary:
 		filePathInvalid.emit(fullFilePath)
 		return create_default_slot_data_template(slot)
 	
-	#var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.READ, SAVE_SECURITY_KEY) #decryption
-	var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.READ) #no decryption
+	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.READ, SAVE_SECURITY_KEY) #decryption
+	#var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.READ) #no decryption
 	
-	if !file:
+	if file == null:
+		Utils.debug_print(self, "error opening file failed: %s", [FileAccess.get_open_error()])
+		return create_default_slot_data_template(slot)
+	elif !file:
 		Utils.debug_print(self, "error opening the file for reading: %s", [fileName])
 		return create_default_slot_data_template(slot)
 	else:
@@ -167,10 +170,12 @@ func load_slot(slot: int) -> Dictionary:
 func save_slot(slot: int, slotData: Dictionary = currentSlotData) -> void: #create_default_slot_data_template(slot)) -> void:
 	var fileName: String = "savedata%s.json" % slot
 	var fullFilePath: String = saveDirPath + fileName
-	#var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, SAVE_SECURITY_KEY) #encryption
-	var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.WRITE) #no encryption
+	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, SAVE_SECURITY_KEY) #encryption
+	#var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.WRITE) #no encryption
 	
-	if !file:
+	if file == null:
+		Utils.debug_print(self, "error opening file failed: %s", [FileAccess.get_open_error()])
+	elif !file:
 		Utils.debug_print(self, "error opening the slotData file for writing at: %s", [fullFilePath])
 	else:
 		var data: String = JSON.stringify(slotData)
