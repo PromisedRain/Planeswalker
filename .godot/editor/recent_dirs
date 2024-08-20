@@ -1,5 +1,5 @@
-res://src/scenes/objects/roomCheckpoint
 res://src/scenes/managers
+res://src/scenes/objects/roomCheckpoint
 res://src/media/audio
 res://src/gui/slotTimer
 res://src/testing
@@ -8,7 +8,6 @@ res://src/components
 res://src/testing/camera stuff
 res://src/lib
 res://src/resources/shaders
-res://src/scenes/objects/roomSwitcher
 res://src/gui/volumeSelection
 res://src/resources/themes
 res://src/gui/slotSelection

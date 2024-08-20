@@ -21,20 +21,26 @@ var loadedAdjacentRooms: Dictionary = {}
 var volumesDirPath: String = "user://volumes"
 
 const roomAdjacencyThreshold: float = 20.0
+const playerSpawnPositionYGrace: int = 6
 
 var currentRoom: Room
 var currentCamera: Camera2D #change this type to the camera class i will make through cameraManager
 
 var player: Player
 
-#TODO update current room when volume loads based on current room. make a process_room function to handle entering a new room
+signal instanceInvalid(instance: Node2D)
+
+#TODO update current room when volume loads based on current room. make a handle_room function to handle entering a new room
 
 func _ready() -> void:
 	#TODO change the worldenvironments and canvasmodulate based on volume in levelmanager or something?
 	
+	instanceInvalid.connect(on_instance_invalid)
+	
 	update_current_volume()
 	
-	save_volume_rooms_info()
+	save_room_bounds_and_pos()
+	save_room_instances()
 	
 	SaveManager.ensure_dir_path_exists(volumesDirPath)
 	
@@ -73,20 +79,23 @@ func load_current_spawn() -> void:
 	if spawnDebug:
 		Utils.debug_print(self, "spawn: debug spawn")
 		var debugSpawnGlobalPosition: Vector2 = volumeDebugSpawn.global_position
-		add_player_instance_and_set_pos(playerInstance, debugSpawnGlobalPosition)
+		add_player_instance(playerInstance, debugSpawnGlobalPosition)
 		return
 	
 	if saveSpawnGlobalPosition == Vector2.ZERO:
 		Utils.debug_print(self, "spawn: default spawn")
 		var defaultSpawnGlobalPosition: Vector2 = volumeSpawn.global_position
-		add_player_instance_and_set_pos(playerInstance, defaultSpawnGlobalPosition)
+		add_player_instance(playerInstance, defaultSpawnGlobalPosition)
 		return
 	
 	Utils.debug_print(self, "spawn: save spawn")
-	add_player_instance_and_set_pos(playerInstance, saveSpawnGlobalPosition)
+	add_player_instance(playerInstance, saveSpawnGlobalPosition) #+ Vector2(0, -20.0).round())
 
-func add_player_instance_and_set_pos(_player: Player, _pos: Vector2) -> void:
-	_player.global_position = _pos
+func add_player_instance(_player: Player, _pos: Vector2) -> void:
+	#var modifiedPosTest: Vector2 = Vector2(_pos.x, _pos.y + (playerSpawnPositionYGrace) * -1)
+	
+	player = _player
+	_player.global_position = _pos.round()
 	objects.add_child(_player)
 
 func handle_room_load_progress(progress: LevelManager.SceneLoadProgress) -> void:
@@ -97,7 +106,7 @@ func handle_room_load_progress(progress: LevelManager.SceneLoadProgress) -> void
 		LevelManager.SceneLoadProgress.ADDED_TO_LOAD_QUEUE:
 			pass
 
-func on_room_load(loadedScene: PackedScene, sceneName: String, autoUpdateRoom: bool = false) -> void:
+func on_room_load(loadedScene: PackedScene, sceneName: String, updateRoom: bool = false) -> void:
 	if !loadedScene is PackedScene:
 		Utils.debug_print(self, "failed to load scene '%s'", [loadedScene])
 		return
@@ -106,23 +115,25 @@ func on_room_load(loadedScene: PackedScene, sceneName: String, autoUpdateRoom: b
 	var roomGlobalPosition: Vector2 = roomGlobalPositions[sceneName]
 	
 	roomInstance.global_position = roomGlobalPosition
+	roomInstance.room_entered.connect(on_room_entered)
+	
 	rooms.add_child(roomInstance)
 	
-	if autoUpdateRoom:
-		update_current_room(roomInstance)
-		process_room(roomInstance)
+	if updateRoom:
+		handle_room(roomInstance)
 
 func update_current_volume() -> void:
 	Utils.debug_print(self, "updating current volume to: %s" % self.get_name())
 	
 	LevelManager.currentVolume = self
 	LevelManager.currentVolumeName = self.get_name()
-	#LevelManager.currentVolumePath = str(LevelManager.volumePath + "/" + LevelManager.currentVolumeName.to_lower())
 	
 	var slot: int = SaveManager.currentSaveSlot
 	var latestVolumeID: int = int(SaveManager.get_slot_data("current_volume"))
 	
-	if volumeID > latestVolumeID:
+	if !volumeID > latestVolumeID:
+		Utils.debug_print(self, "current volume ID not higher than saved, no update required")
+	else:
 		Utils.debug_print(self, "new volume reached")
 		
 		SaveManager.set_specific_slot_meta_data(slot, "current_volume", volumeID)
@@ -131,27 +142,27 @@ func update_current_volume() -> void:
 		
 		SaveManager.set_slot_data("current_volume", volumeID)
 		SaveManager.save_slot(slot, SaveManager.currentSlotData)
-	else:
-		Utils.debug_print(self, "current volume ID not higher than saved, no update required")
 
 func update_current_room(room: Room) -> void:
-	print("[volume] Updating current room")
+	var prevRoom: Room = room
+	
+	if prevRoom != null || is_instance_valid(prevRoom):
+		prevRoom.change_children_processes(false)
+	else:
+		instanceInvalid.emit(prevRoom)
 	
 	currentRoom = room
+	currentRoom.change_children_processes(true)
+	
+	loadedAdjacentRooms[room.roomName] = true
+	
 	LevelManager.currentRoom = room
 	LevelManager.currentRoomName = room.roomName
-
-func get_first_room() -> String:
-	var volume: String = LevelManager.currentVolumeName.to_lower()
-	var defaultVolume1Room: String = "room1"
-	var defaultVolume2Room: String = "room65"
 	
-	match volume:
-		"volume1":
-			return defaultVolume1Room
-		"volume2":
-			return defaultVolume2Room
-	return "room1"
+	SaveManager.set_slot_data("current_room", room.roomName)
+
+func on_room_entered(room: Room) -> void:
+	handle_room(room)
 
 func player_died() -> void:
 	Utils.debug_print(self, "player died")
@@ -159,33 +170,48 @@ func player_died() -> void:
 	reload_room()
 	reload_camera()
 	
-	player.global_position = LevelManager.currentSpawn.round() + Vector2.UP
+	player.global_position = LevelManager.currentSpawn.round() + Vector2(0, -1)
 
 func free_all_rooms() -> void:
 	for room: Room in rooms.get_children():
-		if room != null:
+		if room != null || is_instance_valid(room):
 			room.queue_free()
+		else:
+			instanceInvalid.emit(room)
 
-func save_volume_rooms_info() -> void:
+func save_room_bounds_and_pos() -> void:
 	roomGlobalPositions.clear()
 	roomGlobalBounds.clear()
+	
+	for room: Room in rooms.get_children():
+		if room != null || is_instance_valid(room):
+			roomGlobalPositions[room.roomName] = room.global_position
+			roomGlobalBounds[room.roomName] = room.get_global_room_bounds()
+		else:
+			instanceInvalid.emit(room)
+
+func save_room_instances() -> void:
 	roomInstances.clear()
 	
 	for room: Room in rooms.get_children():
-		roomGlobalPositions[room.name.to_lower()] = room.global_position
-		roomGlobalBounds[room.name.to_lower()] = room.get_global_room_bounds()
-		roomInstances[room.name.to_lower()] = room
-	
-	#print(roomGlobalPositions)
-	#print(roomGlobalBounds)
-	#print(roomInstances)
+		if room != null || is_instance_valid(room):
+			roomInstances[room.roomName] = room
+		else:
+			instanceInvalid.emit(room)
 
-func process_room(_currentRoom: Room) -> void: 
-	#whenever i enter a room / it gets called when i enter a checkpoint i havent entered before.
-	var _rooms: Dictionary = get_non_and_adjacent_rooms()
+func handle_room(room: Room) -> void: #on checkpoint entering
+	var roomLocalBounds: Dictionary = room.get_current_bounds()
 	
-	free_non_adjacent_rooms(_rooms["non_adjacent_rooms"])
-	load_adjacent_rooms(_rooms["adjacent_rooms"])
+	CameraManager.set_active_camera_bounds(roomLocalBounds)
+	save_player_global_pos()
+	
+	if room != currentRoom || currentRoom == null:
+		print("processing new room")
+		update_current_room(room)
+		
+		var _rooms: Dictionary = get_non_and_adjacent_rooms()
+		free_non_adjacent_rooms(_rooms["non_adjacent_rooms"])
+		load_adjacent_rooms(_rooms["adjacent_rooms"])
 
 func free_non_adjacent_rooms(_rooms: Array[String]) -> void:
 	for roomName: String in _rooms:
@@ -193,15 +219,24 @@ func free_non_adjacent_rooms(_rooms: Array[String]) -> void:
 		
 		if roomInstance != null:
 			roomInstance.queue_free()
+			loadedAdjacentRooms.erase(roomName)
 
 func load_adjacent_rooms(_rooms: Array[String]) -> void:
+	var progress: LevelManager.SceneLoadProgress
+	
 	for roomName: String in _rooms:
-		LevelManager.load_room(roomName, Callable(self, "on_room_load"))
- 
+		if loadedAdjacentRooms.has(roomName):
+			continue
+		
+		progress = LevelManager.load_room(roomName, Callable(self, "on_room_load"))
+		handle_room_load_progress(progress)
+		
+		loadedAdjacentRooms[roomName] = true
+
 func get_non_and_adjacent_rooms() -> Dictionary: #Array[String]:
 	var adjacentRooms: Array[String] = []
 	var nonAdjacentRooms: Array[String] = []
-	var bothRoomsDict: Dictionary = {}
+	var bothArrays: Dictionary = {}
 	var currentBounds: Rect2 = currentRoom.get_global_room_bounds()
 	
 	for roomName in roomGlobalBounds.keys():
@@ -214,9 +249,12 @@ func get_non_and_adjacent_rooms() -> Dictionary: #Array[String]:
 		else:
 			nonAdjacentRooms.append(roomName)
 	
-	bothRoomsDict["adjacent_rooms"] = adjacentRooms
-	bothRoomsDict["non_adjacent_rooms"] = nonAdjacentRooms
-	return bothRoomsDict
+	bothArrays["adjacent_rooms"] = adjacentRooms
+	bothArrays["non_adjacent_rooms"] = nonAdjacentRooms
+	
+	print("current room: %s" % currentRoom.name.to_lower())
+	print(bothArrays)
+	return bothArrays
 
 func are_rooms_adjacent(bounds1: Rect2, bounds2: Rect2) -> bool:
 	var expandedBounds1: Rect2 = Rect2(bounds1.position - Vector2(roomAdjacencyThreshold, roomAdjacencyThreshold),
@@ -233,9 +271,28 @@ func reload_room() -> void:
 func reload_camera() -> void:
 	var camera: Camera2D = currentCamera
 	camera.queue_free()
-	camera = LevelManager.create_camera_instance()
+	camera = CameraManager.create_camera_instance()
 	add_child(camera)
 	#camera.reset_camera()
+
+func save_player_global_pos() -> void:
+	SaveManager.set_slot_data("current_spawn_global_position_x", player.global_position.x)
+	SaveManager.set_slot_data("current_spawn_global_position_y", player.global_position.y + -1)
+
+func build_volume_info_file(id: int) -> void:
+	pass
+
+func get_first_room() -> String:
+	var volume: String = LevelManager.currentVolumeName.to_lower()
+	var defaultVolume1Room: String = "room1"
+	var defaultVolume2Room: String = "room65"
+	
+	match volume:
+		"volume1":
+			return defaultVolume1Room
+		"volume2":
+			return defaultVolume2Room
+	return "room1"
 
 func get_important_info() -> void: 
 	get_important_objects()
@@ -257,9 +314,5 @@ func get_important_objects() -> void:
 			#print("[volume] Object: %s" % object)
 	return
 
-func save_player_global_pos() -> void:
-	SaveManager.set_slot_data("current_spawn_global_position_x", player.global_position.x)
-	SaveManager.set_slot_data("current_spawn_global_position_y", player.global_position.y)
-
-func build_volume_info_file(id: int) -> void:
-	pass
+func on_instance_invalid(instance: Node2D) -> void:
+	Utils.debug_print(self, "instance '%s' is invalid or null", [instance])

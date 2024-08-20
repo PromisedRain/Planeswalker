@@ -31,5 +31,4 @@ texture = SubResource("ViewportTexture_qdbio")
 metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="ViewportLayer" groups=["outsideSubViewportCamera"]]
-enabled = false
 metadata/_edit_lock_ = true

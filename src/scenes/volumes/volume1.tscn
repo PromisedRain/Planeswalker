@@ -27,14 +27,16 @@ environment = SubResource("Environment_77io1")
 metadata/_edit_lock_ = true
 
 [node name="DefaultSpawn" type="Marker2D" parent="."]
-position = Vector2(388, -42)
+position = Vector2(385, -42)
 metadata/_edit_lock_ = true
 
 [node name="DebugSpawn" type="Marker2D" parent="."]
 position = Vector2(418, -55)
 
 [node name="DebugCamera" type="Camera2D" parent="."]
+visible = false
 position = Vector2(320, 0)
+enabled = false
 limit_left = 0
 limit_top = -180
 limit_right = 960

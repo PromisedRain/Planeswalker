@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=4 uid="uid://hkeot3pu0jvn"]
+[gd_scene load_steps=6 format=4 uid="uid://hkeot3pu0jvn"]
 
 [ext_resource type="Script" path="res://src/lib/room.gd" id="1_c8bqg"]
 [ext_resource type="PackedScene" uid="uid://c0rxy4tyuojl1" path="res://src/components/autoTilerComponent.tscn" id="2_r3pxv"]
 [ext_resource type="PackedScene" uid="uid://c5evwfnm23qi3" path="res://src/scenes/objects/dashRefillOrb/dashRefillOrb.tscn" id="4_dl1vn"]
 [ext_resource type="PackedScene" uid="uid://bai5l82psdgk1" path="res://src/scenes/objects/collectableWitheredRose/collectableWitheredRose.tscn" id="4_vbrfx"]
+[ext_resource type="PackedScene" uid="uid://ce2g03ooxrt54" path="res://src/scenes/objects/roomCheckpoint/roomCheckpoint.tscn" id="5_t4dvi"]
 
 [node name="Room1" type="Node2D"]
 script = ExtResource("1_c8bqg")
@@ -29,3 +30,13 @@ metadata/_edit_lock_ = true
 
 [node name="Checkpoints" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
+
+[node name="RoomCheckpoint" parent="Checkpoints" instance=ExtResource("5_t4dvi")]
+position = Vector2(9, -80)
+
+[node name="RoomCheckpoint2" parent="Checkpoints" instance=ExtResource("5_t4dvi")]
+position = Vector2(65, -40)
+midLevelCheckpoint = true
+
+[node name="RoomCheckpoint3" parent="Checkpoints" instance=ExtResource("5_t4dvi")]
+position = Vector2(389, -56)

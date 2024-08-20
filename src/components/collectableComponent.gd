@@ -11,7 +11,7 @@ extends Area2D
 @export var collisionShape: CollisionShape2D
 
 @export var isUniqueCollectable: bool
-@export var uniqueCollectible: ProgressionManager.ProgressionCollectibles
+#@export var uniqueCollectible: ProgressionManager.
 
 @export var hasRespawnTimer: bool
 @export var respawnTime: float
@@ -95,8 +95,8 @@ func handle_collecting() -> void:
 		if finishedRunning:
 			parent.queue_free()
 	
-	if isUniqueCollectable && uniqueCollectible != ProgressionManager.ProgressionCollectibles.placeholder:
-		Utils.debug_print(self, "is a unique collectable")
+	#if isUniqueCollectable && uniqueCollectible != ProgressionManager.ProgressionCollectibles.placeholder:
+	#	Utils.debug_print(self, "is a unique collectable")
 	
 	if !hasCollectAnim:
 		if finishedRunning:
@@ -154,13 +154,6 @@ func get_anim_name(_animName: String) -> String:
 	if !animList.has(_animName):
 		return ""
 	return _animName
-
-func has_unique_collectable() -> void:
-	match uniqueCollectible:
-			ProgressionManager.ProgressionCollectibles.witheredRose:
-				print("collected withered rose")
-			_:
-				print("collected ???")
 
 func add_collect_condition(condition: Callable) -> void:
 	collectConditions.append(condition)

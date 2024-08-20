@@ -46,7 +46,7 @@ _data = {
 "anim_idle": SubResource("Animation_blpvq")
 }
 
-[node name="CollectableWitheredRose" type="Node2D"]
+[node name="CollectableWitheredRose" type="Node2D" groups=["uniqueCollectable"]]
 process_mode = 1
 script = ExtResource("1_v1h0d")
 

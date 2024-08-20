@@ -1,7 +1,6 @@
 extends Node
 
 @export var playerPath: PackedScene = preload("res://src/scenes/objects/player/player.tscn")
-@export var playerCamera: PackedScene = preload("res://src/scenes/objects/playerCamera/playerCamera.tscn")
 
 @onready var volumesParent: Node2D
 
@@ -243,14 +242,10 @@ func on_file_path_invalid(path: String) -> void:
 	Utils.debug_print(self, "cannot open non-existent file at: %s", [path])
 	sceneLoadInProgress = false
 
-#getters
+#getters setters
 func get_player_instance() -> Player: 
 	var player: Player = playerPath.instantiate() 
 	return player
-
-func get_player_camera_instance() -> Camera2D:
-	var camera: Camera2D = playerCamera.instantiate()
-	return camera
 
 func get_volume_name(volume: Volumes) -> String:
 	match volume:

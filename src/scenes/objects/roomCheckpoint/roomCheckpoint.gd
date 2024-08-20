@@ -1,3 +1,4 @@
+@tool
 class_name RoomCheckpoint
 extends Node2D
 
@@ -27,4 +28,6 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 	playerInside = false
 
 func handle_entering() -> void:
+	print("entered checkpoint")
+	
 	entered_checkpoint.emit(self, midLevelCheckpoint)

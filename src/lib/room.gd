@@ -26,13 +26,12 @@ func _ready() -> void:
 	roomName = self.name.to_lower()
 	
 	initalize_checkpoints()
-	disable_children_processes()
+	change_children_processes(false)
 
 func on_checkpoint_entered(_checkpoint: RoomCheckpoint, _midLevel: bool) -> void:
-	#room_entered.emit(self)
-	
 	if currentCheckpoint != _checkpoint:
 		currentCheckpoint = _checkpoint
+		room_entered.emit(self)
 		print("set current checkpoint to: %s" % _checkpoint)
 
 func initalize_checkpoints() -> void:
@@ -85,20 +84,34 @@ func get_local_room_bounds() -> Rect2:
 	var localSize: Vector2 = Vector2(maxXFull - minXFull, maxYFull - minYFull)
 	return Rect2(localPos, localSize)
 
-func disable_children_processes() -> void:
+func change_children_processes(_value: bool) -> void:
 	for object in objects.get_children():
 		if object is Node:
-			object.set_process(false)
-			object.set_physics_process(false)
+			object.set_process(_value)
+			object.set_physics_process(_value)
 			
 			if object is Node2D:
-				object.visible = false
+				object.visible = _value
+			
+			if object.is_in_group("dashRefillOrb"):
+				pass
+			
+			if object.is_in_group("uniqueCollectable"):
+				if _value:
+					var shouldSpawn: bool = ProgressionManager.check_unique_collectable_status(roomName, object)
+					
+					if shouldSpawn:
+						object.visible = _value
 
-func enable_children_processes() -> void:
-	for object in objects.get_children():
-		if object is Node:
-			object.set_process(true)
-			object.set_physics_process(true)
-			
-			if object is Node2D:
-				object.visible = true
+func get_current_bounds() -> Dictionary:
+	var boundsDict: Dictionary = {}
+	
+	if !minXFull == null:
+		boundsDict["left"] = minXFull
+	if !maxXFull == null:
+		boundsDict["right"] = maxXFull
+	if !minYFull == null:
+		boundsDict["top"] = minYFull
+	if !maxYFull == null:
+		boundsDict["bottom"] = maxYFull
+	return boundsDict

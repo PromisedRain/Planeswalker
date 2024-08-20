@@ -67,6 +67,6 @@ size_flags_vertical = 0
 theme = ExtResource("6_ef08x")
 theme_override_fonts/font = ExtResource("7_6eqfp")
 theme_override_font_sizes/font_size = 7
-text = "V 0.064a"
+text = "V 0.085a"
 horizontal_alignment = 1
 metadata/_edit_lock_ = true

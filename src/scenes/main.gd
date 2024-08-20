@@ -6,7 +6,6 @@ extends Node
 
 @onready var window: Window = get_window() 
 @onready var windowBaseSize: Vector2i = window.content_scale_size
-@onready var windowScreenSize: Vector2i = get_viewport().get_visible_rect().size
 
 @onready var world: Node2D = $SubViewport/World
 
@@ -29,8 +28,8 @@ func _ready() -> void:
 		saveSecurityKey = env.get("SAVE_SECURITY_KEY")
 	else:
 		saveSecurityKey = "ERROR_GETTING_SAVE_SECURITY_KEY"
-		Utils.debug_print(self, "failed to load SAVE_SECURITY_KEY from .env, using fallback.")
-		print("[main] Failed to load SAVE_SECURITY_KEY from .env, using fallback.")
+		Utils.debug_print(self, "failed to load SAVE_SECURITY_KEY from .env, using fallback")
+		print("[main] Failed to load SAVE_SECURITY_KEY from .env, using fallback")
 	
 	SaveManager.init(saveSecurityKey)
 
@@ -45,7 +44,6 @@ func init(loaded: bool) -> void:
 		match data:
 			true:
 				GlobalManager.debugMode = true
-				#add_debug_mode_only_input_keys()
 			false:
 				GlobalManager.debugMode = false
 		Utils.debug_print(self, "debug mode: %s", [data])
@@ -90,11 +88,11 @@ func load_env_data(envData: String) -> bool:
 func ensure_env_file_exists(_path: String) -> bool:
 	if !FileAccess.file_exists(_path):
 		Utils.debug_print(self, ".env file not created, creating at: %s", [_path])
-		generate_env_file(_path)
+		build_env_file(_path)
 		return false
 	return true
 
-func generate_env_file(_path: String) -> bool:
+func build_env_file(_path: String) -> bool:
 	var file: FileAccess = FileAccess.open(_path, FileAccess.WRITE)
 	
 	if !file:
@@ -115,7 +113,6 @@ func _unhandled_input(event) -> void:
 
 func window_size_changed() -> void: 
 	pass
-	#print("size changed")
 	#var scale: Vector2i = window.size / windowBaseSize 
 	#window.content_scale_size = window.size / (scale.y if scale.y <= scale.x else scale.x)
 

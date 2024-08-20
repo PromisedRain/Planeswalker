@@ -29,7 +29,7 @@ LevelManager="*res://src/scenes/managers/levelManager.tscn"
 LayerManager="*res://src/scenes/managers/layerManager.gd"
 SceneTransitionManager="*res://src/scenes/managers/sceneTransitionManager.tscn"
 CameraManager="*res://src/scenes/managers/cameraManager.tscn"
-ProgressionManager="*res://src/scenes/managers/progressionManager.gd"
+ProgressionManager="*res://src/scenes/managers/progressionManager.tscn"
 UiManager="*res://src/scenes/managers/uiManager.tscn"
 
 [display]
@@ -136,6 +136,7 @@ debug_reload_room={
 2d_physics/layer_1="foundationLayer"
 2d_physics/layer_2="player"
 2d_physics/layer_3="collectables"
+2d_physics/layer_4="checkpoints"
 
 [physics]
 

@@ -49,7 +49,6 @@ func init(saveSecurityKey: String) -> void:
 		Utils.debug_print(self, "runtime load check: %s", [passedStr])
 		SignalManager.initialLoadComplete.emit(passed)
 
-#ensuring existence of stuff needed before choosing slots.
 func ensure_dir_path_exists(dirPath: String) -> void:
 	var dir: DirAccess = verify_and_open_dir(dirPath)
 	

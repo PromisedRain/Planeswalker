@@ -592,37 +592,37 @@ func st_duck_update(delta: float) -> Callable:
 	
 	return Callable()
 
-func st_enter_duck(delta: float = 0) -> void:
+func st_enter_duck(_delta: float = 0) -> void:
 	#print("DUCK")
 	sprite.scale = bodyDuckSquashVec
 	
 	duckedCollisionBox.disabled = false
 	normalCollisionBox.disabled = true
 
-func st_leave_duck(delta: float = 0) -> void:
+func st_leave_duck(_delta: float = 0) -> void:
 	duckedCollisionBox.disabled = true
 	normalCollisionBox.disabled = false
 
 #respawn
-func st_respawn_update(delta: float) -> void:
+func st_respawn_update(_delta: float) -> void:
 	return Callable()
 
-func st_enter_respawn(delta: float = 0) -> void:
+func st_enter_respawn(_delta: float = 0) -> void:
 	print("RESPAWN")
 	pass
 
-func st_leave_respawn(delta: float = 0) -> void:
+func st_leave_respawn(_delta: float = 0) -> void:
 	pass
 
 #dead
-func st_dead_update(delta: float) -> void:
+func st_dead_update(_delta: float) -> void:
 	return Callable()
 
-func st_enter_dead(delta: float = 0) -> void:
+func st_enter_dead(_delta: float = 0) -> void:
 	print("DEAD")
 	pass
 
-func st_leave_dead(delta: float = 0) -> void:
+func st_leave_dead(_delta: float = 0) -> void:
 	pass
 
 # getters

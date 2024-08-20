@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bpy4v6pmtpjms"]
+
+[ext_resource type="Script" path="res://src/scenes/objects/mainCamera/mainCamera.gd" id="1_oc01a"]
+
+[node name="MainCamera" type="Camera2D" groups=["playerCamera"]]
+script = ExtResource("1_oc01a")
