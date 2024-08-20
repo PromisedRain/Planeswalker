@@ -27,3 +27,5 @@ res://src/scenes/objects/roomCheckpoint/roomCheckpoint.gd
 res://src/scenes/managers/levelManager.gd
 res://src/scenes/objects/player/player.gd
 res://src/scenes/objects/playerCamera/playerCamera.tscn
+res://src/scenes/objects/mainCamera/mainCamera.tscn
+res://src/scenes/objects/mainCamera/mainCamera.gd

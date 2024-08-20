@@ -107,11 +107,11 @@ func get_current_bounds() -> Dictionary:
 	var boundsDict: Dictionary = {}
 	
 	if !minXFull == null:
-		boundsDict["left"] = minXFull
+		boundsDict["left"] = minXFull + global_position.x
 	if !maxXFull == null:
-		boundsDict["right"] = maxXFull
+		boundsDict["right"] = maxXFull + global_position.x
 	if !minYFull == null:
-		boundsDict["top"] = minYFull
+		boundsDict["top"] = minYFull + global_position.y
 	if !maxYFull == null:
-		boundsDict["bottom"] = maxYFull
+		boundsDict["bottom"] = maxYFull + global_position.y
 	return boundsDict

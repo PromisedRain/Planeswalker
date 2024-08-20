@@ -80,16 +80,19 @@ func load_current_spawn() -> void:
 		Utils.debug_print(self, "spawn: debug spawn")
 		var debugSpawnGlobalPosition: Vector2 = volumeDebugSpawn.global_position
 		add_player_instance(playerInstance, debugSpawnGlobalPosition)
+		add_camera_instance()
 		return
 	
 	if saveSpawnGlobalPosition == Vector2.ZERO:
 		Utils.debug_print(self, "spawn: default spawn")
 		var defaultSpawnGlobalPosition: Vector2 = volumeSpawn.global_position
 		add_player_instance(playerInstance, defaultSpawnGlobalPosition)
+		add_camera_instance()
 		return
 	
 	Utils.debug_print(self, "spawn: save spawn")
 	add_player_instance(playerInstance, saveSpawnGlobalPosition) #+ Vector2(0, -20.0).round())
+	add_camera_instance()
 
 func add_player_instance(_player: Player, _pos: Vector2) -> void:
 	#var modifiedPosTest: Vector2 = Vector2(_pos.x, _pos.y + (playerSpawnPositionYGrace) * -1)
@@ -97,6 +100,16 @@ func add_player_instance(_player: Player, _pos: Vector2) -> void:
 	player = _player
 	_player.global_position = _pos.round()
 	objects.add_child(_player)
+
+func add_camera_instance() -> void:
+	var cameraInstance: MainCamera = CameraManager.get_main_camera_instance()
+	
+	if currentCamera == null:
+		currentCamera = cameraInstance
+		CameraManager.set_current_camera(cameraInstance)
+		cameraInstance.reset_initial_position(player)
+		objects.add_child(cameraInstance)
+	
 
 func handle_room_load_progress(progress: LevelManager.SceneLoadProgress) -> void:
 	match progress:
@@ -202,7 +215,7 @@ func save_room_instances() -> void:
 func handle_room(room: Room) -> void: #on checkpoint entering
 	var roomLocalBounds: Dictionary = room.get_current_bounds()
 	
-	CameraManager.set_active_camera_bounds(roomLocalBounds)
+	#CameraManager.set_active_camera_bounds(roomLocalBounds)
 	save_player_global_pos()
 	
 	if room != currentRoom || currentRoom == null:

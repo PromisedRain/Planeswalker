@@ -3,4 +3,6 @@
 [ext_resource type="Script" path="res://src/scenes/objects/mainCamera/mainCamera.gd" id="1_oc01a"]
 
 [node name="MainCamera" type="Camera2D" groups=["playerCamera"]]
+limit_smoothed = true
+position_smoothing_enabled = true
 script = ExtResource("1_oc01a")

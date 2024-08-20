@@ -3,8 +3,8 @@ extends Node
 @onready var player: Player = Utils.get_player()
 @export var mainCamera: PackedScene
 
-var activeCamera: Camera2D
-var previousCamera: Camera2D
+var currentCamera: MainCamera
+var previousCamera: MainCamera
 
 var screenShakeEnabled: bool = false
 
@@ -15,26 +15,26 @@ func load_camera_settings() -> void:
 	if SaveManager.get_config_data("settings_special", "screen_shake") != null:
 		screenShakeEnabled = SaveManager.get_config_data("settings_special", "screen_shake")
 
-func set_camera_active(camera: Camera2D, active: bool) -> void:
-	previousCamera = activeCamera
-	var newActiveCamera: Camera2D = camera
+func set_current_camera(camera: MainCamera) -> void:
+	if currentCamera != null && currentCamera.enabled:
+		currentCamera.enabled = false
 	
-	previousCamera.enabled = false
+	currentCamera = camera
 	
-	activeCamera = newActiveCamera
-	newActiveCamera.enabled = active
-	
-	if active == false:
-		previousCamera.enabled = true
-		activeCamera = previousCamera
+	if !currentCamera.enabled:
+		currentCamera.enabled = true
 
-func set_active_camera_bounds(bounds: Dictionary) -> void:#_left, _right, _bot, _top) -> void:
+func set_active_camera_bounds(bounds: Dictionary, camera: MainCamera = currentCamera) -> void:#_left, _right, _bot, _top) -> void:
 	var leftLimit: int = bounds["left"]
 	var rightLimit: int = bounds["right"]
 	var topLimit: int = bounds["top"]
 	var bottomLimit: int = bounds["bottom"]
-	print(bounds)
+	
+	camera.limit_left = leftLimit
+	camera.limit_right = rightLimit
+	camera.limit_top = topLimit
+	camera.limit_bottom = bottomLimit
 
-func get_player_camera_instance() -> Camera2D:
-	var camera: Camera2D = mainCamera.instantiate()
+func get_main_camera_instance() -> MainCamera:
+	var camera: MainCamera = mainCamera.instantiate()
 	return camera
