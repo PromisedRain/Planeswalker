@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cvbw61cy0um5e"]
+[gd_scene load_steps=9 format=3 uid="uid://cvbw61cy0um5e"]
 
 [ext_resource type="Script" path="res://src/lib/volume.gd" id="1_15x16"]
 [ext_resource type="PackedScene" uid="uid://hkeot3pu0jvn" path="res://src/scenes/volumes/rooms/room1.tscn" id="1_38e1n"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bu3f150dlw6qp" path="res://src/scenes/volumes/rooms/room0.tscn" id="4_nryjl"]
 [ext_resource type="PackedScene" uid="uid://8t6kjxiqfujr" path="res://src/scenes/volumes/rooms/room2.tscn" id="5_a2ch5"]
 [ext_resource type="Script" path="res://src/testing/camera stuff/placeholderCamera.gd" id="6_tju2t"]
+[ext_resource type="PackedScene" uid="uid://b1m1seifaxnw8" path="res://src/scenes/volumes/rooms/room3.tscn" id="7_lijjr"]
 
 [sub_resource type="Environment" id="Environment_77io1"]
 background_mode = 3
@@ -35,7 +36,7 @@ position = Vector2(418, -55)
 [node name="DebugCamera" type="Camera2D" parent="."]
 position = Vector2(320, 0)
 limit_left = 0
-limit_top = -190
+limit_top = -180
 limit_right = 960
 limit_bottom = 0
 position_smoothing_enabled = true
@@ -58,3 +59,6 @@ position = Vector2(320, 0)
 
 [node name="Room2" parent="Rooms" instance=ExtResource("5_a2ch5")]
 position = Vector2(720, 0)
+
+[node name="Room3" parent="Rooms" instance=ExtResource("7_lijjr")]
+position = Vector2(1032, 0)

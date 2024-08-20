@@ -100,18 +100,18 @@ func free_volume_instance() -> void:
 
 func load_room(_roomName: String, callback: Callable) -> SceneLoadProgress:
 	if sceneLoadInProgress:
-		load_scene_async(_roomName, roomsPath, callback)
+		async_load_scene(_roomName, roomsPath, callback)
 		return SceneLoadProgress.ADDED_TO_LOAD_QUEUE
 	
-	load_scene_async(_roomName, roomsPath, callback)
+	async_load_scene(_roomName, roomsPath, callback)
 	return SceneLoadProgress.LOADING
 
 func load_volume(volumeName: String, callback: Callable) -> SceneLoadProgress:
 	if sceneLoadInProgress:
-		load_scene_async(volumeName, volumePath, callback)
+		async_load_scene(volumeName, volumePath, callback)
 		return SceneLoadProgress.ADDED_TO_LOAD_QUEUE
 	
-	load_scene_async(volumeName, volumePath, callback)
+	async_load_scene(volumeName, volumePath, callback)
 	return SceneLoadProgress.LOADING
 
 func add_to_scene_load_queue(fileName: String, filePath: String, callback: Callable = Callable()) -> void: #fileParent: Node, callback: Callable = Callable()) -> void:
@@ -131,7 +131,7 @@ func on_load_next_scene_queue() -> void:
 	var fileName: String = sceneInfo["file_name"]
 	var filePath: String = sceneInfo["file_path"]
 	var fileCallback: Callable = sceneInfo["file_callback"]
-	load_scene_async(fileName, filePath, fileCallback)
+	async_load_scene(fileName, filePath, fileCallback)
 
 func cache_scene(filePath: String, scene: PackedScene) -> void:
 	if sceneCache.size() >= maxSceneCacheSize:
@@ -159,7 +159,7 @@ func reset_scene_loading_state() -> void:
 		sceneLoadQueue.clear()
 	Utils.debug_print(self, "reset scene loading state")
 
-func load_scene_async(fileName: String, filePath: String, callback: Callable) -> void: #fileParent: Node, callback: Callable) -> void:
+func async_load_scene(fileName: String, filePath: String, callback: Callable) -> void: #fileParent: Node, callback: Callable) -> void:
 	if sceneLoadInProgress:
 		Utils.debug_print(self, "load currently in progress, adding '%s' to the queue, queue size: %s", [fileName, sceneLoadQueue.size()])
 		add_to_scene_load_queue(fileName, filePath, callback)

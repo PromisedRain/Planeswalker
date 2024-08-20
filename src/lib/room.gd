@@ -1,15 +1,13 @@
 class_name Room
 extends Node2D
 
-@onready var doors: Node2D = $Doors
+@onready var checkpoints: Node2D = $Checkpoints
 @onready var decorations: Node2D = $Decorations
 @onready var objects: Node2D = $Objects
 @onready var world: Node2D = get_parent().get_parent()
 @onready var tileSolidLayer: AutoTilerComponent = $TileSolidLayer
 
 var currentCheckpoint: RoomCheckpoint = null
-var objectChildren: Array = []
-var adjacentRooms: Array = []
 
 var minXFull: int
 var minYFull: int
@@ -38,7 +36,7 @@ func on_checkpoint_entered(_checkpoint: RoomCheckpoint, _midLevel: bool) -> void
 		print("set current checkpoint to: %s" % _checkpoint)
 
 func initalize_checkpoints() -> void:
-	for checkpoint: RoomCheckpoint in doors.get_children():
+	for checkpoint: RoomCheckpoint in checkpoints.get_children():
 		checkpoint.entered_checkpoint.connect(on_checkpoint_entered)
 		checkpoint.parentRoom = self
 
@@ -86,7 +84,6 @@ func get_local_room_bounds() -> Rect2:
 	var localPos: Vector2 = Vector2(minXFull, minYFull)
 	var localSize: Vector2 = Vector2(maxXFull - minXFull, maxYFull - minYFull)
 	return Rect2(localPos, localSize)
-
 
 func disable_children_processes() -> void:
 	for object in objects.get_children():

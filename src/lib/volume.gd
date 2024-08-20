@@ -12,8 +12,8 @@ extends Node2D
 @export var volumeDebugSpawn: Marker2D
 @export var spawnDebug: bool
 
-var roomPositions: Dictionary = {}
-var roomBoundaries: Dictionary = {}
+var roomGlobalPositions: Dictionary = {}
+var roomGlobalBounds: Dictionary = {}
 
 const roomAdjacencyThreshold: float = 20.0
 
@@ -28,6 +28,7 @@ func _ready() -> void:
 	#TODO change the worldenvironments and canvasmodulate based on volume in levelmanager or something?
 	
 	update_current_volume()
+	
 	save_room_global_positions()
 	save_room_global_bounds()
 	
@@ -36,7 +37,6 @@ func _ready() -> void:
 	load_current_spawn()
 	
 	get_important_info()
-	#calculate_adjacency()
 	
 	SaveManager.save_game()
 
@@ -48,11 +48,11 @@ func load_current_room() -> void:
 		Utils.debug_print(self, "no saved room found, loading default")
 		var defaultFirstRoomName: String = get_first_room()
 		
-		progress = LevelManager.load_room(defaultFirstRoomName, Callable(self, "on_room_load"))
+		progress = LevelManager.load_room(defaultFirstRoomName, Callable(self, "on_room_load").bind(true))
 		handle_room_load_progress(progress)
 		return
 	
-	progress = LevelManager.load_room(saveRoomName, Callable(self, "on_room_load"))
+	progress = LevelManager.load_room(saveRoomName, Callable(self, "on_room_load").bind(true))
 	handle_room_load_progress(progress)
 
 func load_current_spawn() -> void:
@@ -89,22 +89,26 @@ func handle_room_load_progress(progress: LevelManager.SceneLoadProgress) -> void
 		LevelManager.SceneLoadProgress.ADDED_TO_LOAD_QUEUE:
 			pass
 
-func on_room_load(loadedScene: PackedScene, sceneName: String) -> void:
+func on_room_load(loadedScene: PackedScene, sceneName: String, autoUpdateRoom: bool = false) -> void:
 	if !loadedScene is PackedScene:
 		Utils.debug_print(self, "failed to load scene '%s'", [loadedScene])
 		return
 	
 	var roomInstance: Room = loadedScene.instantiate()
-	var roomGlobalPosition: Vector2 = roomPositions[sceneName]
+	var roomGlobalPosition: Vector2 = roomGlobalPositions[sceneName]
 	
 	roomInstance.global_position = roomGlobalPosition
 	rooms.add_child(roomInstance)
+	
+	if autoUpdateRoom:
+		update_current_room(roomInstance)
+		load_adjacent_rooms()
 
 func update_current_volume() -> void:
-	Utils.debug_print(self, "updating current volume")
+	Utils.debug_print(self, "updating current volume to: %s" % self.get_name())
 	
 	LevelManager.currentVolume = self
-	LevelManager.currentVolumeName = get_name()
+	LevelManager.currentVolumeName = self.get_name()
 	#LevelManager.currentVolumePath = str(LevelManager.volumePath + "/" + LevelManager.currentVolumeName.to_lower())
 	
 	var slot: int = SaveManager.currentSaveSlot
@@ -122,13 +126,13 @@ func update_current_volume() -> void:
 	else:
 		Utils.debug_print(self, "current volume ID not higher than saved, no update required")
 
-func update_current_room(_room: Room) -> void:
+func update_current_room(room: Room) -> void:
 	print("[volume] Updating current room")
 	
 	
-	currentRoom = _room
-	LevelManager.currentRoom = _room
-	LevelManager.currentRoomName = _room.roomName
+	currentRoom = room
+	LevelManager.currentRoom = room
+	LevelManager.currentRoomName = room.roomName
 
 func get_first_room() -> String:
 	var volume: String = LevelManager.currentVolumeName.to_lower()
@@ -155,37 +159,42 @@ func free_all_rooms() -> void:
 		room.queue_free()
 
 func save_room_global_positions() -> void:
-	roomPositions.clear()
+	roomGlobalPositions.clear()
 	
 	for room: Room in rooms.get_children():
-		roomPositions[room.name.to_lower()] = room.global_position
-	print(roomPositions)
+		roomGlobalPositions[room.name.to_lower()] = room.global_position
+	print(roomGlobalPositions)
 
 func save_room_global_bounds() -> void:
-	roomBoundaries.clear()
+	roomGlobalBounds.clear()
 	
 	for room: Room in rooms.get_children():
 		var roomBounds: Rect2 = room.get_global_room_bounds()
-		roomBoundaries[room.name.to_lower()] = roomBounds
-	print(roomBoundaries)
+		roomGlobalBounds[room.name.to_lower()] = roomBounds
+	print(roomGlobalBounds)
 
 func process_room() -> void:
-	calculate_adjacency()
+	load_adjacent_rooms()
 
-func calculate_adjacency() -> void:
+func free_non_adjacent_rooms() -> void:
+	pass
+
+func load_adjacent_rooms() -> void:
 	var adjacentRoomNames: Array[String] = get_adjacent_rooms()
 	print(adjacentRoomNames)
+	for roomName in adjacentRoomNames:
+		print(roomName)
 
 func get_adjacent_rooms() -> Array[String]:
 	var adjacentRooms: Array[String] = []
 	var nonAdjacentRooms: Array[String] = []
 	var currentBounds: Rect2 = currentRoom.get_global_room_bounds()
 	
-	for roomName in roomBoundaries.keys():
+	for roomName in roomGlobalBounds.keys():
 		if roomName == currentRoom.name.to_lower():
 			continue
 		
-		var bounds: Rect2 = roomBoundaries[roomName]
+		var bounds: Rect2 = roomGlobalBounds[roomName]
 		if are_rooms_adjacent(currentBounds, bounds):
 			adjacentRooms.append(roomName)
 		else:
@@ -196,12 +205,6 @@ func are_rooms_adjacent(bounds1: Rect2, bounds2: Rect2) -> bool:
 	var expandedBounds1: Rect2 = Rect2(bounds1.position - Vector2(roomAdjacencyThreshold, roomAdjacencyThreshold),
 	bounds1.size + Vector2(roomAdjacencyThreshold * 2, roomAdjacencyThreshold * 2))
 	return expandedBounds1.intersects(bounds2)
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("debug_reload_room"):
-		#if GlobalManager.debugMode:
-		#reload_camera()
-		reload_room()
 
 func reload_room() -> void:
 	print("reloading room")

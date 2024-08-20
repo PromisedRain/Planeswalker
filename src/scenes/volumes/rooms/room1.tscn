@@ -27,5 +27,5 @@ position = Vector2(134, -66)
 [node name="Decorations" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
 
-[node name="Doors" type="Node2D" parent="."]
+[node name="Checkpoints" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
