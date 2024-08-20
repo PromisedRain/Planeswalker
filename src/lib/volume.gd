@@ -14,6 +14,9 @@ extends Node2D
 
 var roomGlobalPositions: Dictionary = {}
 var roomGlobalBounds: Dictionary = {}
+var roomInstances: Dictionary = {}
+
+var loadedAdjacentRooms: Dictionary = {}
 
 var volumesDirPath: String = "user://volumes"
 
@@ -31,8 +34,7 @@ func _ready() -> void:
 	
 	update_current_volume()
 	
-	save_room_global_positions()
-	save_room_global_bounds()
+	save_volume_rooms_info()
 	
 	SaveManager.ensure_dir_path_exists(volumesDirPath)
 	
@@ -135,7 +137,6 @@ func update_current_volume() -> void:
 func update_current_room(room: Room) -> void:
 	print("[volume] Updating current room")
 	
-	
 	currentRoom = room
 	LevelManager.currentRoom = room
 	LevelManager.currentRoomName = room.roomName
@@ -164,20 +165,19 @@ func free_all_rooms() -> void:
 	for room: Room in rooms.get_children():
 		room.queue_free()
 
-func save_room_global_positions() -> void:
+func save_volume_rooms_info() -> void:
 	roomGlobalPositions.clear()
+	roomGlobalBounds.clear()
+	roomInstances.clear()
 	
 	for room: Room in rooms.get_children():
 		roomGlobalPositions[room.name.to_lower()] = room.global_position
-	print(roomGlobalPositions)
-
-func save_room_global_bounds() -> void:
-	roomGlobalBounds.clear()
+		roomGlobalBounds[room.name.to_lower()] = room.get_global_room_bounds()
+		roomInstances[room.name.to_lower()] = room
 	
-	for room: Room in rooms.get_children():
-		var roomBounds: Rect2 = room.get_global_room_bounds()
-		roomGlobalBounds[room.name.to_lower()] = roomBounds
-	print(roomGlobalBounds)
+	#print(roomGlobalPositions)
+	#print(roomGlobalBounds)
+	#print(roomInstances)
 
 func process_room(_currentRoom: Room) -> void: 
 	#whenever i enter a room / it gets called when i enter a checkpoint i havent entered before.
@@ -188,13 +188,14 @@ func process_room(_currentRoom: Room) -> void:
 
 func free_non_adjacent_rooms(_rooms: Array[String]) -> void:
 	for roomName: String in _rooms:
-		print("non adjacent")
-		print(roomName)
+		var roomInstance = roomInstances[roomName]
+		
+		if roomInstance != null:
+			roomInstance.queue_free()
 
 func load_adjacent_rooms(_rooms: Array[String]) -> void:
 	for roomName: String in _rooms:
-		print("adjacents")
-		print(roomName)
+		LevelManager.load_room(roomName, Callable(self, "on_room_load"))
  
 func get_non_and_adjacent_rooms() -> Dictionary: #Array[String]:
 	var adjacentRooms: Array[String] = []
@@ -224,7 +225,7 @@ func are_rooms_adjacent(bounds1: Rect2, bounds2: Rect2) -> bool:
 func reload_room() -> void:
 	print("reloading room")
 	
-	var roomName: String = str(LevelManager.currentRoomName)
+	#var roomName: String = str(LevelManager.currentRoomName)
 	#var roomInstance: Room = load(roomPath).instantiate()
 	#var oldRoom: Room = currentRoom
 
