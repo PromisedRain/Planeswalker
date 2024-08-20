@@ -163,7 +163,8 @@ func player_died() -> void:
 
 func free_all_rooms() -> void:
 	for room: Room in rooms.get_children():
-		room.queue_free()
+		if room != null:
+			room.queue_free()
 
 func save_volume_rooms_info() -> void:
 	roomGlobalPositions.clear()
