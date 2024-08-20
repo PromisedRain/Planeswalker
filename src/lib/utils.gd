@@ -7,7 +7,6 @@ extends Node
 
 var fireDebugs: bool = false
 
-
 func _ready() -> void:
 	if !fireDebugs:
 		print("[utils] Debug prints are off")

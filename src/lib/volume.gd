@@ -15,6 +15,8 @@ extends Node2D
 var roomGlobalPositions: Dictionary = {}
 var roomGlobalBounds: Dictionary = {}
 
+var volumesDirPath: String = "user://volumes"
+
 const roomAdjacencyThreshold: float = 20.0
 
 var currentRoom: Room
@@ -31,6 +33,10 @@ func _ready() -> void:
 	
 	save_room_global_positions()
 	save_room_global_bounds()
+	
+	SaveManager.ensure_dir_path_exists(volumesDirPath)
+	
+	build_volume_info_file(volumeID)
 	
 	free_all_rooms()
 	load_current_room()
@@ -102,7 +108,7 @@ func on_room_load(loadedScene: PackedScene, sceneName: String, autoUpdateRoom: b
 	
 	if autoUpdateRoom:
 		update_current_room(roomInstance)
-		load_adjacent_rooms()
+		process_room(roomInstance)
 
 func update_current_volume() -> void:
 	Utils.debug_print(self, "updating current volume to: %s" % self.get_name())
@@ -173,21 +179,27 @@ func save_room_global_bounds() -> void:
 		roomGlobalBounds[room.name.to_lower()] = roomBounds
 	print(roomGlobalBounds)
 
-func process_room() -> void:
-	load_adjacent_rooms()
+func process_room(_currentRoom: Room) -> void: 
+	#whenever i enter a room / it gets called when i enter a checkpoint i havent entered before.
+	var _rooms: Dictionary = get_non_and_adjacent_rooms()
+	
+	free_non_adjacent_rooms(_rooms["non_adjacent_rooms"])
+	load_adjacent_rooms(_rooms["adjacent_rooms"])
 
-func free_non_adjacent_rooms() -> void:
-	pass
-
-func load_adjacent_rooms() -> void:
-	var adjacentRoomNames: Array[String] = get_adjacent_rooms()
-	print(adjacentRoomNames)
-	for roomName in adjacentRoomNames:
+func free_non_adjacent_rooms(_rooms: Array[String]) -> void:
+	for roomName: String in _rooms:
+		print("non adjacent")
 		print(roomName)
 
-func get_adjacent_rooms() -> Array[String]:
+func load_adjacent_rooms(_rooms: Array[String]) -> void:
+	for roomName: String in _rooms:
+		print("adjacents")
+		print(roomName)
+ 
+func get_non_and_adjacent_rooms() -> Dictionary: #Array[String]:
 	var adjacentRooms: Array[String] = []
 	var nonAdjacentRooms: Array[String] = []
+	var bothRoomsDict: Dictionary = {}
 	var currentBounds: Rect2 = currentRoom.get_global_room_bounds()
 	
 	for roomName in roomGlobalBounds.keys():
@@ -199,7 +211,10 @@ func get_adjacent_rooms() -> Array[String]:
 			adjacentRooms.append(roomName)
 		else:
 			nonAdjacentRooms.append(roomName)
-	return adjacentRooms
+	
+	bothRoomsDict["adjacent_rooms"] = adjacentRooms
+	bothRoomsDict["non_adjacent_rooms"] = nonAdjacentRooms
+	return bothRoomsDict
 
 func are_rooms_adjacent(bounds1: Rect2, bounds2: Rect2) -> bool:
 	var expandedBounds1: Rect2 = Rect2(bounds1.position - Vector2(roomAdjacencyThreshold, roomAdjacencyThreshold),
@@ -238,11 +253,11 @@ func get_important_objects() -> void:
 				LevelManager.collectiblesCount += 1
 				#print(LevelManager.collectableDict)
 			#print("[volume] Object: %s" % object)
-	
 	return
-	#print(LevelManager.collectiblesCount)
-
 
 func save_player_global_pos() -> void:
 	SaveManager.set_slot_data("current_spawn_global_position_x", player.global_position.x)
 	SaveManager.set_slot_data("current_spawn_global_position_y", player.global_position.y)
+
+func build_volume_info_file(id: int) -> void:
+	pass

@@ -21,7 +21,7 @@ const metaDataFullPath: String = saveDirPath + metaDataFilename
 #const saveDataFilename: String = "savedata%s.json"
 #const saveDataFullPath: String = saveDirPath + saveDataFilename
 
-var SAVE_SECURITY_KEY: String #= "A23I5B6925UIB32P572J283I65J" #change location in the future, but who cares rn, doesnt matter
+var SAVE_SECURITY_KEY: String
 
 signal filePathInvalid(filePath)
 
@@ -29,7 +29,7 @@ func _ready() -> void:
 	filePathInvalid.connect(on_file_path_invalid)
 
 func init(saveSecurityKey: String) -> void:
-	ensure_save_dir_exists()
+	ensure_dir_path_exists(saveDirPath) #checking savedirectory path
 	
 	ensure_config_file_exists()
 	currentConfigData = load_config_file()
@@ -50,17 +50,17 @@ func init(saveSecurityKey: String) -> void:
 		SignalManager.initialLoadComplete.emit(passed)
 
 #ensuring existence of stuff needed before choosing slots.
-func ensure_save_dir_exists() -> void:
-	var dir: DirAccess = verify_and_open_dir(saveDirPath)
+func ensure_dir_path_exists(dirPath: String) -> void:
+	var dir: DirAccess = verify_and_open_dir(dirPath)
 	
 	if dir == null:
-		if !DirAccess.dir_exists_absolute(saveDirPath):
-			var err = DirAccess.make_dir_absolute(saveDirPath)
+		if !DirAccess.dir_exists_absolute(dirPath):
+			var err = DirAccess.make_dir_absolute(dirPath)
 			
 			if err != OK:
-				Utils.debug_print(self, "failed to create the save directory at: %s", [saveDirPath])
+				Utils.debug_print(self, "failed to create the save directory at: %s", [dirPath])
 		else:
-			dir = DirAccess.open(saveDirPath)
+			dir = DirAccess.open(dirPath)
 
 func ensure_config_file_exists() -> void:
 	if !FileAccess.file_exists(configFullPath):
@@ -167,7 +167,7 @@ func load_slot(slot: int) -> Dictionary:
 			currentSaveSlot = slot
 			return merge_with_default(create_default_slot_data_template(slot), loadedData, fileName)
 
-func save_slot(slot: int, slotData: Dictionary = currentSlotData) -> void: #create_default_slot_data_template(slot)) -> void:
+func save_slot(slot: int, slotData: Dictionary = currentSlotData) -> void:
 	var fileName: String = "savedata%s.json" % slot
 	var fullFilePath: String = saveDirPath + fileName
 	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, SAVE_SECURITY_KEY) #encryption
@@ -421,7 +421,6 @@ func get_save_dir_json_files() -> PackedStringArray:
 			filteredFiles.append(file)
 	return filteredFiles
 
-#getters and setters
 func get_config_data(section: String, key: String, _configData: Dictionary = currentConfigData) -> Variant:
 	if !_configData.has(section):
 		Utils.debug_print(self, "no '%s' section found in configData", [section])

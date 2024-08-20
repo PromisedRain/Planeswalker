@@ -11,3 +11,6 @@ res://src/scenes/volumes/volume1.tscn
 res://src/scenes/volumes/rooms/room0.tscn
 res://src/scenes/volumes/rooms/room1.tscn
 res://src/scenes/volumes/rooms/room3.tscn
+res://src/lib/volume.gd
+res://src/scenes/managers/saveManager.gd
+res://src/lib/utils.gd
