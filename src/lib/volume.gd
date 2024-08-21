@@ -14,8 +14,8 @@ extends Node2D
 @export_range(Utils.minVolumesCurrently, Utils.maxVolumesCurrently) var volumeID: int
 @export var spawnDebug: bool
 
-var roomGlobalPositions: Dictionary = {}
-var roomGlobalBounds: Dictionary = {}
+#var roomGlobalPositions: Dictionary = {}
+#var roomGlobalBounds: Dictionary = {}
 var roomInstances: Dictionary = {}
 
 var volumeRoomInfo: Dictionary = {}
@@ -268,11 +268,11 @@ func get_non_and_adjacent_rooms() -> Dictionary:
 	var bothArrays: Dictionary = {}
 	var currentBounds: Rect2 = get_room_bounds(currentRoom.roomName) #currentRoom.get_global_room_bounds()
 	
-	for roomName in roomGlobalBounds.keys():
+	for roomName: String in volumeRoomInfo.keys():
 		if roomName == currentRoom.roomName:
 			continue
 		
-		var bounds: Rect2 = roomGlobalBounds[roomName]
+		var bounds: Rect2 = get_room_bounds(roomName)
 		
 		if are_rooms_adjacent(currentBounds, bounds):
 			adjacentRooms.append(roomName)
