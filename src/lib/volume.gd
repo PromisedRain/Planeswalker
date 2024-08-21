@@ -186,6 +186,7 @@ func update_current_room(room: Room) -> void:
 	SaveManager.set_slot_data("current_room", room.roomName)
 
 func on_room_entered(room: Room, checkpoint: RoomCheckpoint) -> void:
+	print("room entered")
 	handle_room(room, checkpoint)
 
 func player_died() -> void:
@@ -306,11 +307,11 @@ func save_player_global_pos(checkpointPos: Variant = null) -> void:
 		checkpointPos = checkpointPos as Vector2
 		SaveManager.set_slot_data("current_spawn_global_position_x", checkpointPos.x)
 		SaveManager.set_slot_data("current_spawn_global_position_y", checkpointPos.y + -1)
-		print("checkpoint position spawn")
+		#print("checkpoint position spawn")
 	else:
 		SaveManager.set_slot_data("current_spawn_global_position_x", currentPlayer.global_position.x)
 		SaveManager.set_slot_data("current_spawn_global_position_y", currentPlayer.global_position.y + -1)
-		print("player position spawn")
+		#print("player position spawn")
 
 func get_first_room() -> String:
 	var volume: String = LevelManager.currentVolumeName.to_lower()

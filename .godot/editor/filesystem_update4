@@ -24,3 +24,5 @@ res://src/lib/utils.gd
 res://src/testing/slotSelection/slotSelection.gd
 res://src/scenes/managers/cameraManager.gd
 res://src/scenes/objects/mainCamera/mainCamera.gd
+res://src/scenes/objects/roomCheckpoint/roomCheckpoint.gd
+res://src/lib/room.gd

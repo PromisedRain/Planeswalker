@@ -26,6 +26,7 @@ func set_current_camera(camera: MainCamera) -> void:
 
 func set_active_camera_bounds(bounds: Rect2, camera: MainCamera = currentCamera) -> void:
 	print("updating camera bounds")
+	print(bounds)
 	if camera:
 		camera.limit_left = bounds.position.x
 		camera.limit_top = bounds.position.y

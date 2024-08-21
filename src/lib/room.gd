@@ -37,7 +37,9 @@ func on_checkpoint_entered(checkpoint: RoomCheckpoint) -> void:
 	if currentCheckpoint != checkpoint:
 		currentCheckpoint = checkpoint
 		room_entered.emit(self, checkpoint)
-		print("set current checkpoint to: %s" % checkpoint)
+		#print("set current checkpoint to: %s" % checkpoint)
+	else:
+		room_entered.emit(self, checkpoint)
 
 func initalize_checkpoints() -> void:
 	for checkpoint: RoomCheckpoint in checkpoints.get_children():
