@@ -136,8 +136,6 @@ func on_room_load(loadedScene: PackedScene, roomName: String, updateRoom: bool =
 		return
 	
 	var roomInstance: Room = loadedScene.instantiate()
-	
-	
 	var roomGlobalPosition: Vector2 = get_room_global_position(roomName) #roomGlobalPositions[roomName]
 	
 	roomInstance.global_position = roomGlobalPosition
@@ -225,9 +223,10 @@ func save_room_instances() -> void:
 		else:
 			instanceInvalid.emit(room)
 
-func handle_room(room: Room, checkpoint: Variant = null) -> void:
-	var roomBounds: Dictionary = room.get_camera_bounds()
-	#CameraManager.set_active_camera_bounds(roomBounds)
+func handle_room(room: Room, checkpoint: Variant = null) -> void: # when i go into a checkpoint.
+	var roomBounds: Rect2 = get_room_bounds(room.roomName)
+	
+	CameraManager.set_active_camera_bounds(roomBounds)
 	
 	if checkpoint is RoomCheckpoint:
 		save_player_global_pos(checkpoint.get_spawn_position())
@@ -235,9 +234,8 @@ func handle_room(room: Room, checkpoint: Variant = null) -> void:
 		save_player_global_pos()
 	
 	if room != currentRoom || currentRoom == null:
-		#print("processing new room")
+		print("processing new room")
 		update_current_room(room)
-		
 		var _rooms: Dictionary = get_non_and_adjacent_rooms()
 		free_non_adjacent_rooms(_rooms["non_adjacent_rooms"])
 		load_adjacent_rooms(_rooms["adjacent_rooms"])
@@ -259,7 +257,6 @@ func load_adjacent_rooms(_rooms: Array[String]) -> void:
 		
 		progress = LevelManager.load_room(roomName, Callable(self, "on_room_load"))
 		handle_room_load_progress(progress)
-		
 		loadedAdjacentRooms[roomName] = true
 
 func get_non_and_adjacent_rooms() -> Dictionary: 
@@ -281,7 +278,6 @@ func get_non_and_adjacent_rooms() -> Dictionary:
 	
 	bothArrays["adjacent_rooms"] = adjacentRooms
 	bothArrays["non_adjacent_rooms"] = nonAdjacentRooms
-	
 	#print("current room: %s" % currentRoom.roomName)
 	#print(bothArrays)
 	return bothArrays

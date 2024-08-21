@@ -73,7 +73,6 @@ func build_env_file(filePath: String) -> bool:
 		return true
 
 func save_room_data_to_json(ID: int, roomParent: Node2D) -> void:
-	var fullFilePath: String = volumesMetaDataFullPath
 	var roomData: Dictionary = {}
 	
 	for room: Room in roomParent.get_children():

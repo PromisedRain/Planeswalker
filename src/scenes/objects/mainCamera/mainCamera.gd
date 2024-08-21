@@ -14,8 +14,8 @@ func _physics_process(_delta: float) -> void:
 		
 		if player == null:
 			return
-		else:
-			global_position = player.global_position
+		#else:
+		#	global_position = player.global_position
 	
-	position = Vector2(round(position.x), round(position.y))
+	#position = Vector2(round(position.x), round(position.y))
 	global_position = player.global_position

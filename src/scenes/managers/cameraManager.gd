@@ -24,16 +24,15 @@ func set_current_camera(camera: MainCamera) -> void:
 	if !currentCamera.enabled:
 		currentCamera.enabled = true
 
-func set_active_camera_bounds(bounds: Dictionary, camera: MainCamera = currentCamera) -> void:
-	var leftLimit: int = bounds["left"]
-	var rightLimit: int = bounds["right"]
-	var topLimit: int = bounds["up"]
-	var bottomLimit: int = bounds["down"]
-	
-	camera.limit_left = leftLimit
-	camera.limit_right = rightLimit
-	camera.limit_top = topLimit
-	camera.limit_bottom = bottomLimit
+func set_active_camera_bounds(bounds: Rect2, camera: MainCamera = currentCamera) -> void:
+	print("updating camera bounds")
+	if camera:
+		camera.limit_left = bounds.position.x
+		camera.limit_top = bounds.position.y
+		camera.limit_right = bounds.position.x + bounds.size.x
+		camera.limit_bottom = bounds.position.y + bounds.size.y
+	else:
+		Utils.debug_print(self, "no active camera provided, active camera instance '%s'", [camera])
 
 func get_main_camera_instance() -> MainCamera:
 	var camera: MainCamera = mainCamera.instantiate()
