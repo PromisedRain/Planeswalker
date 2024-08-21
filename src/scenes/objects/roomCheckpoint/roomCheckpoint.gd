@@ -2,7 +2,6 @@
 class_name RoomCheckpoint
 extends Node2D
 
-@onready var player: Player = Utils.get_player()
 @onready var spawnPosMarker: Marker2D = $Marker2D
 
 var playerInside: bool = false
@@ -16,6 +15,8 @@ func _ready() -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if !Engine.is_editor_hint():
+		var player: Player = Utils.get_player()
+		
 		if !body == player || !body is Player:
 			return
 		
@@ -24,6 +25,8 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	if !Engine.is_editor_hint():
+		var player: Player = Utils.get_player()
+		
 		if !body == player || !body is Player:
 			return
 		

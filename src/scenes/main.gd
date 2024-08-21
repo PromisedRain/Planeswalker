@@ -9,8 +9,6 @@ extends Node
 
 @onready var world: Node2D = $SubViewport/World
 
-var env: Dictionary = {}
-
 signal filePathInvalid(path: String)
 
 func _ready() -> void:
@@ -20,18 +18,7 @@ func _ready() -> void:
 	self.filePathInvalid.connect(on_file_path_invalid)
 	SignalManager.initialLoadComplete.connect(init)
 	
-	var saveSecurityKey: String
-	
-	ensure_env_file_exists(".env")
-	
-	if load_env_file(".env"):
-		saveSecurityKey = env.get("SAVE_SECURITY_KEY")
-	else:
-		saveSecurityKey = "ERROR_GETTING_SAVE_SECURITY_KEY"
-		Utils.debug_print(self, "failed to load SAVE_SECURITY_KEY from .env, using fallback")
-		print("[main] Failed to load SAVE_SECURITY_KEY from .env, using fallback")
-	
-	SaveManager.init(saveSecurityKey)
+	SaveManager.init()
 
 func init(loaded: bool) -> void: 
 	if !loaded:
@@ -56,54 +43,6 @@ func init(loaded: bool) -> void:
 	#		print("volume 1")
 	#	_:
 	#		print("volume ???")
-
-func load_env_file(_path: String) -> bool:
-	if !FileAccess.file_exists(_path):
-		filePathInvalid.emit(_path)
-		return false
-	
-	var file: FileAccess = FileAccess.open(_path, FileAccess.READ)
-	
-	if !file:
-		Utils.debug_print(self, "error opening the file for reading at: %s", [_path])
-		return false
-	else:
-		var data = file.get_as_text()
-		file.close()
-		return load_env_data(data)
-
-func load_env_data(envData: String) -> bool:
-	var lines: PackedStringArray = envData.split("\n", true)
-	
-	for line in lines:
-		if line.find("=") != -1 && !line.begins_with("#"):
-			var keyValue = line.split("=", false)
-			
-			if keyValue.size() == 2:
-				var key: String = keyValue[0].strip_edges()
-				var value: String = keyValue[1].strip_edges()
-				env[key] = value
-	return true
-
-func ensure_env_file_exists(_path: String) -> bool:
-	if !FileAccess.file_exists(_path):
-		Utils.debug_print(self, ".env file not created, creating at: %s", [_path])
-		build_env_file(_path)
-		return false
-	return true
-
-func build_env_file(_path: String) -> bool:
-	var file: FileAccess = FileAccess.open(_path, FileAccess.WRITE)
-	
-	if !file:
-		filePathInvalid.emit(_path)
-		return false
-	else:
-		file.store_line("# default .env configuration")
-		file.store_line("")
-		file.store_line("SAVE_SECURITY_KEY=%s" % Utils.generate_uuid().to_upper())
-		file.close()
-		return true
 
 func _unhandled_input(event) -> void:
 	if event.is_action_pressed("debug") && GlobalManager.debugMode:

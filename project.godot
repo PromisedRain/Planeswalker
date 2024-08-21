@@ -23,7 +23,7 @@ config/icon="res://src/media/sprites/icon.svg"
 
 Utils="*res://src/lib/utils.gd"
 SignalManager="*res://src/scenes/managers/signalManager.gd"
-SaveManager="*res://src/scenes/managers/saveManager.gd"
+SaveManager="*res://src/scenes/managers/saveManager.tscn"
 GlobalManager="*res://src/scenes/managers/globalManager.gd"
 LevelManager="*res://src/scenes/managers/levelManager.tscn"
 LayerManager="*res://src/scenes/managers/layerManager.gd"

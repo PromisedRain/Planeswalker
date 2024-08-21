@@ -1,5 +1,7 @@
 extends Node
 
+@onready var fileBuildManager: FileBuildManager = $FileBuildManager as FileBuildManager
+
 var configFileLoadCheck: bool = false
 var metaDataLoadCheck: bool = false
 var currentSaveSlotLoadCheck: bool = false
@@ -14,21 +16,22 @@ var savingFlag: bool = false
 const fireSuccessPrint: bool = true
 
 const saveDirPath: String = "user://saves/"
+
 const configFilename: String = "config.ini"
 const configFullPath: String = saveDirPath + configFilename
+
 const metaDataFilename: String = "metadata.json"
 const metaDataFullPath: String = saveDirPath + metaDataFilename
+
 #const saveDataFilename: String = "savedata%s.json"
 #const saveDataFullPath: String = saveDirPath + saveDataFilename
-
-var SAVE_SECURITY_KEY: String
 
 signal filePathInvalid(filePath)
 
 func _ready() -> void:
 	filePathInvalid.connect(on_file_path_invalid)
 
-func init(saveSecurityKey: String) -> void:
+func init() -> void:
 	ensure_dir_path_exists(saveDirPath) #checking savedirectory path
 	
 	ensure_config_file_exists()
@@ -36,8 +39,6 @@ func init(saveSecurityKey: String) -> void:
 	
 	ensure_meta_data_file_exists()
 	currentMetaData = load_all_meta_data()
-	
-	SAVE_SECURITY_KEY = saveSecurityKey
 	
 	var passed: bool = get_runtime_check()
 	var passedStr: String = Utils.get_check_word(passed)
@@ -140,7 +141,7 @@ func load_slot(slot: int) -> Dictionary:
 		filePathInvalid.emit(fullFilePath)
 		return create_default_slot_data_template(slot)
 	
-	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.READ, SAVE_SECURITY_KEY) #decryption
+	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.READ, fileBuildManager.env.get("SAVE_SECURITY_KEY", "ERROR_NO_SAVE_SECURITY_KEY")) #decryption
 	#var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.READ) #no decryption
 	
 	if file == null:
@@ -169,7 +170,7 @@ func load_slot(slot: int) -> Dictionary:
 func save_slot(slot: int, slotData: Dictionary = currentSlotData) -> void:
 	var fileName: String = "savedata%s.json" % slot
 	var fullFilePath: String = saveDirPath + fileName
-	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, SAVE_SECURITY_KEY) #encryption
+	var file: FileAccess = FileAccess.open_encrypted_with_pass(fullFilePath, FileAccess.WRITE, fileBuildManager.env.get("SAVE_SECURITY_KEY", "ERROR_NO_SAVE_SECURITY_KEY")) #encryption
 	#var file: FileAccess = FileAccess.open(fullFilePath, FileAccess.WRITE) #no encryption
 	
 	if file == null:
@@ -177,7 +178,7 @@ func save_slot(slot: int, slotData: Dictionary = currentSlotData) -> void:
 	elif !file:
 		Utils.debug_print(self, "error opening the slotData file for writing at: %s", [fullFilePath])
 	else:
-		var data: String = JSON.stringify(slotData)
+		var data: String = JSON.stringify(slotData, "\t")
 		
 		file.store_string(data)
 		file.close()
@@ -315,7 +316,7 @@ func save_meta_data(slot: int, _metaData: Dictionary) -> void:
 	if !_file:
 		Utils.debug_print(self, "error opening the metaData file for writing at: %s", [fullFilePath])
 	else:
-		var data: String = JSON.stringify(_metaData)
+		var data: String = JSON.stringify(_metaData, "\t")
 		_file.store_string(data)
 		_file.close()
 		Utils.debug_print(self, "metadata file created and saved at: %s", [fullFilePath])

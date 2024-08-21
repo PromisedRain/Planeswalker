@@ -3,16 +3,6 @@ extends Control
 signal selectedSlot(slot: int)
 signal slotSelectionPressedReturn
 
-func _ready() -> void:
-	pass
-
-
-func _process(delta: float) -> void:
-	pass
-
-
-
-
 func _on_slot_1_select_pressed() -> void:
 	Utils.debug_print(self, "slot 1 selected")
 	var slot: int = 1
