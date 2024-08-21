@@ -24,11 +24,11 @@ func set_current_camera(camera: MainCamera) -> void:
 	if !currentCamera.enabled:
 		currentCamera.enabled = true
 
-func set_active_camera_bounds(bounds: Dictionary, camera: MainCamera = currentCamera) -> void:#_left, _right, _bot, _top) -> void:
+func set_active_camera_bounds(bounds: Dictionary, camera: MainCamera = currentCamera) -> void:
 	var leftLimit: int = bounds["left"]
 	var rightLimit: int = bounds["right"]
-	var topLimit: int = bounds["top"]
-	var bottomLimit: int = bounds["bottom"]
+	var topLimit: int = bounds["up"]
+	var bottomLimit: int = bounds["down"]
 	
 	camera.limit_left = leftLimit
 	camera.limit_right = rightLimit

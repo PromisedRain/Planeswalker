@@ -181,8 +181,8 @@ func update_current_room(room: Room) -> void:
 	
 	SaveManager.set_slot_data("current_room", room.roomName)
 
-func on_room_entered(room: Room, checkpoint) -> void:
-	handle_room(room)
+func on_room_entered(room: Room, checkpoint: RoomCheckpoint) -> void:
+	handle_room(room, checkpoint)
 
 func player_died() -> void:
 	Utils.debug_print(self, "player died")
@@ -219,14 +219,18 @@ func save_room_instances() -> void:
 		else:
 			instanceInvalid.emit(room)
 
-func handle_room(room: Room, checkpoint = null) -> void: #on checkpoint entering
-	var roomLocalBounds: Dictionary = room.get_current_bounds()
+func handle_room(room: Room, checkpoint: Variant = null || RoomCheckpoint) -> void:
+	var roomBounds: Dictionary = room.get_camera_bounds()
+	print("checkpooooooooooooooooooooooooooooooooint: %s" % checkpoint)
+	#CameraManager.set_active_camera_bounds(roomBounds)
 	
-	#CameraManager.set_active_camera_bounds(roomLocalBounds)
-	save_player_global_pos()
+	if checkpoint is RoomCheckpoint:
+		save_player_global_pos(checkpoint.get_spawn_position())
+	else:
+		save_player_global_pos()
 	
 	if room != currentRoom || currentRoom == null:
-		print("processing new room")
+		#print("processing new room")
 		update_current_room(room)
 		
 		var _rooms: Dictionary = get_non_and_adjacent_rooms()
@@ -295,9 +299,14 @@ func reload_camera() -> void:
 	add_child(camera)
 	#camera.reset_camera()
 
-func save_player_global_pos() -> void:
-	SaveManager.set_slot_data("current_spawn_global_position_x", player.global_position.x)
-	SaveManager.set_slot_data("current_spawn_global_position_y", player.global_position.y + -1)
+func save_player_global_pos(checkpointPos: Variant = null) -> void:
+	if checkpointPos != null && checkpointPos is Vector2:
+		checkpointPos = checkpointPos as Vector2
+		SaveManager.set_slot_data("current_spawn_global_position_x", checkpointPos.x)
+		SaveManager.set_slot_data("current_spawn_global_position_y", checkpointPos.y + -1)
+	else:
+		SaveManager.set_slot_data("current_spawn_global_position_x", player.global_position.x)
+		SaveManager.set_slot_data("current_spawn_global_position_y", player.global_position.y + -1)
 
 func build_volume_info_file(id: int) -> void:
 	pass

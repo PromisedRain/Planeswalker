@@ -30,8 +30,7 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 		playerInside = false
 
 func handle_entering() -> void:
-	
-	print("entered checkpoint")
+	#print("entered checkpoint")
 	
 	entered_checkpoint.emit(self)
 

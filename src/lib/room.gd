@@ -14,6 +14,11 @@ var minYFull: int
 var maxXFull: int
 var maxYFull: int
 
+var globalMinX: int
+var globalMinY: int
+var globalMaxX: int
+var globalMaxY: int
+
 #var roomWidth: int
 #var roomHeight: int
 #var roomCenter: Vector2
@@ -65,6 +70,13 @@ func calculate_room_bounds() -> void:
 	maxXFull = maxX * tileSize.x
 	maxYFull = maxY * tileSize.y
 	
+	var global: Vector2 = global_position
+	
+	globalMinX = global.x + minX * tileSize.x
+	globalMinY = global.y + minY * tileSize.y
+	globalMaxX = global.x + maxX * tileSize.x
+	globalMaxY = global.y * maxY * tileSize.y
+	
 	#roomWidth = minXFull + maxXFull
 	#roomHeight = minYFull + maxYFull
 	#roomCenter = Vector2((minXFull + maxXFull) / 2, (minYFull + maxYFull) / 2)
@@ -103,15 +115,19 @@ func change_children_processes(_value: bool) -> void:
 					if shouldSpawn:
 						object.visible = _value
 
-func get_current_bounds() -> Dictionary:
-	var boundsDict: Dictionary = {}
+func get_camera_bounds() -> Dictionary:
+	var dict: Dictionary = {}
 	
-	if !minXFull == null:
-		boundsDict["left"] = minXFull + global_position.x
-	if !maxXFull == null:
-		boundsDict["right"] = maxXFull + global_position.x
-	if !minYFull == null:
-		boundsDict["top"] = minYFull + global_position.y
-	if !maxYFull == null:
-		boundsDict["bottom"] = maxYFull + global_position.y
-	return boundsDict
+	if !globalMinX == null:
+		dict["left"] = globalMinX
+	if !globalMinY == null:
+		dict["right"] = globalMinY
+	if !globalMaxX == null:
+		dict["up"] = globalMaxX
+	if !globalMaxY == null:
+		dict["down"] = globalMaxY
+	
+	if dict.size() <= 0:
+		print("dict size is null")
+		return Dictionary()
+	return dict
