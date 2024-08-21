@@ -331,7 +331,7 @@ func st_idle_update(delta: float) -> Callable: #this gets called every frame
 	
 	return Callable()
 
-func st_enter_idle(delta: float = 0) -> void: #this gets called once you change a state to idle, aka it gets called once
+func st_enter_idle(_delta: float = 0) -> void: #this gets called once you change a state to idle, aka it gets called once
 	#print("IDLE")
 	canJump = true
 	
@@ -340,7 +340,7 @@ func st_enter_idle(delta: float = 0) -> void: #this gets called once you change 
 	
 	refill_dashes()
 
-func st_leave_idle(delta: float = 0) -> void: #this gets called before you change state, it gets called once
+func st_leave_idle(_delta: float = 0) -> void: #this gets called before you change state, it gets called once
 	pass
 
 #move
@@ -366,13 +366,13 @@ func st_move_update(delta: float) -> Callable:
 	
 	return Callable()
 
-func st_enter_move(delta: float = 0) -> void:
+func st_enter_move(_delta: float = 0) -> void:
 	#print("MOVE")
 	if stateMachine.previousState == Callable(self, "st_fall"):
 		sprite.scale = bodySquashVec
 	refill_dashes()
 
-func st_leave_move(delta: float = 0) -> void:
+func st_leave_move(_delta: float = 0) -> void:
 	pass
 
 #jump
@@ -396,14 +396,14 @@ func st_jump_update(delta: float) -> Callable: # every frame
 	
 	return Callable()
 
-func st_enter_jump(delta: float = 0) -> void: #once
+func st_enter_jump(_delta: float = 0) -> void: #once
 	#print("JUMP")
 	sprite.scale = bodyStretchVec
 	canJump = false
 	
 	velocity.y = jumpHeight
 
-func st_leave_jump(delta: float = 0) -> void:
+func st_leave_jump(_delta: float = 0) -> void:
 	pass
 
 #fall
@@ -428,7 +428,7 @@ func st_fall_update(delta: float) -> Callable:
 	
 	return Callable()
 
-func st_enter_fall(delta: float = 0) -> void:
+func st_enter_fall(_delta: float = 0) -> void:
 	#print("FALL")
 	if stateMachine.previousState == Callable(self, "st_idle_update") || stateMachine.previousState == Callable(self, "st_move_update") || stateMachine.previousState == Callable(self, "st_climb_update"):
 		canJump = true
@@ -437,7 +437,7 @@ func st_enter_fall(delta: float = 0) -> void:
 		canJump = false
 	start_jump_grace_timer()
 
-func st_leave_fall(delta: float = 0) -> void:
+func st_leave_fall(_delta: float = 0) -> void:
 	pass
 
 #dash
@@ -462,7 +462,7 @@ func st_dash_update(delta: float) -> Callable:
 	
 	return Callable()
 
-func st_enter_dash(delta: float = 0) -> void:
+func st_enter_dash(_delta: float = 0) -> void:
 	#print("DASH")
 	totalDashes = max(0, totalDashes - 1)
 	isDashing = true
@@ -482,7 +482,7 @@ func st_enter_dash(delta: float = 0) -> void:
 	dashParticles.direction = dashDir.normalized()
 	velocity = dashDir.normalized() * dashSpeed
 
-func st_leave_dash(delta: float = 0) -> void:
+func st_leave_dash(_delta: float = 0) -> void:
 	leave_dash_events()
 	isDashing = false
 	dashTrailTimer = 0
@@ -532,11 +532,11 @@ func st_climb_update(delta: float) -> Callable:
 	
 	return Callable()
 
-func st_enter_climb(delta: float = 0) -> void:
+func st_enter_climb(_delta: float = 0) -> void:
 	#print("CLIMB")
 	pass
 
-func st_leave_climb(delta: float = 0) -> void:
+func st_leave_climb(_delta: float = 0) -> void:
 	pass
 
 #superjump

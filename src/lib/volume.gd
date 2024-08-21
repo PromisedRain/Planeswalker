@@ -1,15 +1,17 @@
 class_name Volume
 extends Node2D
 
-@onready var rooms: Node2D = $Rooms
-@onready var objects: Node2D = $Objects
-@onready var worldEnvironment: WorldEnvironment = $WorldEnvironment
-@onready var canvasModulate: CanvasModulate = $CanvasModulate
-
-@export var volumeGivenName: String
-@export_range(1,3) var volumeID: int
+@export_category("volume specific")
+@export var rooms: Node2D
+@export var objects: Node2D
+@export var worldEnvironment: WorldEnvironment 
+@export var canvasModulate: CanvasModulate
 @export var volumeSpawn: Marker2D
 @export var volumeDebugSpawn: Marker2D
+
+@export_category("volume info")
+@export var volumeGivenName: String
+@export_range(1,3) var volumeID: int
 @export var spawnDebug: bool
 
 var roomGlobalPositions: Dictionary = {}
@@ -21,21 +23,27 @@ var loadedAdjacentRooms: Dictionary = {}
 var volumesDirPath: String = "user://volumes"
 
 const roomAdjacencyThreshold: float = 20.0
-const playerSpawnPositionYGrace: int = 6
+#const playerSpawnPositionYGrace: int = 6
 
 var currentRoom: Room
-var currentCamera: Camera2D #change this type to the camera class i will make through cameraManager
+var currentCamera: MainCamera
 
 var player: Player
 
 signal instanceInvalid(instance: Node2D)
 
-#TODO update current room when volume loads based on current room. make a handle_room function to handle entering a new room
-
 func _ready() -> void:
-	#TODO change the worldenvironments and canvasmodulate based on volume in levelmanager or something?
-	
 	instanceInvalid.connect(on_instance_invalid)
+	
+	if is_instance_valid(worldEnvironment):
+		pass
+	else:
+		instanceInvalid.emit(worldEnvironment)
+	
+	if is_instance_valid(canvasModulate):
+		pass
+	else:
+		instanceInvalid.emit(canvasModulate)
 	
 	update_current_volume()
 	
@@ -50,7 +58,7 @@ func _ready() -> void:
 	load_current_room()
 	load_current_spawn()
 	
-	get_important_info()
+	get_volume_info()
 	
 	SaveManager.save_game()
 
@@ -109,7 +117,6 @@ func add_camera_instance() -> void:
 		CameraManager.set_current_camera(cameraInstance)
 		cameraInstance.reset_initial_position(player)
 		objects.add_child(cameraInstance)
-	
 
 func handle_room_load_progress(progress: LevelManager.SceneLoadProgress) -> void:
 	match progress:
@@ -174,7 +181,7 @@ func update_current_room(room: Room) -> void:
 	
 	SaveManager.set_slot_data("current_room", room.roomName)
 
-func on_room_entered(room: Room) -> void:
+func on_room_entered(room: Room, checkpoint) -> void:
 	handle_room(room)
 
 func player_died() -> void:
@@ -212,7 +219,7 @@ func save_room_instances() -> void:
 		else:
 			instanceInvalid.emit(room)
 
-func handle_room(room: Room) -> void: #on checkpoint entering
+func handle_room(room: Room, checkpoint = null) -> void: #on checkpoint entering
 	var roomLocalBounds: Dictionary = room.get_current_bounds()
 	
 	#CameraManager.set_active_camera_bounds(roomLocalBounds)
@@ -253,7 +260,7 @@ func get_non_and_adjacent_rooms() -> Dictionary: #Array[String]:
 	var currentBounds: Rect2 = currentRoom.get_global_room_bounds()
 	
 	for roomName in roomGlobalBounds.keys():
-		if roomName == currentRoom.name.to_lower():
+		if roomName == currentRoom.roomName:
 			continue
 		
 		var bounds: Rect2 = roomGlobalBounds[roomName]
@@ -265,7 +272,7 @@ func get_non_and_adjacent_rooms() -> Dictionary: #Array[String]:
 	bothArrays["adjacent_rooms"] = adjacentRooms
 	bothArrays["non_adjacent_rooms"] = nonAdjacentRooms
 	
-	print("current room: %s" % currentRoom.name.to_lower())
+	print("current room: %s" % currentRoom.roomName)
 	print(bothArrays)
 	return bothArrays
 
@@ -307,7 +314,7 @@ func get_first_room() -> String:
 			return defaultVolume2Room
 	return "room1"
 
-func get_important_info() -> void: 
+func get_volume_info() -> void: 
 	get_important_objects()
 
 func get_important_objects() -> void:

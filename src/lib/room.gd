@@ -28,11 +28,11 @@ func _ready() -> void:
 	initalize_checkpoints()
 	change_children_processes(false)
 
-func on_checkpoint_entered(_checkpoint: RoomCheckpoint, _midLevel: bool) -> void:
-	if currentCheckpoint != _checkpoint:
-		currentCheckpoint = _checkpoint
-		room_entered.emit(self)
-		print("set current checkpoint to: %s" % _checkpoint)
+func on_checkpoint_entered(checkpoint: RoomCheckpoint) -> void:
+	if currentCheckpoint != checkpoint:
+		currentCheckpoint = checkpoint
+		room_entered.emit(self, checkpoint)
+		print("set current checkpoint to: %s" % checkpoint)
 
 func initalize_checkpoints() -> void:
 	for checkpoint: RoomCheckpoint in checkpoints.get_children():

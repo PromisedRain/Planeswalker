@@ -36,7 +36,6 @@ position = Vector2(9, -80)
 
 [node name="RoomCheckpoint2" parent="Checkpoints" instance=ExtResource("5_t4dvi")]
 position = Vector2(65, -40)
-midLevelCheckpoint = true
 
 [node name="RoomCheckpoint3" parent="Checkpoints" instance=ExtResource("5_t4dvi")]
 position = Vector2(389, -56)

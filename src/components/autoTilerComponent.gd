@@ -8,8 +8,9 @@ extends TileMapLayer
 @export var layerIndex: LayerManager.Layers
 
 func _ready() -> void:
-	if layerIndex != LayerManager.Layers.PLACEHOLDER_LAYER:
-		LayerManager.set_layer_index(self, layerIndex)
+	if !Engine.is_editor_hint():
+		if layerIndex != LayerManager.Layers.PLACEHOLDER_LAYER:
+			LayerManager.set_layer_index(self, layerIndex)
 
 func add_border_collision_tiles() -> void:
 	if Engine.is_editor_hint():

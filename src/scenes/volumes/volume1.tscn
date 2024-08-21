@@ -1,23 +1,26 @@
-[gd_scene load_steps=9 format=3 uid="uid://cvbw61cy0um5e"]
+[gd_scene load_steps=8 format=3 uid="uid://cvbw61cy0um5e"]
 
 [ext_resource type="Script" path="res://src/lib/volume.gd" id="1_15x16"]
 [ext_resource type="PackedScene" uid="uid://hkeot3pu0jvn" path="res://src/scenes/volumes/rooms/room1.tscn" id="1_38e1n"]
 [ext_resource type="Script" path="res://src/lib/rooms.gd" id="2_7xnfi"]
 [ext_resource type="PackedScene" uid="uid://bu3f150dlw6qp" path="res://src/scenes/volumes/rooms/room0.tscn" id="4_nryjl"]
 [ext_resource type="PackedScene" uid="uid://8t6kjxiqfujr" path="res://src/scenes/volumes/rooms/room2.tscn" id="5_a2ch5"]
-[ext_resource type="Script" path="res://src/testing/camera stuff/placeholderCamera.gd" id="6_tju2t"]
 [ext_resource type="PackedScene" uid="uid://b1m1seifaxnw8" path="res://src/scenes/volumes/rooms/room3.tscn" id="7_lijjr"]
 
 [sub_resource type="Environment" id="Environment_77io1"]
 background_mode = 3
 tonemap_mode = 2
 
-[node name="Volume1" type="Node2D" node_paths=PackedStringArray("volumeSpawn", "volumeDebugSpawn")]
+[node name="Volume1" type="Node2D" node_paths=PackedStringArray("rooms", "objects", "worldEnvironment", "canvasModulate", "volumeSpawn", "volumeDebugSpawn")]
 script = ExtResource("1_15x16")
-volumeGivenName = "Prologue"
-volumeID = 1
+rooms = NodePath("Rooms")
+objects = NodePath("Objects")
+worldEnvironment = NodePath("WorldEnvironment")
+canvasModulate = NodePath("CanvasModulate")
 volumeSpawn = NodePath("DefaultSpawn")
 volumeDebugSpawn = NodePath("DebugSpawn")
+volumeGivenName = "Prologue"
+volumeID = 1
 metadata/_edit_lock_ = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -32,20 +35,6 @@ metadata/_edit_lock_ = true
 
 [node name="DebugSpawn" type="Marker2D" parent="."]
 position = Vector2(418, -55)
-
-[node name="DebugCamera" type="Camera2D" parent="."]
-visible = false
-position = Vector2(320, 0)
-enabled = false
-limit_left = 0
-limit_top = -180
-limit_right = 960
-limit_bottom = 0
-position_smoothing_enabled = true
-position_smoothing_speed = 4.0
-editor_draw_limits = true
-script = ExtResource("6_tju2t")
-manualCommand = false
 
 [node name="Objects" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
