@@ -126,7 +126,6 @@ func handle_room_load_progress(progress: LevelManager.SceneLoadProgress) -> void
 	match progress:
 		LevelManager.SceneLoadProgress.LOADING:
 			pass
-			#Utils.debug_print(self, "loading ")
 		LevelManager.SceneLoadProgress.ADDED_TO_LOAD_QUEUE:
 			pass
 
@@ -185,6 +184,13 @@ func update_current_room(room: Room) -> void:
 	
 	SaveManager.set_slot_data("current_room", room.roomName)
 
+func resize_room_checkpoint_sizes(room: Room) -> void:
+	var checkpoints: Node2D = room.checkpoints
+	
+	if is_instance_valid(checkpoints) || checkpoints != null:
+		for checkpoint: RoomCheckpoint in checkpoints.get_children():
+			checkpoint.resize_checkpoint_size()
+
 func on_room_entered(room: Room, checkpoint: RoomCheckpoint) -> void:
 	print("room entered")
 	handle_room(room, checkpoint)
@@ -235,8 +241,9 @@ func handle_room(room: Room, checkpoint: Variant = null) -> void: # when i go in
 		save_player_global_pos()
 	
 	if room != currentRoom || currentRoom == null:
-		print("processing new room")
+		#print("processing new room")
 		update_current_room(room)
+		
 		var _rooms: Dictionary = get_non_and_adjacent_rooms()
 		free_non_adjacent_rooms(_rooms["non_adjacent_rooms"])
 		load_adjacent_rooms(_rooms["adjacent_rooms"])
@@ -264,7 +271,7 @@ func get_non_and_adjacent_rooms() -> Dictionary:
 	var adjacentRooms: Array[String] = []
 	var nonAdjacentRooms: Array[String] = []
 	var bothArrays: Dictionary = {}
-	var currentBounds: Rect2 = get_room_bounds(currentRoom.roomName) #currentRoom.get_global_room_bounds()
+	var currentBounds: Rect2 = get_room_bounds(currentRoom.roomName)
 	
 	for roomName: String in volumeRoomInfo.keys():
 		if roomName == currentRoom.roomName:
@@ -279,8 +286,6 @@ func get_non_and_adjacent_rooms() -> Dictionary:
 	
 	bothArrays["adjacent_rooms"] = adjacentRooms
 	bothArrays["non_adjacent_rooms"] = nonAdjacentRooms
-	#print("current room: %s" % currentRoom.roomName)
-	#print(bothArrays)
 	return bothArrays
 
 func are_rooms_adjacent(bounds1: Rect2, bounds2: Rect2) -> bool:
@@ -348,8 +353,8 @@ func get_important_objects() -> void:
 func get_room_global_position(roomName: String) -> Vector2:
 	if volumeRoomInfo.has(roomName):
 		var roomData: Dictionary = volumeRoomInfo[roomName]
-		var x: float = roomData.get("global_position_x", 0.0)
-		var y: float = roomData.get("global_position_y", 0.0)
+		var x: int = roomData.get("global_position_x", 0)
+		var y: int = roomData.get("global_position_y", 0)
 		return Vector2(x, y)
 	else:
 		Utils.debug_print(self, "room '%s' not found in volumeRoomInfo", [roomName])
@@ -360,12 +365,12 @@ func get_room_bounds(roomName: String) -> Rect2:
 		var roomData: Dictionary = volumeRoomInfo[roomName]
 		var boundsData: Dictionary = roomData.get("global_bounds", {})
 		var posData: Vector2 = Vector2(
-			boundsData.get("position_x", 0.0),
-			boundsData.get("position_y", 0.0)
+			boundsData.get("position_x", 0),
+			boundsData.get("position_y", 0)
 		)
 		var sizeData: Vector2 = Vector2(
-			boundsData.get("size_x", 0.0),
-			boundsData.get("size_y", 0.0)
+			boundsData.get("size_x", 0),
+			boundsData.get("size_y", 0)
 		)
 		return Rect2(posData, sizeData)
 	else:
