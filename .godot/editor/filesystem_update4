@@ -14,15 +14,5 @@ res://src/scenes/volumes/rooms/room3.tscn
 res://src/scenes/managers/progressionManager.tscn
 res://src/scenes/managers/cameraManager.tscn
 res://src/scenes/objects/mainCamera/mainCamera.tscn
-res://src/lib/volume.gd
 res://src/scenes/managers/saveManager.tscn
-res://src/scenes/managers/fileBuildManager.gd
-res://src/scenes/managers/saveManager.gd
-res://src/scenes/main.gd
 res://src/scenes/managers/fileBuildManager.tscn
-res://src/lib/utils.gd
-res://src/testing/slotSelection/slotSelection.gd
-res://src/scenes/managers/cameraManager.gd
-res://src/scenes/objects/mainCamera/mainCamera.gd
-res://src/scenes/objects/roomCheckpoint/roomCheckpoint.gd
-res://src/lib/room.gd
