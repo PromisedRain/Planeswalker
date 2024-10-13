@@ -19,10 +19,6 @@ var globalMinY: int
 var globalMaxX: int
 var globalMaxY: int
 
-#var roomWidth: int
-#var roomHeight: int
-#var roomCenter: Vector2
-
 var roomName: String
 
 signal room_entered(room: Room)
@@ -72,12 +68,17 @@ func calculate_room_bounds() -> void:
 	maxXFull = maxX * tileSize.x
 	maxYFull = maxY * tileSize.y
 	
-	var global: Vector2 = global_position
+	var global: Vector2 = round(global_position)
 	
 	globalMinX = global.x + minX * tileSize.x
 	globalMinY = global.y + minY * tileSize.y
 	globalMaxX = global.x + maxX * tileSize.x
-	globalMaxY = global.y * maxY * tileSize.y
+	globalMaxY = global.y + maxY * tileSize.y
+	
+	#globalMinX = global.x * minX * tileSize.x
+	#globalMinY = global.y * minY * tileSize.y
+	#globalMaxX = global.x * maxX * tileSize.x
+	#globalMaxY = global.y * maxY * tileSize.y
 	
 	#roomWidth = minXFull + maxXFull
 	#roomHeight = minYFull + maxYFull
@@ -85,15 +86,13 @@ func calculate_room_bounds() -> void:
 
 func get_global_room_bounds() -> Rect2:
 	var localRoomBounds: Rect2 = get_local_room_bounds()
-	
 	var globalPos: Vector2 = global_position + localRoomBounds.position
 	var globalSize: Vector2 = localRoomBounds.size
-	var globalRoomBounds: Rect2 = Rect2(globalPos, globalSize)
+	var globalRoomBounds: Rect2 = Rect2(round(globalPos), round(globalSize))
 	return globalRoomBounds
 
 func get_local_room_bounds() -> Rect2:
 	calculate_room_bounds()
-	
 	var localPos: Vector2 = Vector2(minXFull, minYFull)
 	var localSize: Vector2 = Vector2(maxXFull - minXFull, maxYFull - minYFull)
 	return Rect2(localPos, localSize)
@@ -116,20 +115,3 @@ func change_children_processes(_value: bool) -> void:
 					
 					if shouldSpawn:
 						object.visible = _value
-
-func get_camera_bounds() -> Dictionary:
-	var dict: Dictionary = {}
-	
-	if !globalMinX == null:
-		dict["left"] = globalMinX
-	if !globalMinY == null:
-		dict["right"] = globalMinY
-	if !globalMaxX == null:
-		dict["up"] = globalMaxX
-	if !globalMaxY == null:
-		dict["down"] = globalMaxY
-	
-	if dict.size() <= 0:
-		print("dict size is null")
-		return Dictionary()
-	return dict

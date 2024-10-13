@@ -5,4 +5,5 @@
 [node name="MainCamera" type="Camera2D" groups=["playerCamera"]]
 limit_smoothed = true
 position_smoothing_enabled = true
+position_smoothing_speed = 6.0
 script = ExtResource("1_oc01a")
