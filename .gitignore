@@ -1,3 +1,8 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+/ios/
+
 # Godot-specific ignores
 .import/
 export.cfg
@@ -9,9 +14,11 @@ export_presets.cfg
 # Mono-specific ignores
 .mono/
 data_*/
+mono_crash.*.json
 
-#Aseprite-specific ignores
-.aseprite
+# Compiled build files
+.bin/build/
+.bin/build
+¨
 
-#.env 
 .env

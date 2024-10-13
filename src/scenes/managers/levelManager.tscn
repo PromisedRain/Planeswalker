@@ -1,8 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://gq4mh3s47m6o"]
+[gd_scene load_steps=2 format=3 uid="uid://gq4mh3s47m6o"]
 
 [ext_resource type="Script" path="res://src/scenes/managers/levelManager.gd" id="1_nir2c"]
-[ext_resource type="PackedScene" uid="uid://cm0lw3nd0kw7d" path="res://src/scenes/objects/player/player.tscn" id="2_onaxt"]
 
 [node name="LevelManager" type="Node"]
 script = ExtResource("1_nir2c")
-player = ExtResource("2_onaxt")
