@@ -403,7 +403,7 @@ func verify_and_open_dir(dirPath: String, _fireSucess: bool = fireSuccessPrint) 
 		Utils.debug_print(self, "error opening directory at: %s", [dirPath])
 		return null
 	
-	Utils.debug_print(self, "directory verified at: %s", [saveDirPath])
+	Utils.debug_print(self, "directory verified at: %s", [dirPath])
 	return dir
 
 func get_save_dir_json_files() -> PackedStringArray:
