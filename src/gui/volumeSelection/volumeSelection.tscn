@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ju8hbn5ionoq"]
 
-[ext_resource type="Script" path="res://src/gui/volumeSelection/volumeSelection.gd" id="1_ssv84"]
+[ext_resource type="Script" uid="uid://dp14t5266ekel" path="res://src/gui/volumeSelection/volumeSelection.gd" id="1_ssv84"]
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/gameTheme.tres" id="2_owvrl"]
 
 [node name="VolumeSelection" type="Control"]

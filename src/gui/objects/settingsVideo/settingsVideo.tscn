@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cnntgis2xd1sn"]
 
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/gameTheme.tres" id="1_rnqj1"]
-[ext_resource type="Script" path="res://src/gui/objects/settingsVideo/settingsVideo.gd" id="2_btho6"]
+[ext_resource type="Script" uid="uid://cm18l2hi27ib8" path="res://src/gui/objects/settingsVideo/settingsVideo.gd" id="2_btho6"]
 
 [node name="SettingsVideo" type="VBoxContainer"]
 anchors_preset = 15

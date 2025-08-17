@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=4 uid="uid://8t6kjxiqfujr"]
 
-[ext_resource type="Script" path="res://src/lib/room.gd" id="1_r83ro"]
+[ext_resource type="Script" uid="uid://we5p5sfdjkc5" path="res://src/lib/room.gd" id="1_r83ro"]
 [ext_resource type="PackedScene" uid="uid://c0rxy4tyuojl1" path="res://src/components/autoTilerComponent.tscn" id="2_ljwe0"]
 [ext_resource type="PackedScene" uid="uid://ce2g03ooxrt54" path="res://src/scenes/objects/roomCheckpoint/roomCheckpoint.tscn" id="3_xu23n"]
 

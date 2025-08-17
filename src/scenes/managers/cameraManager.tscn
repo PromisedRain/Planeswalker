@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://4co1prjwjqc3"]
 
-[ext_resource type="Script" path="res://src/scenes/managers/cameraManager.gd" id="1_oj7vw"]
+[ext_resource type="Script" uid="uid://bi7ibjk5p3dmr" path="res://src/scenes/managers/cameraManager.gd" id="1_oj7vw"]
 [ext_resource type="PackedScene" uid="uid://bpy4v6pmtpjms" path="res://src/scenes/objects/mainCamera/mainCamera.tscn" id="2_3rdk8"]
 
 [node name="CameraManager" type="Node"]

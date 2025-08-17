@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bdpah7xiq4mad"]
 
-[ext_resource type="Script" path="res://src/scenes/managers/saveManager.gd" id="1_72tjq"]
+[ext_resource type="Script" uid="uid://cweiecfl1mnt0" path="res://src/scenes/managers/saveManager.gd" id="1_72tjq"]
 [ext_resource type="PackedScene" uid="uid://ba8dobxlgc6rm" path="res://src/scenes/managers/fileBuildManager.tscn" id="2_vld5b"]
 
 [node name="SaveManager" type="Node"]

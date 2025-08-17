@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bpded4k5kx45m"]
 
-[ext_resource type="Script" path="res://src/gui/slotSelection/slotSelection.gd" id="1_g6te1"]
+[ext_resource type="Script" uid="uid://bwecy7vsqhwe4" path="res://src/gui/slotSelection/slotSelection.gd" id="1_g6te1"]
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/gameTheme.tres" id="1_qw8gh"]
 [ext_resource type="PackedScene" uid="uid://bnso1trspauhu" path="res://src/gui/objects/usedSlot/usedSlot.tscn" id="2_38uy8"]
 [ext_resource type="PackedScene" uid="uid://cupp0v4ej5krd" path="res://src/gui/objects/emptySlot/emptySlot.tscn" id="3_ujnop"]

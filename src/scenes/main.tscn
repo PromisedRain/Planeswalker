@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://4sk5yusr5vvs"]
 
-[ext_resource type="Script" path="res://src/scenes/main.gd" id="1_gewu3"]
+[ext_resource type="Script" uid="uid://bxaf7nxvxba05" path="res://src/scenes/main.gd" id="1_gewu3"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_qdbio"]
 viewport_path = NodePath("SubViewport")

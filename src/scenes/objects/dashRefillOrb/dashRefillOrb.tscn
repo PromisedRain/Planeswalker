@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://c5evwfnm23qi3"]
 
-[ext_resource type="Script" path="res://src/scenes/objects/dashRefillOrb/dashRefillOrb.gd" id="1_sdw5v"]
+[ext_resource type="Script" uid="uid://cs1uarawlddin" path="res://src/scenes/objects/dashRefillOrb/dashRefillOrb.gd" id="1_sdw5v"]
 [ext_resource type="Texture2D" uid="uid://bogxoicmpdfv7" path="res://src/media/sprites/objects/dashRefillOrb/DashRefillOrbSet.png" id="2_bkb1h"]
 [ext_resource type="Texture2D" uid="uid://cyfsf07we3j0e" path="res://src/media/sprites/objects/dashRefillOrb/dashRefillOrb.png" id="2_mschl"]
 [ext_resource type="PackedScene" uid="uid://b76vpkbu8boum" path="res://src/components/collectableComponent.tscn" id="3_711e7"]
@@ -340,10 +340,10 @@ tracks/6/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_522lj"]
 _data = {
-"RESET": SubResource("Animation_bmx6l"),
-"anim_collect": SubResource("Animation_s74km"),
-"anim_collected": SubResource("Animation_4w5mh"),
-"anim_idle": SubResource("Animation_ucftk")
+&"RESET": SubResource("Animation_bmx6l"),
+&"anim_collect": SubResource("Animation_s74km"),
+&"anim_collected": SubResource("Animation_4w5mh"),
+&"anim_idle": SubResource("Animation_ucftk")
 }
 
 [node name="DashRefillOrb" type="Node2D" groups=["dashRefillOrb"]]

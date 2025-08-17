@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://hlvjcki0njjd"]
 
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/gameTheme.tres" id="1_mimga"]
-[ext_resource type="Script" path="res://src/gui/objects/settingsSpecial/settingsSpecial.gd" id="2_bs684"]
+[ext_resource type="Script" uid="uid://bougp20cbm0wv" path="res://src/gui/objects/settingsSpecial/settingsSpecial.gd" id="2_bs684"]
 
 [node name="SettingsSpecial" type="VBoxContainer"]
 anchors_preset = 15

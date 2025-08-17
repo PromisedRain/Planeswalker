@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://ceqbiwerqme85"]
 
-[ext_resource type="Script" path="res://src/testing/slotSelection/slotSelection.gd" id="1_g6te1"]
+[ext_resource type="Script" uid="uid://cwokgq6h4wvse" path="res://src/testing/slotSelection/slotSelection.gd" id="1_g6te1"]
 [ext_resource type="Texture2D" uid="uid://b4vw2ps85vui3" path="res://src/media/ui/slotSelectionDoor/slotSelectionDoorOpen.png" id="2_6eapp"]
 [ext_resource type="Theme" uid="uid://blxx1x6h8a1qw" path="res://src/resources/themes/mainMenuButtons.tres" id="2_ta2dc"]
 [ext_resource type="FontFile" uid="uid://c6puhvxl5gut6" path="res://src/media/fonts/mago1.ttf" id="4_l6bkq"]

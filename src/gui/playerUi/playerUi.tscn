@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cevaoxwk4veu4"]
 
-[ext_resource type="Script" path="res://src/gui/playerUI/playerUI.gd" id="1_far8l"]
+[ext_resource type="Script" uid="uid://brvg64n0387j7" path="res://src/gui/playerUI/playerUI.gd" id="1_far8l"]
 [ext_resource type="FontFile" uid="uid://gejvyowi0g8l" path="res://src/media/fonts/m5x7.ttf" id="2_xc8eg"]
 
 [node name="PlayerUi" type="CanvasLayer"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c6s0hvw0hsy5t"]
 
-[ext_resource type="Script" path="res://src/scenes/managers/debugManager.gd" id="1_nguqr"]
+[ext_resource type="Script" uid="uid://dqmawihgaoi5l" path="res://src/scenes/managers/debugManager.gd" id="1_nguqr"]
 [ext_resource type="FontFile" uid="uid://gejvyowi0g8l" path="res://src/media/fonts/m5x7.ttf" id="2_ft4bb"]
 
 [sub_resource type="Theme" id="Theme_xg7o3"]

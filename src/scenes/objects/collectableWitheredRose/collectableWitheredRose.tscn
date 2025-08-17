@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bai5l82psdgk1"]
 
-[ext_resource type="Script" path="res://src/scenes/objects/collectableWitheredRose/collectableWitheredRose.gd" id="1_v1h0d"]
+[ext_resource type="Script" uid="uid://blvafmht3pbe3" path="res://src/scenes/objects/collectableWitheredRose/collectableWitheredRose.gd" id="1_v1h0d"]
 [ext_resource type="Texture2D" uid="uid://du1uio6c2bnpd" path="res://src/media/sprites/objects/witheredRose/witheredRoseSet.png" id="2_pj2q5"]
 [ext_resource type="PackedScene" uid="uid://b76vpkbu8boum" path="res://src/components/collectableComponent.tscn" id="3_itm3y"]
 
@@ -42,8 +42,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x8byl"]
 _data = {
-"RESET": SubResource("Animation_xrqb0"),
-"anim_idle": SubResource("Animation_blpvq")
+&"RESET": SubResource("Animation_xrqb0"),
+&"anim_idle": SubResource("Animation_blpvq")
 }
 
 [node name="CollectableWitheredRose" type="Node2D" groups=["uniqueCollectable"]]

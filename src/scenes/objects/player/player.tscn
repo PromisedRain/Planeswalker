@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://cm0lw3nd0kw7d"]
 
-[ext_resource type="Script" path="res://src/scenes/objects/player/player.gd" id="1_ev1iy"]
+[ext_resource type="Script" uid="uid://bmgoq18fy4o1a" path="res://src/scenes/objects/player/player.gd" id="1_ev1iy"]
 [ext_resource type="Texture2D" uid="uid://dus1t4omt66pe" path="res://src/media/sprites/objects/player/lilithIdleSheet19x128.png" id="2_d5ssh"]
 [ext_resource type="PackedScene" uid="uid://cyc4eax6g4cjv" path="res://src/components/hurtboxComponent.tscn" id="2_v0tt5"]
 [ext_resource type="PackedScene" uid="uid://dhgs7vny0y0xq" path="res://src/components/healthComponent.tscn" id="3_b752o"]
@@ -274,11 +274,11 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g70rx"]
 _data = {
-"RESET": SubResource("Animation_h43l2"),
-"anim_duck": SubResource("Animation_n06re"),
-"anim_idle": SubResource("Animation_i23dv"),
-"anim_jump": SubResource("Animation_ofp21"),
-"anim_run": SubResource("Animation_epnq1")
+&"RESET": SubResource("Animation_h43l2"),
+&"anim_duck": SubResource("Animation_n06re"),
+&"anim_idle": SubResource("Animation_i23dv"),
+&"anim_jump": SubResource("Animation_ofp21"),
+&"anim_run": SubResource("Animation_epnq1")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mvywc"]
@@ -312,7 +312,7 @@ layerIndex = 14
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_g70rx")
+&"": SubResource("AnimationLibrary_g70rx")
 }
 
 [node name="PlayerDeathAnimationComponent" type="CanvasLayer" parent="."]

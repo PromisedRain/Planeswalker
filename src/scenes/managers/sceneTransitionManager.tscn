@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dbcuxonnm0ubv"]
 
-[ext_resource type="Script" path="res://src/scenes/managers/sceneTransitionManager.gd" id="1_fha77"]
+[ext_resource type="Script" uid="uid://slnx1s1ex2c2" path="res://src/scenes/managers/sceneTransitionManager.gd" id="1_fha77"]
 
 [sub_resource type="Animation" id="Animation_ulw6f"]
 length = 0.001
@@ -49,9 +49,9 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3fuwa"]
 _data = {
-"RESET": SubResource("Animation_ulw6f"),
-"black_to_clear": SubResource("Animation_5dwnl"),
-"clear_to_black": SubResource("Animation_vhqlf")
+&"RESET": SubResource("Animation_ulw6f"),
+&"black_to_clear": SubResource("Animation_5dwnl"),
+&"clear_to_black": SubResource("Animation_vhqlf")
 }
 
 [node name="SceneTransitionManager" type="Node"]

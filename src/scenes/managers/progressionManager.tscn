@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c6httmxijyg36"]
 
-[ext_resource type="Script" path="res://src/scenes/managers/progressionManager.gd" id="1_4xs7r"]
+[ext_resource type="Script" uid="uid://cn2yoynt3sjue" path="res://src/scenes/managers/progressionManager.gd" id="1_4xs7r"]
 
 [node name="ProgressionManager" type="Node"]
 script = ExtResource("1_4xs7r")

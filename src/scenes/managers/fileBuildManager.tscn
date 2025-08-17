@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ba8dobxlgc6rm"]
 
-[ext_resource type="Script" path="res://src/scenes/managers/fileBuildManager.gd" id="1_m2luu"]
+[ext_resource type="Script" uid="uid://csjrf5sl6bgrb" path="res://src/scenes/managers/fileBuildManager.gd" id="1_m2luu"]
 
 [node name="FileBuildManager" type="Node"]
 script = ExtResource("1_m2luu")
