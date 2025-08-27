@@ -34,7 +34,7 @@ var respawnTimer: float
 var justRespawned: bool
 
 var jumpInput: bool
-var jumpGraceTimer: float = 0.0 
+var jumpGraceTimer: float = 0.0
 var jumpBufferTimer: float = 0.0
 var canJump: bool
 var jumpBuffer: bool
@@ -44,7 +44,7 @@ var climbInput: bool
 var climbStamina: float
 var previousClimbStamina: float = -1.0
 
-var dashInput: bool 
+var dashInput: bool
 var dashCooldownTimer: float
 var dashLengthTimer: float
 var dashTrailTimer: float
@@ -60,12 +60,12 @@ var duckInput: bool
 const upwardCornerCorrection: int = 4
 const respawnTime: float = 2.5
 
-const jumpHeight: float = (215.0) * -1 
+const jumpHeight: float = (215.0) * -1
 const jumpHBoost: float = 0.925
 const jumpAirHang: float = 0.8
 const jumpGraceTime: float = 0.19
 const jumpBufferTime: float = 0.11
-const variableJumpH: float = 0.45 
+const variableJumpH: float = 0.45
 
 const dashSpeed: float = 240.0
 const endDashSpeed: float = 160.0
@@ -96,13 +96,13 @@ const climbUpStaminaDrain: float = 0.18
 
 const fallGravity: float = 1.15
 const fallSpeed: float = 310.0
-const maxFallSpeed: float = fallSpeed 
+const maxFallSpeed: float = fallSpeed
 const gravity: int = 900
 
 const bodySquashStretchReversion: float = 1.75
-const bodySquashVec: Vector2 = Vector2(1.4, 0.8) #0.6
-const bodyStretchVec: Vector2 = Vector2(0.6, 1.4) 
-const bodyDuckSquashVec: Vector2 = Vector2(1.4, 0.8) #0.6
+const bodySquashVec: Vector2 = Vector2(1.4, 0.8) # 0.6
+const bodyStretchVec: Vector2 = Vector2(0.6, 1.4)
+const bodyDuckSquashVec: Vector2 = Vector2(1.4, 0.8) # 0.6
 
 enum climbStaminaActions {
 	jump,
@@ -123,13 +123,13 @@ func _ready() -> void:
 	stateMachine.add_states("respawn", Callable(self, "st_respawn_update"), Callable(self, "st_enter_respawn"), Callable(self, "st_leave_respawn"))
 	stateMachine.add_states("dead", Callable(self, "st_dead_update"), Callable(self, "st_enter_dead"), Callable(self, "st_leave_dead"))
 	stateMachine.set_initial_state(Callable(self, "st_idle_update"))
-	
+
 	healthComponent.connect("died", Callable(self, "st_dead"))
-	
+
 	start_jump_buffer_timer()
 	refill_stamina()
 	refill_dashes()
-	
+
 	if layerIndex != LayerManager.Layers.PLACEHOLDER_LAYER:
 		LayerManager.set_layer_index(self, layerIndex)
 
@@ -151,7 +151,7 @@ func _gravity_process(delta: float) -> void:
 			velocity.y += gravity * jumpHBoost * delta
 	elif stateMachine.currentState == Callable(self, "st_fall"):
 		velocity.y += gravity * fallGravity * delta
-	
+
 	if velocity.y > maxFallSpeed:
 		velocity.y = maxFallSpeed
 
@@ -181,57 +181,56 @@ func update(delta: float) -> void:
 	# dash
 	if dashCooldownTimer > 0.0:
 		dashCooldownTimer -= delta
-	
+
 	if dashLengthTimer > 0.0:
 		dashLengthTimer -= delta
 	if Utils.is_approximately_equal(dashLengthTimer, 0.0, 0.01):
 		isDashing = false
-	
+
 	#jump
 	if jumpGraceTimer > 0.0:
 		jumpGraceTimer -= delta
 	if Utils.is_approximately_equal(jumpGraceTimer, 0.0, 0.01):
 		canJump = false
-	
+
 	if jumpBufferTimer > 0.0:
 		jumpBufferTimer -= delta
 	if Utils.is_approximately_equal(jumpBufferTimer, 0.0, 0.01):
 		jumpBuffer = false
-	
+
 	#superjump
 	#if superJumpLengthTimer > 0.0:
 	#	superJumpLengthTimer -= delta
 	#	print(superJumpLengthTimer)
 	#if Utils.is_approximately_equal(superJumpLengthTimer, 0.0, 0.1):
 	#	isSuperJumping = false
-	
+
 	#respawn
 	if respawnTimer > 0.0:
 		respawnTimer -= delta
 	if Utils.is_approximately_equal(respawnTimer, 0.0, 0.01):
 		respawn = true
-	
+
 	if justRespawned && (velocity != Vector2.ZERO):
 		justRespawned = false
-	
+
 	#sprite
 	update_sprite(delta)
-	
+
 	#stamina
 	if is_on_floor() && climbStamina != climbMaxStamina:
 		refill_stamina()
-	
+
 	if climbStamina != previousClimbStamina:
 		climbStaminaChanged.emit(climbStamina)
 		previousClimbStamina = climbStamina
-	
+
 	#corner correction
 	if velocity.y < 0 && test_move(global_transform, Vector2(0, velocity.y * delta)):
-		
 		for i in range(1, upwardCornerCorrection * 2 + 1):
 			for dir in [-1.0, 1.0]:
 				var offset = Vector2(i * dir / 2, 0)
-				
+
 				if !test_move(global_transform.translated(Vector2(i * dir / 2, 0)), Vector2(0, velocity.y * delta)):
 					translate(offset)
 					if velocity.x * dir < 0: velocity.x = 0
@@ -241,33 +240,33 @@ func update_sprite(delta: float) -> void:
 	# scale tweening
 	sprite.scale.x = move_toward(sprite.scale.x, 1.0, bodySquashStretchReversion * delta)
 	sprite.scale.y = move_toward(sprite.scale.y, 1.0, bodySquashStretchReversion * delta)
-	
+
 	#anims
 	if canControl && !sequenceState:
 		#idle
 		if stateMachine.currentState == Callable(self, "st_idle_update"):
 			animationPlayer.play("anim_idle")
-		
+
 		#move
 		elif stateMachine.currentState == Callable(self, "st_move_update"):
 			animationPlayer.play("anim_run")
-		
+
 		#jump
 		elif stateMachine.currentState == Callable(self, "st_jump_update"):
 			animationPlayer.play("anim_jump")
-		
+
 		#fall
 		elif stateMachine.currentState == Callable(self, "st_fall_update"):
-			animationPlayer.play("anim_jump") #placeholder, make the fall diff from jump
-		
+			animationPlayer.play("anim_jump") # placeholder, make the fall diff from jump
+
 		#dash
 		elif stateMachine.currentState == Callable(self, "st_dash_update"):
 			pass
-		
+
 		#climb
 		elif stateMachine.currentState == Callable(self, "st_climb_update"):
 			pass
-		
+
 		#duck
 		elif stateMachine.currentState == Callable(self, "st_duck_update"):
 			animationPlayer.play("anim_duck")
@@ -288,7 +287,7 @@ func player_input() -> void:
 		facing.y += 1
 	if Input.is_action_pressed("up"):
 		facing.y -= 1
-	
+
 	jumpInput = Input.is_action_just_pressed("jump")
 	dashInput = Input.is_action_just_pressed("dash")
 	climbInput = Input.is_action_pressed("climb")
@@ -308,62 +307,62 @@ func player_movement(delta) -> void:
 				decelerate(delta)
 
 #idle
-func st_idle_update(delta: float) -> Callable: #this gets called every frame
+func st_idle_update(delta: float) -> Callable: # this gets called every frame
 	_gravity_process(delta)
 	player_movement(delta)
 	canJump = true
-	
+
 	if !Utils.is_approximately_equal(velocity.x, 0):
 		return Callable(self, "st_move_update")
-	
+
 	if (jumpInput || jumpBuffer) && canJump:
 		jumpBuffer = false
 		return Callable(self, "st_jump_update")
-	
+
 	if velocity.y > 0:
 		return Callable(self, "st_fall_update")
-	
+
 	if canDash:
 		return Callable(self, "st_dash_update")
-	
+
 	if duckInput:
 		return Callable(self, "st_duck_update")
-	
+
 	return Callable()
 
-func st_enter_idle(_delta: float = 0) -> void: #this gets called once you change a state to idle, aka it gets called once
+func st_enter_idle(_delta: float = 0) -> void: # this gets called once you change a state to idle, aka it gets called once
 	#print("IDLE")
 	canJump = true
-	
+
 	if stateMachine.previousState == Callable(self, "st_fall"):
 		sprite.scale = bodySquashVec
-	
+
 	refill_dashes()
 
-func st_leave_idle(_delta: float = 0) -> void: #this gets called before you change state, it gets called once
+func st_leave_idle(_delta: float = 0) -> void: # this gets called before you change state, it gets called once
 	pass
 
 #move
 func st_move_update(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
-	
+
 	if Utils.is_approximately_equal(velocity.x, 0):
 		return Callable(self, "st_idle_update")
-	
+
 	if jumpInput || jumpBuffer:
 		jumpBuffer = false
 		return Callable(self, "st_jump_update")
-	
+
 	if velocity.y > 0:
 		return Callable(self, "st_fall_update")
-	
-	if canDash: 
+
+	if canDash:
 		return Callable(self, "st_dash_update")
-	
+
 	if duckInput:
 		return Callable(self, "st_duck_update")
-	
+
 	return Callable()
 
 func st_enter_move(_delta: float = 0) -> void:
@@ -379,28 +378,28 @@ func st_leave_move(_delta: float = 0) -> void:
 func st_jump_update(delta: float) -> Callable: # every frame
 	_gravity_process(delta)
 	player_movement(delta)
-	
+
 	if jumpInput:
 		jumpBuffer = true
 		start_jump_buffer_timer()
-	
+
 	# variable jump height
-	if Input.is_action_just_released("jump"): 
-		velocity.y *= variableJumpH 
-	
+	if Input.is_action_just_released("jump"):
+		velocity.y *= variableJumpH
+
 	if velocity.y >= 0:
 		return Callable(self, "st_fall_update")
-	
-	if canDash: 
+
+	if canDash:
 		return Callable(self, "st_dash_update")
-	
+
 	return Callable()
 
-func st_enter_jump(_delta: float = 0) -> void: #once
+func st_enter_jump(_delta: float = 0) -> void: # once
 	#print("JUMP")
 	sprite.scale = bodyStretchVec
 	canJump = false
-	
+
 	velocity.y = jumpHeight
 
 func st_leave_jump(_delta: float = 0) -> void:
@@ -410,22 +409,22 @@ func st_leave_jump(_delta: float = 0) -> void:
 func st_fall_update(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
-	
+
 	if is_on_floor() && !Utils.is_approximately_equal(velocity.x, 0):
 		return Callable(self, "st_move_update")
-	
+
 	if is_on_floor():
 		return Callable(self, "st_idle_update")
-	
+
 	if (jumpInput || jumpBuffer) && canJump:
 		return Callable(self, "st_jump_update")
-	
-	if canDash: 
+
+	if canDash:
 		return Callable(self, "st_dash_update")
-	
+
 	if get_climbable_dir_next_to_wall() != Vector2.ZERO:
 		return Callable(self, "st_climb_update")
-	
+
 	return Callable()
 
 func st_enter_fall(_delta: float = 0) -> void:
@@ -445,21 +444,21 @@ func st_dash_update(delta: float) -> Callable:
 	jumpInput = Input.is_action_just_pressed("jump")
 	if jumpInput:
 		print(jumpInput)
-	
+
 	if dashTrailTimer > 0:
 		dashTrailTimer -= delta
 		if dashTrailTimer <= 0:
 			create_dash_trail()
 			dashTrailTimer = dashTrailTime
-	
+
 	if dashDir.y == 0:
 		pass
 	#	if jumpInput && jumpGraceTimer > 0:
 	#		return Callable(self, "st_super_jump")
-	
+
 	if !isDashing:
 		return Callable(self, "st_fall_update")
-	
+
 	return Callable()
 
 func st_enter_dash(_delta: float = 0) -> void:
@@ -468,17 +467,17 @@ func st_enter_dash(_delta: float = 0) -> void:
 	isDashing = true
 	dashParticles.emitting = true
 	sprite.scale = bodySquashVec
-	
+
 	dashLengthTimer = dashLengthTime
 	dashCooldownTimer = dashCooldownTime
 	dashTrailTimer = dashTrailTime
 	start_jump_grace_timer()
-	
+
 	if facing != Vector2.ZERO:
 		dashDir = facing
 	else:
 		dashDir = lastDir
-	
+
 	dashParticles.direction = dashDir.normalized()
 	velocity = dashDir.normalized() * dashSpeed
 
@@ -487,7 +486,7 @@ func st_leave_dash(_delta: float = 0) -> void:
 	isDashing = false
 	dashTrailTimer = 0
 	dashParticles.emitting = false
-	
+
 	dashDir = Vector2.ZERO
 
 func leave_dash_events() -> void:
@@ -497,11 +496,11 @@ func leave_dash_events() -> void:
 func st_climb_update(delta: float) -> Callable:
 	_gravity_process(delta)
 	player_movement(delta)
-	
+
 	if climbInput && climbStamina > 0:
 		if facing.y == -1 && has_enough_stamina(climbStaminaActions.climbUp):
 			velocity.y = climbUpSpeed
-			
+
 			#get_ledge_grabbable()
 			#print("is grabbable: %s" % get_ledge_grabbable())
 		elif facing.y == 1:
@@ -512,24 +511,23 @@ func st_climb_update(delta: float) -> Callable:
 	else:
 		climbStamina -= delta
 		velocity.y *= climbFriction
-	
+
 	#print(climbStamina)
-	
+
 	if jumpInput && has_enough_stamina(climbStaminaActions.jump):
-		
 		climbStamina -= climbJumpStaminaDrain
 		return Callable(self, "st_jump_update")
-	
+
 	if get_climbable_dir_next_to_wall() == Vector2.ZERO:
 		return Callable(self, "st_fall_update")
-	
+
 	if canDash:
 		return Callable(self, "st_dash_update")
-	
+
 	if is_on_floor():
 		refill_stamina()
 		return Callable(self, "st_idle_update")
-	
+
 	return Callable()
 
 func st_enter_climb(_delta: float = 0) -> void:
@@ -542,13 +540,13 @@ func st_leave_climb(_delta: float = 0) -> void:
 #superjump
 #func st_superJump_update(delta: float) -> void:
 #	velocity.x = superJumpX * dashDir.x
-#	
+#
 #	if dashTrailTimer > 0:
 #		dashTrailTimer -= delta
 #		if dashTrailTimer <= 0:
 #			create_dash_trail()
 #			dashTrailTimer = dashTrailTime
-#	
+#
 #	if superJumpLengthTimer <= 0:
 #		isSuperJumping = false
 #		return Callable(self, "st_fall_update")
@@ -557,15 +555,15 @@ func st_leave_climb(_delta: float = 0) -> void:
 #	#print("SUPERJUMP")
 #	isSuperJumping = true
 #	dashParticles.emitting = true
-#	
+#
 #	superJumpLengthTimer = superJumpLengthTime
 #	dashTrailTimer = dashTrailTime
-#	
+#
 #	if facing != Vector2.ZERO:
 #		dashDir = facing
 #	else:
 #		dashDir = lastDir
-#	
+#
 #	dashParticles.direction = dashDir.normalized()
 #	velocity.y = jumpHeight
 
@@ -577,25 +575,25 @@ func st_duck_update(delta: float) -> Callable:
 	_gravity_process(delta)
 	canJump = true
 	jumpInput = Input.is_action_just_pressed("jump")
-	
+
 	if velocity.x != 0:
 		apply_velocity(Vector2(0, velocity.y), duckFriction, delta)
-	
+
 	if velocity.y > 0:
 		return Callable(self, "st_fall_update")
-	
+
 	if !duckInput:
 		return Callable(self, "st_idle_update")
-	
+
 	if jumpInput && canJump:
 		return Callable(self, "st_jump_update")
-	
+
 	return Callable()
 
 func st_enter_duck(_delta: float = 0) -> void:
 	#print("DUCK")
 	sprite.scale = bodyDuckSquashVec
-	
+
 	duckedCollisionBox.disabled = false
 	normalCollisionBox.disabled = true
 
@@ -668,7 +666,7 @@ func get_ledge_grabbable() -> bool:
 	var midRaycasts: Array = climbLedgeGrabMiddleRaycasts
 	var topIsColliding: bool = false
 	var midIsColliding: bool = false
-	
+
 	for i: RayCast2D in topRaycasts:
 		i.force_raycast_update()
 		if !i.is_colliding():
@@ -677,7 +675,7 @@ func get_ledge_grabbable() -> bool:
 			break
 		else:
 			print("top collided")
-	
+
 	for i: RayCast2D in midRaycasts:
 		i.force_raycast_update()
 		if i.is_colliding():
@@ -686,7 +684,7 @@ func get_ledge_grabbable() -> bool:
 			break
 		else:
 			print("mid didnt collide")
-	
+
 	return topIsColliding && midIsColliding
 
 func create_dash_trail() -> void:
