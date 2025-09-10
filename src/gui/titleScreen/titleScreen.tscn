@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c4r2alp7dkopp"]
 
-[ext_resource type="Script" uid="uid://b56h84hopst1f" path="res://src/gui/titleScreen/titleScreen.gd" id="1_wjd3i"]
+[ext_resource type="Script" uid="uid://kxe4j6wq5vhq" path="res://src/gui/titleScreen/titleScreen.gd" id="1_wjd3i"]
 [ext_resource type="Theme" uid="uid://bbvixcv2opc1q" path="res://src/resources/themes/gameTheme.tres" id="2_ihltr"]
 
 [node name="TitleScreen" type="Control"]
